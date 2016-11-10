@@ -15,6 +15,27 @@
 
 require_once 'esr.civix.php';
 
+
+/**
+* Add an action for creating donation receipts after doing a search
+*
+* @param string $objectType specifies the component
+* @param array $tasks the list of actions
+*
+* @access public
+*/
+function esr_civicrm_searchTasks($objectType, &$tasks) {
+  // add MERGE INTO HOUSEHOLD task to contact list
+  if ($objectType == 'contact') {
+    // this object is only available for the 'merge' mode
+    $tasks['generate_esr'] = array(
+        'title'  => "ESR-Generierung",
+        'class'  => 'CRM_Esr_Form_Task_Contact',
+        'result' => false);
+  }
+}
+
+
 /**
  * Implements hook_civicrm_config().
  *

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/esr/contact</path>
+    <page_callback>CRM_Esr_Form_Task_Contact</page_callback>
+    <title>Task_Contact</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
