@@ -20,7 +20,7 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Esr_Form_Task_Contact extends CRM_Core_Form {
+class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
   public function buildQuickForm() {
     CRM_Utils_System::setTitle("ESR Code Generierung");
@@ -89,6 +89,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Core_Form {
   public function postProcess() {
     // store settings as default
     $all_values = $this->exportValues();
+    
     //Contact:submit
     $values = array(
       'tn_number'   => CRM_Utils_Array::value('tn_number', $all_values),
@@ -99,7 +100,8 @@ class CRM_Esr_Form_Task_Contact extends CRM_Core_Form {
 
     if (isset($all_values['_qf_Contact_submit'])) {
       // CREATE CSV
-      error_log("CREATE CSV");
+      $generator = new CRM_Esr_Generator();
+      $generator->generate($this->_contactIds, $values);
 
     } elseif (isset($all_values['_qf_Contact_next'])) {
       // CREATE ACTIVITIES
