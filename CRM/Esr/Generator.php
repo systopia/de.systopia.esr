@@ -28,6 +28,7 @@ class CRM_Esr_Generator {
 
 
   public function __construct() {
+    // fill header
     $this->header = array(
         'Personennummer',
         'Mailcode',
@@ -58,6 +59,19 @@ class CRM_Esr_Generator {
         'TextBaustein',
         'Paketnummer',
         );
+
+    // fill prefix lookup
+    $prefixes = civicrm_api3('OptionValue', 'get', array('option_group_id' => 'individual_prefix', 'return' => 'value,label'));
+    $this->id2prefix = array('' => '', NULL => '');
+    foreach ($prefixes['values'] as $prefix) {
+      $this->id2prefix[$prefix['value']] = $prefix['label'];
+    }
+
+    // fill country (localised)
+    $this->id2country = CRM_Core_PseudoConstant::country();
+    // $I18nParams = array('context' => 'country');
+    // $i18n = CRM_Core_I18n::singleton();
+    // $i18n->localizeArray($this->id2country, $I18nParams);
   }
 
 
@@ -65,8 +79,6 @@ class CRM_Esr_Generator {
    * Will generate a CSV file and write into a file or the HTTP stream
    */
   public function generate($contact_ids, $params, $out = 'php://output') {
-    error_log(json_encode($contact_ids));
-
     if ($out == 'php://output') {
       // we want to write into the outstream
       $filename = "ESR-" . date('YmdHis') . '.csv';
@@ -92,7 +104,6 @@ class CRM_Esr_Generator {
     
     // create the query and go through the lines
     $sql = $this->generateSQL($contact_ids, $params);
-    error_log($sql);
     $query = CRM_Core_DAO::executeQuery($sql);
     while ($query->fetch()) {
       $record = $this->generateRecord($query, $params);

@@ -49,6 +49,8 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       false
     );
 
+    parent::buildQuickForm();
+
     $this->addButtons(array(
       array(
         'type' => 'next',
@@ -66,8 +68,6 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'isDefault' => FALSE,
       ),
     ));
-
-    parent::buildQuickForm();
   }
 
 
