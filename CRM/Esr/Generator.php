@@ -25,7 +25,7 @@ class CRM_Esr_Generator {
   protected $header     = NULL;
   protected $id2country = NULL;
   protected $id2prefix  = NULL;
-
+  protected $street_parser = '#^(?P<street>.*) +(?P<number>[\d\/-]+( ?[A-Za-z]+)?)$#';
 
   public function __construct() {
     // fill header
@@ -184,19 +184,23 @@ GROUP BY  civicrm_contact.id";
 
     // address lines
     $record['Adresszeile1'] = $this->id2prefix[$query->prefix_id];
-    $record['Adresszeile2'] = $query->addressee_display;
+    $record['Adresszeile2'] = $this->stripPrefix($query->addressee_display, $record['Adresszeile1']);
     $record['Adresszeile3'] = $query->street_address;
     $record['Adresszeile4'] = "{$query->postal_code} {$query->city}";
     $record['Adresszeile5'] = $query->supplemental_address_1;
     $record['Adresszeile6'] = $query->supplemental_address_2;
 
     // parsed address
-    // TODO: PARSE
-    $record['Strasse']    = '';
-    $record['Hausnummer'] = '';
-    $record['Plz']        = $query->postal_code;
-    $record['Ort']        = $query->city;
-    $record['Land']       = $this->id2country[$query->country_id];
+    $record['Plz']          = $query->postal_code;
+    $record['Ort']          = $query->city;
+    $record['Land']         = $this->id2country[$query->country_id];
+    if (preg_match($this->street_parser, $query->street_address, $matches)) {
+      $record['Strasse']    = $matches['street'];
+      $record['Hausnummer'] = $matches['number'];
+    } else {      
+      $record['Strasse']    = $query->street_address;
+      $record['Hausnummer'] = '';
+    }
 
     // personalised data
     $record['Anrede']       = $this->id2prefix[$query->prefix_id];
@@ -218,6 +222,19 @@ GROUP BY  civicrm_contact.id";
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
 
     return $record;
+  }
+
+
+  /**
+   * remove the given prefix from the string, if present
+   */
+  protected function stripPrefix($string, $prefix) {
+    $string_prefix = substr($string, 0, strlen($prefix));
+    if ($string_prefix == $prefix) {
+      return trim(substr($string, strlen($prefix)));
+    } else {
+      return trim($string);
+    }
   }
 
 }

@@ -137,7 +137,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     }
 
     $contact_id_list = implode(',', $filtered_contact_ids);
-    $violator = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_contact WHERE contact_type != 'Individual' AND id IN ({$contact_id_list});");
+    $violator = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_contact WHERE contact_type != 'Individual' AND id IN ({$contact_id_list}) LIMIT 1;");
     if ($violator) {
       return FALSE;
     } else {
