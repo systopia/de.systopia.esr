@@ -72,6 +72,8 @@ class CRM_Esr_Generator {
     // $I18nParams = array('context' => 'country');
     // $i18n = CRM_Core_I18n::singleton();
     // $i18n->localizeArray($this->id2country, $I18nParams);
+    $this->id2country[''] = '';
+    $this->id2country[NULL] = '';
   }
 
 
@@ -85,7 +87,7 @@ class CRM_Esr_Generator {
       header('Content-Description: File Transfer');
       header('Content-Type: application/csv');
       header('Content-Disposition: attachment; filename=' . $filename);
-      // 4.7:
+      // CiviCRM 4.7:
       // CRM_Utils_System::setHttpHeader('Content-Description', 'File Transfer');
       // CRM_Utils_System::setHttpHeader('Content-Type', 'application/csv');
       // CRM_Utils_System::setHttpHeader('Content-Disposition', 'attachment; filename=' . $filename);
@@ -209,7 +211,11 @@ GROUP BY  civicrm_contact.id";
     $record['ESR1']             = $params['mailcode'];
     $record['ESR1RefZeile']     = '1234567890';  // TODO
     $record['ESR1RefZeileGrp']  = '1234 5678 90';  // TODO
-    // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, TextBaustein, Paketnummer
+
+    // misc
+    $record['TextBaustein'] = $params['custom_text'];
+    
+    // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
 
     return $record;
   }

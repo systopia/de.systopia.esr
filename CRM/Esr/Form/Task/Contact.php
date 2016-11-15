@@ -25,6 +25,13 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
   public function buildQuickForm() {
     CRM_Utils_System::setTitle("ESR Code Generierung");
 
+    // make sure we're only talking about individuals
+    if (!$this->onlyIndividuals()) {
+      $session = CRM_Core_Session::singleton();
+      CRM_Core_Session::setStatus("Es können ausschließlich Kontakte vom Typ 'Individual' verarbeitet werden", "Ungültige Auswahl", 'error');
+      CRM_Utils_System::redirect($session->readUserContext());
+    }
+
     $this->add(
       'text',
       'tn_number',
@@ -112,4 +119,29 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     parent::postProcess();
   }
 
+
+  /**
+   * check if the selected contacts are all individuals
+   */
+  protected function onlyIndividuals() {
+    $filtered_contact_ids = array();
+    foreach ($this->_contactIds as $contact_id) {
+      $filtered_contact_id = (int) $contact_id;
+      if ($filtered_contact_id) {
+        $filtered_contact_ids[] = $filtered_contact_id;
+      }
+    }
+  
+    if (empty($filtered_contact_ids)) {
+      return TRUE;
+    }
+
+    $contact_id_list = implode(',', $filtered_contact_ids);
+    $violator = CRM_Core_DAO::singleValueQuery("SELECT id FROM civicrm_contact WHERE contact_type != 'Individual' AND id IN ({$contact_id_list});");
+    if ($violator) {
+      return FALSE;
+    } else {
+      return TRUE;
+    }
+  }
 }
