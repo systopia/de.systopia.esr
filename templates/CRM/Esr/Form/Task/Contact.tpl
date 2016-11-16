@@ -15,6 +15,11 @@
 <h3>Parameter</h3>
 
 <div class="crm-section">
+  <div class="label">{$form.amount.label}</div>
+  <div class="content">{$form.amount.html}&nbsp;CHF</div>
+  <div class="clear"></div>
+</div>
+<div class="crm-section">
   <div class="label">{$form.tn_number.label}</div>
   <div class="content">{$form.tn_number.html}</div>
   <div class="clear"></div>

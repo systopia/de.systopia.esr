@@ -31,6 +31,16 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       CRM_Core_Session::setStatus("Es können ausschließlich Kontakte vom Typ 'Individual' verarbeitet werden", "Ungültige Auswahl", 'error');
       CRM_Utils_System::redirect($session->readUserContext());
     }
+    $this->registerRule('digits_only', 'callback', 'digits_only', 'CRM_Esr_Form_Task_Contact');
+
+    $this->add(
+      'text',
+      'amount',
+      "Betrag",
+      array('class' => 'tiny'),
+      false
+    );
+    $this->addRule('amount', "Bitte einen gültigen Betrag eingeben", 'money');
 
     $this->add(
       'text',
@@ -39,7 +49,8 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       array('class' => 'huge'),
       false
     );
-  
+    $this->addRule('tn_number', "Bitte nur Ziffern eingeben", 'digits_only');
+
     $this->add(
       'text',
       'mailcode',
@@ -47,11 +58,12 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       array('class' => 'huge'),
       false
     );
+    $this->addRule('mailcode', "Bitte nur Ziffern eingeben", 'digits_only');
 
     $this->add(
       'text',
       'custom_text',
-      "Textbausteine",
+      "Textbaustein",
       array('class' => 'huge'),
       false
     );
@@ -99,6 +111,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     
     //Contact:submit
     $values = array(
+      'amount'      => CRM_Utils_Array::value('amount', $all_values),
       'tn_number'   => CRM_Utils_Array::value('tn_number', $all_values),
       'mailcode'    => CRM_Utils_Array::value('mailcode', $all_values),
       'custom_text' => CRM_Utils_Array::value('custom_text', $all_values),
@@ -118,7 +131,6 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     parent::postProcess();
   }
-
 
   /**
    * check if the selected contacts are all individuals
@@ -143,5 +155,12 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     } else {
       return TRUE;
     }
+  }
+
+  /**
+   * RULE that the value should be exlusively numbers
+   */
+  public static function digits_only($value) {
+    return preg_match('/^\d+$/', $value);
   }
 }

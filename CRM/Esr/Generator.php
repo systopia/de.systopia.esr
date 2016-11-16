@@ -15,6 +15,7 @@
 
 require_once 'CRM/Core/Form.php';
 
+
 /**
  * Form controller class
  *
@@ -22,10 +23,23 @@ require_once 'CRM/Core/Form.php';
  */
 class CRM_Esr_Generator {
 
+  // ESR TYPES BC (Belegartcode), defined by standard
+  public static $BC_ESR_CHF      = '01';
+  public static $BC_ESR__N_CHF   = '03';
+  public static $BC_ESR_PLUS_CHF = '04';
+  public static $BC_ESR_EUR      = '21';
+  public static $BC_ESR_PLUS_EUR = '31';
+
+  // Reference type indicators (self defined)
+  public static $REFTYPE_BULK_SIMPLE  = '01';
+
+
   protected $header     = NULL;
   protected $id2country = NULL;
   protected $id2prefix  = NULL;
-  protected $street_parser = '#^(?P<street>.*) +(?P<number>[\d\/-]+( ?[A-Za-z]+)?)$#';
+  protected $street_parser  = '#^(?P<street>.*) +(?P<number>[\d\/-]+( ?[A-Za-z]+)?)$#';
+  protected $checksum_table = '0946827135'; // used by calculate_checksum
+
 
   public function __construct() {
     // fill header
@@ -69,11 +83,10 @@ class CRM_Esr_Generator {
 
     // fill country (localised)
     $this->id2country = CRM_Core_PseudoConstant::country();
-    // $I18nParams = array('context' => 'country');
-    // $i18n = CRM_Core_I18n::singleton();
-    // $i18n->localizeArray($this->id2country, $I18nParams);
     $this->id2country[''] = '';
     $this->id2country[NULL] = '';
+
+    // $this->test_calculate_checksum();
   }
 
 
@@ -211,19 +224,108 @@ GROUP BY  civicrm_contact.id";
     $record['Name2']        = '';  // unused
 
     // codes
+    $esr_ref = $this->create_reference(self::$REFTYPE_BULK_SIMPLE, array('contact_id' => $query->contact_id));
+    $esr1    = $this->create_code(self::$BC_ESR_CHF, $params['amount'], $esr_ref, $params['tn_number']);
     $record['VESRNummer']       = $params['tn_number'];
-    $record['ESR1']             = $params['mailcode'];
-    $record['ESR1RefZeile']     = '1234567890';  // TODO
-    $record['ESR1RefZeileGrp']  = '1234 5678 90';  // TODO
+    $record['ESR1']             = $esr1;
+    $record['ESR1RefZeile']     = $esr_ref;
+    $record['ESR1RefZeileGrp']  = $this->format_code($esr_ref);
 
     // misc
     $record['TextBaustein'] = $params['custom_text'];
     
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
-
     return $record;
   }
 
+
+  /**
+   * generate an ESR code, 
+   *  e.g. 0100003949753>120000000000234478943216899+ 010001628>
+   * @see https://www.postfinance.ch/binp/postfinance/public/dam.aw0b_Jf924M3gwLiSxkZQ_REZopMbAfPgsQR7kChnsY.spool/content/dam/pf/de/doc/consult/manual/dlserv/inpayslip_isr_man_de.pdf
+   */
+  protected function create_code($type, $amount, $esr_ref, $tn_number) {
+    $config = CRM_Core_Config::singleton();
+    // 
+
+    // code starts with the type
+    $code = $type;
+
+    if ($type == self::$REFTYPE_BULK_SIMPLE) {
+      // clean the amount
+      $amount = str_replace(array(' ', "\t", "\n", $config->monetaryThousandSeparator), '', $amount);
+      $amount = str_replace($config->monetaryDecimalPoint, '.', $amount);
+
+      // add the amount
+      $fullamount = (int) ($amount * 100.0);
+      $code .= sprintf("%010d", $fullamount);
+    }
+
+    // add checksum bit
+    $code .= $this->calculate_checksum($code);
+
+    // then add the '>' separator
+    $code .= '>';
+
+    // then add the reference
+    $code .= $esr_ref;
+
+    // then add the '+ ' separator (for whatever reason)
+    $code .= '+ ';
+
+    // then add the creditor id (Teilnehmernummer)
+    $code .= sprintf('%09d', $tn_number);
+
+    // ...and finish with '>'
+    $code .= '>';
+
+    return $code;
+  }
+
+  /**
+   * generate an ESR reference
+   */
+  protected function create_reference($type, $params) {
+    switch ($type) {
+      case self::$REFTYPE_BULK_SIMPLE:
+        $reference = sprintf("%02d%014d%010d", $type, 0, $params['contact_id']);
+        break;
+      
+      default:
+        error_log("Unknown type: '{$type}'");
+        $reference = '00000000000000000000000000';
+          break;
+    }
+
+    $reference .= $this->calculate_checksum($reference);
+    return $reference;
+  }
+
+  /**
+   * simply adds spaces to separate the code into columns
+   */
+  protected function format_code($code) {
+    $code_blocks = substr($code, 0, 2);
+    for ($i=0; $i < (strlen($code)-2)/5 ; $i++) {
+      $code_blocks .= ' ' . substr($code, 2+$i*5, 5);
+    }
+    return $code_blocks;
+  }
+
+  /** 
+   * calculate MOD10 checksum
+   * @see https://www.postfinance.ch/binp/postfinance/public/dam.c8_wVGPa22PId2Sju8Y4fcG6nsPr4WVUrdgEgwJu5RA.spool/content/dam/pf/de/doc/consult/manual/dldata/efin_recdescr_man_de.pdf
+   */
+  public function calculate_checksum($number_string) {
+    $number_string = (String) $number_string;
+    $carry = 0;
+    for ($i=0; $i < strlen($number_string); $i++) {
+      $digit = $number_string[$i];
+      // error_log("INDEX {$i}, CARRY {$carry}, DIGIT {$digit}");
+      $carry = $this->checksum_table[($carry + $digit) % 10];
+    }
+    return (10 - $carry) % 10;
+  }
 
   /**
    * remove the given prefix from the string, if present
@@ -234,6 +336,31 @@ GROUP BY  civicrm_contact.id";
       return trim(substr($string, strlen($prefix)));
     } else {
       return trim($string);
+    }
+  }
+
+
+
+
+  /**
+   * simple test function for calculate_checksum($number_string)
+   *
+   * @todo: move to unit tests
+   */
+  protected function test_calculate_checksum() {
+    $test_cases = array(
+      '70004152' => '8',
+      '12000000000023447894321689' => '9',
+      '96111690000000660000000928' => '4',
+      '21000000000313947143000901' => '7');
+
+    foreach ($test_cases as $number => $checksum_expected) {
+      $checksum_calculated = $this->calculate_checksum($number);
+      if ($checksum_calculated == $checksum_expected) {
+        error_log("OK: {$number}: {$checksum_expected}");
+      } else {
+        error_log("FAIL: {$number}: {$checksum_calculated} != {$checksum_expected}");
+      }
     }
   }
 
