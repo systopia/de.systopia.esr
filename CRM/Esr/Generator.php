@@ -200,8 +200,8 @@ GROUP BY  civicrm_contact.id";
     $record['Mailcode']       = $params['mailcode'];
 
     // address lines
-    $record['Adresszeile1'] = $this->id2prefix[$query->prefix_id];
-    $record['Adresszeile2'] = $this->stripPrefix($query->addressee_display, $record['Adresszeile1']);
+    $record['Adresszeile1'] = ''; // $this->id2prefix[$query->prefix_id];
+    $record['Adresszeile2'] = $query->addressee_display; // $this->stripPrefix($query->addressee_display, $record['Adresszeile1']);
     $record['Adresszeile3'] = $query->street_address;
     $record['Adresszeile4'] = "{$query->postal_code} {$query->city}";
     $record['Adresszeile5'] = $query->supplemental_address_1;
