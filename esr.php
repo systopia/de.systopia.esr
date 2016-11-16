@@ -81,6 +81,15 @@ function esr_civicrm_uninstall() {
  */
 function esr_civicrm_enable() {
   _esr_civix_civicrm_enable();
+
+  // make sure the activiy type is there
+  $activity_type = (int) CRM_Core_OptionGroup::getValue('activity_type', 'ESR Code Generierung');
+  if (!$activity_type) {
+    civicrm_api3('OptionValue', 'create', array(
+      'option_group_id' => 'activity_type',
+      'label'           => 'ESR Code Generierung',
+      ));
+  }
 }
 
 /**
