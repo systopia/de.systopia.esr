@@ -121,7 +121,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     if (isset($all_values['_qf_Contact_submit'])) {
       // CREATE CSV
       $generator = new CRM_Esr_Generator();
-      $generator->generate($this->_contactIds, $values);
+      $generator->generate(CRM_Esr_Generator::$REFTYPE_BULK_SIMPLE, $this->_contactIds, $values);
 
     } elseif (isset($all_values['_qf_Contact_next'])) {
       // CREATE ACTIVITIES

@@ -92,8 +92,12 @@ class CRM_Esr_Generator {
 
   /**
    * Will generate a CSV file and write into a file or the HTTP stream
+   *
+   * @param $type        String reference type, e.g. self::$REFTYPE_BULK_SIMPLE
+   * @param $contact_ids array  list of contact ids
+   * @param $params      array  list of additional parameters
    */
-  public function generate($contact_ids, $params, $out = 'php://output') {
+  public function generate($type, $contact_ids, $params, $out = 'php://output') {
     if ($out == 'php://output') {
       // we want to write into the outstream
       $filename = "ESR-" . date('YmdHis') . '.csv';
@@ -121,7 +125,7 @@ class CRM_Esr_Generator {
     $sql = $this->generateSQL($contact_ids, $params);
     $query = CRM_Core_DAO::executeQuery($sql);
     while ($query->fetch()) {
-      $record = $this->generateRecord($query, $params);
+      $record = $this->generateRecord($type, $query, $params);
       $csv_line = array();
       foreach ($this->header as $field) {
         if (isset($record[$field])) {
@@ -188,7 +192,7 @@ GROUP BY  civicrm_contact.id";
   /**
    * generate a new record on the next line of the query result
    */
-  protected function generateRecord($query, $params) {
+  protected function generateRecord($type, $query, $params) {
     $record = array();
 
     // basic information
@@ -224,7 +228,7 @@ GROUP BY  civicrm_contact.id";
     $record['Name2']        = '';  // unused
 
     // codes
-    $esr_ref = $this->create_reference(self::$REFTYPE_BULK_SIMPLE, array('contact_id' => $query->contact_id));
+    $esr_ref = $this->create_reference($type, array('contact_id' => $query->contact_id, 'mailcode' => $params['mailcode']));
     $esr1    = $this->create_code(self::$BC_ESR_CHF, $params['amount'], $esr_ref, $params['tn_number']);
     $record['VESRNummer']       = $params['tn_number'];
     $record['ESR1']             = $esr1;
@@ -288,7 +292,7 @@ GROUP BY  civicrm_contact.id";
   protected function create_reference($type, $params) {
     switch ($type) {
       case self::$REFTYPE_BULK_SIMPLE:
-        $reference = sprintf("%02d%014d%010d", $type, 0, $params['contact_id']);
+        $reference = sprintf("%02d%014d%010d", $type, $params['mailcode'], $params['contact_id']);
         break;
       
       default:
