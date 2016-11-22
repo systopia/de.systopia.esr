@@ -229,7 +229,9 @@ GROUP BY  civicrm_contact.id";
 
     // codes
     $esr_ref = $this->create_reference($type, array('contact_id' => $query->contact_id, 'mailcode' => $params['mailcode']));
-    $esr1    = $this->create_code(self::$BC_ESR_CHF, $params['amount'], $esr_ref, $params['tn_number']);
+    $amount  = $this->getFullAmount($params['amount']);
+    $bc_type = empty($amount) ? self::$BC_ESR_PLUS_CHF : self::$BC_ESR_CHF;
+    $esr1    = $this->create_code($bc_type, $amount, $esr_ref, $params['tn_number']);
     $record['VESRNummer']       = $params['tn_number'];
     $record['ESR1']             = $esr1;
     $record['ESR1RefZeile']     = $esr_ref;
@@ -249,20 +251,11 @@ GROUP BY  civicrm_contact.id";
    * @see https://www.postfinance.ch/binp/postfinance/public/dam.aw0b_Jf924M3gwLiSxkZQ_REZopMbAfPgsQR7kChnsY.spool/content/dam/pf/de/doc/consult/manual/dlserv/inpayslip_isr_man_de.pdf
    */
   protected function create_code($type, $amount, $esr_ref, $tn_number) {
-    $config = CRM_Core_Config::singleton();
-    // 
-
     // code starts with the type
     $code = $type;
 
-    if ($type == self::$REFTYPE_BULK_SIMPLE) {
-      // clean the amount
-      $amount = str_replace(array(' ', "\t", "\n", $config->monetaryThousandSeparator), '', $amount);
-      $amount = str_replace($config->monetaryDecimalPoint, '.', $amount);
-
-      // add the amount
-      $fullamount = (int) ($amount * 100.0);
-      $code .= sprintf("%010d", $fullamount);
+    if ($amount) {
+      $code .= sprintf("%010d", $amount);      
     }
 
     // add checksum bit
@@ -303,6 +296,24 @@ GROUP BY  civicrm_contact.id";
 
     $reference .= $this->calculate_checksum($reference);
     return $reference;
+  }
+
+  /**
+   * converts the amount string in an integer of cents.
+   */
+  protected function getFullAmount($amount) {
+    // check if it's even set
+    if (empty($amount)) {
+      return 0;
+    }
+
+    // clean the amount
+    $config = CRM_Core_Config::singleton();
+    $amount = str_replace(array(' ', "\t", "\n", $config->monetaryThousandSeparator), '', $amount);
+    $amount = str_replace($config->monetaryDecimalPoint, '.', $amount);
+
+    // add the amount
+    return (int) ($amount * 100.0);
   }
 
   /**

@@ -15,7 +15,7 @@
 <h3>Parameter</h3>
 
 <div class="crm-section">
-  <div class="label">{$form.amount.label}</div>
+  <div class="label">{$form.amount.label} <a onclick='CRM.help("Betrag", {literal}{"id":"id-amount","file":"CRM\/Esr\/Form\/Task\/Contact"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.amount.html}&nbsp;CHF</div>
   <div class="clear"></div>
 </div>
