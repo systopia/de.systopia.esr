@@ -38,7 +38,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'amount',
       "Betrag",
       array('class' => 'tiny'),
-      false
+      FALSE
     );
     $this->addRule('amount', "Bitte einen gültigen Betrag eingeben", 'money');
 
@@ -47,7 +47,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'tn_number',
       "Teilnehmer-Nummer",
       array('class' => 'huge'),
-      false
+      TRUE
     );
     $this->addRule('tn_number', "Bitte nur Ziffern eingeben", 'digits_only');
 
@@ -56,7 +56,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'mailcode',
       "Mailcode",
       array('class' => 'huge'),
-      false
+      TRUE
     );
     $this->addRule('mailcode', "Bitte nur Ziffern eingeben", 'digits_only');
 
@@ -65,7 +65,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'custom_text',
       "Textbaustein",
       array('class' => 'huge'),
-      false
+      FALSE
     );
 
     parent::buildQuickForm();
