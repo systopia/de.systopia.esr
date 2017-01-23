@@ -30,6 +30,11 @@
   <div class="clear"></div>
 </div>
 <div class="crm-section">
+  <div class="label">{$form.campaign.label}</div>
+  <div class="content">{$form.campaign.html}</div>
+  <div class="clear"></div>
+</div>
+<div class="crm-section">
   <div class="label">{$form.custom_text.label}</div>
   <div class="content">{$form.custom_text.html}</div>
   <div class="clear"></div>
@@ -39,3 +44,30 @@
 <div class="crm-submit-buttons">
 {include file="CRM/common/formButtons.tpl" location="bottom"}
 </div>
+
+<script type="text/javascript">
+var campaign_mailcode_prefix = "{$campaign_mailcode_prefix}";
+var campaign_mailcode_length = {$campaign_mailcode_length};
+{literal}
+
+cj("#campaign").change(function(e) {
+  var campaign_id = cj(e.target).val();
+  if (campaign_id == '0') {
+    cj("#mailcode").val('');
+  } else {
+    // compile mailcode
+    var mailcode = campaign_mailcode_prefix;
+    while (mailcode.length + campaign_id.length < campaign_mailcode_length) {
+      mailcode = mailcode + '0';
+    }
+    mailcode = mailcode + campaign_id;
+    cj("#mailcode").val(mailcode);
+  }
+});
+
+cj("#mailcode").change(function(e) {
+  cj("#campaign").val('0');
+});
+
+{/literal}
+</script>

@@ -31,7 +31,23 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       CRM_Core_Session::setStatus("Es können ausschließlich Kontakte vom Typ 'Individual' verarbeitet werden", "Ungültige Auswahl", 'error');
       CRM_Utils_System::redirect($session->readUserContext());
     }
+
+    // register rule
     $this->registerRule('digits_only', 'callback', 'digits_only', 'CRM_Esr_Form_Task_Contact');
+
+    // default settings for campaign mailcodes
+    $this->assign('campaign_mailcode_prefix', '313');
+    $this->assign('campaign_mailcode_length', 9);
+
+    // load campaigns
+    $campaigns = civicrm_api3('Campaign', 'get', array(
+      'is_active' => 1,
+      'option.limit' => 0,
+      ));
+    $campaign_list = array('0' => 'Keine Kampagne');
+    foreach ($campaigns['values'] as $campaign) {
+      $campaign_list[$campaign['id']] = $campaign['title'];
+    }
 
     $this->add(
       'text',
@@ -56,6 +72,15 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'mailcode',
       "Mailcode",
       array('class' => 'huge'),
+      TRUE
+    );
+    $this->addRule('mailcode', "Bitte nur Ziffern eingeben", 'digits_only');
+
+    $this->add(
+      'select',
+      'campaign',
+      "Mailcode für Kampagne",
+      $campaign_list,
       TRUE
     );
     $this->addRule('mailcode', "Bitte nur Ziffern eingeben", 'digits_only');
