@@ -200,8 +200,8 @@ GROUP BY  civicrm_contact.id";
     $record['Mailcode']       = $params['mailcode'];
 
     // address lines
-    $record['Adresszeile1'] = ''; // $this->id2prefix[$query->prefix_id];
-    $record['Adresszeile2'] = $query->addressee_display; // $this->stripPrefix($query->addressee_display, $record['Adresszeile1']);
+    $record['Adresszeile1'] = $this->id2prefix[$query->prefix_id];
+    $record['Adresszeile2'] = $this->generateName($query);
     $record['Adresszeile3'] = $query->street_address;
     $record['Adresszeile4'] = "{$query->postal_code} {$query->city}";
     $record['Adresszeile5'] = $query->supplemental_address_1;
@@ -352,6 +352,17 @@ GROUP BY  civicrm_contact.id";
     } else {
       return trim($string);
     }
+  }
+
+  /**
+   * Generate a name: "{Titel} {Vorname} {Nachname}"
+   * @see https://projekte.systopia.de/redmine/issues/3937#change-24931
+   */
+  protected function generateName($contact) {
+    $name = "{$contact->formal_title} {$contact->first_name} {$contact->last_name}";
+    $name = str_replace('  ', ' ', $name); // remove double whitespaces
+    $name = trim($name); // remove leading/trailing whitespaces
+    return $name;
   }
 
 
