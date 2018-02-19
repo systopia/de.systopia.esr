@@ -112,7 +112,7 @@ class CRM_Esr_Generator {
       $output_stream = fopen('php://output', 'w');
       ob_clean();
       flush();
-    
+
     } else {
       // user submitted a file
       $output_stream = fopen($out, 'w');
@@ -120,7 +120,7 @@ class CRM_Esr_Generator {
 
     // write header line
     fputcsv($output_stream, $this->header);
-    
+
     // create the query and go through the lines
     $sql = $this->generateSQL($contact_ids, $params);
     $query = CRM_Core_DAO::executeQuery($sql);
@@ -167,10 +167,13 @@ class CRM_Esr_Generator {
 
     $sql = "
 SELECT    civicrm_contact.id                        AS contact_id,
+          civicrm_contact.contact_type              AS contact_type,
           civicrm_contact.prefix_id                 AS prefix_id,
           civicrm_contact.display_name              AS display_name,
           civicrm_contact.first_name                AS first_name,
           civicrm_contact.last_name                 AS last_name,
+          civicrm_contact.household_name            AS household_name,
+          civicrm_contact.organization_name         AS organization_name,
           civicrm_contact.formal_title              AS formal_title,
           civicrm_contact.addressee_display         AS addressee_display,
           civicrm_contact.postal_greeting_display   AS postal_greeting_display,
@@ -214,7 +217,7 @@ GROUP BY  civicrm_contact.id";
     if (preg_match($this->street_parser, $query->street_address, $matches)) {
       $record['Strasse']    = $matches['street'];
       $record['Hausnummer'] = $matches['number'];
-    } else {      
+    } else {
       $record['Strasse']    = $query->street_address;
       $record['Hausnummer'] = '';
     }
@@ -239,14 +242,14 @@ GROUP BY  civicrm_contact.id";
 
     // misc
     $record['TextBaustein'] = $params['custom_text'];
-    
+
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
     return $record;
   }
 
 
   /**
-   * generate an ESR code, 
+   * generate an ESR code,
    *  e.g. 0100003949753>120000000000234478943216899+ 010001628>
    * @see https://www.postfinance.ch/binp/postfinance/public/dam.aw0b_Jf924M3gwLiSxkZQ_REZopMbAfPgsQR7kChnsY.spool/content/dam/pf/de/doc/consult/manual/dlserv/inpayslip_isr_man_de.pdf
    */
@@ -255,7 +258,7 @@ GROUP BY  civicrm_contact.id";
     $code = $type;
 
     if ($amount) {
-      $code .= sprintf("%010d", $amount);      
+      $code .= sprintf("%010d", $amount);
     }
 
     // add checksum bit
@@ -287,7 +290,7 @@ GROUP BY  civicrm_contact.id";
       case self::$REFTYPE_BULK_SIMPLE:
         $reference = sprintf("%02d%014d%010d", $type, $params['mailcode'], $params['contact_id']);
         break;
-      
+
       default:
         error_log("Unknown type: '{$type}'");
         $reference = '00000000000000000000000000';
@@ -327,7 +330,7 @@ GROUP BY  civicrm_contact.id";
     return $code_blocks;
   }
 
-  /** 
+  /**
    * calculate MOD10 checksum
    * @see https://www.postfinance.ch/binp/postfinance/public/dam.c8_wVGPa22PId2Sju8Y4fcG6nsPr4WVUrdgEgwJu5RA.spool/content/dam/pf/de/doc/consult/manual/dldata/efin_recdescr_man_de.pdf
    */
@@ -359,10 +362,22 @@ GROUP BY  civicrm_contact.id";
    * @see https://projekte.systopia.de/redmine/issues/3937#change-24931
    */
   protected function generateName($contact) {
-    $name = "{$contact->formal_title} {$contact->first_name} {$contact->last_name}";
-    $name = str_replace('  ', ' ', $name); // remove double whitespaces
-    $name = trim($name); // remove leading/trailing whitespaces
-    return $name;
+    switch ($contact->contact_type) {
+      case 'Organization':
+        return $contact->organization_name;
+        break;
+
+      case 'Household':
+        return $contact->household_name;
+        break;
+
+      default:
+      case 'Individual':
+        $name = "{$contact->formal_title} {$contact->first_name} {$contact->last_name}";
+        $name = str_replace('  ', ' ', $name); // remove double whitespaces
+        $name = trim($name); // remove leading/trailing whitespaces
+        return $name;
+    }
   }
 
 
