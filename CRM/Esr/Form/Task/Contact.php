@@ -25,12 +25,12 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
   public function buildQuickForm() {
     CRM_Utils_System::setTitle("ESR Code Generierung");
 
-    // make sure we're only talking about individuals
-    if (!$this->onlyIndividuals()) {
-      $session = CRM_Core_Session::singleton();
-      CRM_Core_Session::setStatus("Es können ausschließlich Kontakte vom Typ 'Individual' verarbeitet werden", "Ungültige Auswahl", 'error');
-      CRM_Utils_System::redirect($session->readUserContext());
-    }
+    // // make sure we're only talking about individuals
+    // if (!$this->onlyIndividuals()) {
+    //   $session = CRM_Core_Session::singleton();
+    //   CRM_Core_Session::setStatus("Es können ausschließlich Kontakte vom Typ 'Individual' verarbeitet werden", "Ungültige Auswahl", 'error');
+    //   CRM_Utils_System::redirect($session->readUserContext());
+    // }
 
     // register rule
     $this->registerRule('digits_only', 'callback', 'digits_only', 'CRM_Esr_Form_Task_Contact');
@@ -133,7 +133,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
   public function postProcess() {
     // store settings as default
     $all_values = $this->exportValues();
-    
+
     //Contact:submit
     $values = array(
       'amount'      => CRM_Utils_Array::value('amount', $all_values),
@@ -164,6 +164,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
   /**
    * check if the selected contacts are all individuals
+   * @deprecated
    */
   protected function onlyIndividuals() {
     $filtered_contact_ids = array();
@@ -173,7 +174,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         $filtered_contact_ids[] = $filtered_contact_id;
       }
     }
-  
+
     if (empty($filtered_contact_ids)) {
       return TRUE;
     }
