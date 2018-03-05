@@ -25,24 +25,6 @@ class CRM_Esr_Config {
    * Value for TA875 file format:
    *
    */
-  public function get_ta875_BC_ZP() {
-    // TODO: move to settings
-    return '781';
-  }
-
-  /**
-   * Value for TA875 file format:
-   *
-   */
-  public function get_ta875_BC_ZE() {
-    // TODO: move to settings
-    return '8390';
-  }
-
-  /**
-   * Value for TA875 file format:
-   *
-   */
   public function get_ta875_ESR_TN() {
     // TODO: move to settings
     return '010092520';
