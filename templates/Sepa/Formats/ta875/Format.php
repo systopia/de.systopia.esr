@@ -53,7 +53,6 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
    *  transaction (contribution + extra data)
    */
   public function extendTransaction(&$trxn, $creditor_id) {
-    error_log("BEFORE " . json_encode($trxn));
     // generate ESR reference
     $trxn['ta875_ESR']    = $this->generateReference($trxn, $creditor_id);
 
@@ -63,8 +62,6 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
     // add creditor CH bank code (BLZ)
     $creditor_iban = $this->getIBANfromCreditor($creditor_id);
     $trxn['ta875_BC_ZE']  = $this->getBLZfromIBAN($creditor_iban);
-
-    error_log("AFTER  " . json_encode($trxn));
   }
 
 
@@ -92,7 +89,15 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
       return '99999'; // error
     }
 
-    return substr($iban, 4, 5);
+    // cut out the BLZ
+    $blz = substr($iban, 4, 5);
+
+    // remove leading zeros
+    while (substr($blz, 0, 1) == '0') {
+      $blz = substr($blz, 1);
+    }
+
+    return $blz;
   }
 
 
