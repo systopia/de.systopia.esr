@@ -1,0 +1,21 @@
+{
+  "_comment": "register TA875 CiviSEPA file format",
+  "_lookup": ["name"],
+  "_translate": ["title"],
+  "name": "sepa_file_format",
+  "title": "SEPA XML File Format Variants",
+  "is_reserved": "1",
+  "is_active": "1",
+  "_values": [
+   {
+      "_lookup": ["name"],
+      "_translate": ["label"],
+      "label": "TA875 LSV",
+      "description": "LSV+ Züricher Kantonalbank (CH)",
+      "name": "ta875",
+      "filter": "0",
+      "is_reserved": "1",
+      "is_active": "1"
+    }
+  ]
+}
