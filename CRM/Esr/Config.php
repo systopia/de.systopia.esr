@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | ESR Codes Extension                                    |
-| Copyright (C) 2016 SYSTOPIA                            |
+| Copyright (C) 2018 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
@@ -23,7 +23,7 @@ class CRM_Esr_Config {
 
   /**
    * Value for TA875 file format:
-   * 
+   *
    */
   public function get_ta875_BC_ZP() {
     // TODO: move to settings
@@ -32,27 +32,27 @@ class CRM_Esr_Config {
 
   /**
    * Value for TA875 file format:
-   * 
+   *
    */
-  public function ta875_BC_ZE() {
+  public function get_ta875_BC_ZE() {
     // TODO: move to settings
     return '8390';
   }
 
   /**
    * Value for TA875 file format:
-   * 
+   *
    */
-  public function ta875_ESR_TN() {
+  public function get_ta875_ESR_TN() {
     // TODO: move to settings
     return '010092520';
   }
 
   /**
    * Value for TA875 file format:
-   * 
+   *
    */
-  public function ta875_LSV_ID() {
+  public function get_ta875_LSV_ID() {
     // TODO: move to settings
     return '900003';
   }

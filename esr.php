@@ -82,14 +82,9 @@ function esr_civicrm_uninstall() {
 function esr_civicrm_enable() {
   _esr_civix_civicrm_enable();
 
-  // make sure the activiy type is there
-  $activity_type = (int) CRM_Core_OptionGroup::getValue('activity_type', 'ESR Code Generierung');
-  if (!$activity_type) {
-    civicrm_api3('OptionValue', 'create', array(
-      'option_group_id' => 'activity_type',
-      'label'           => 'ESR Code Generierung',
-      ));
-  }
+  $customData = new CRM_Esr_CustomData('de.systopia.esr');
+  $customData->syncOptionGroup(__DIR__ . '/resources/formats_option_group.json');
+  $customData->syncOptionGroup(__DIR__ . '/resources/activity_type_option_group.json');
 }
 
 /**
@@ -168,16 +163,16 @@ function esr_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 }
 
 /**
- * This hook lets you customize the EndToEndId used when submitting 
+ * This hook lets you customize the EndToEndId used when submitting
  *  a collection file to the bank
- * 
+ *
  * The variable end2endID already contains a uniqe ID (contribution ID),
- * but you can add a custom prefix or suffix. 
+ * but you can add a custom prefix or suffix.
  *
  * If you want to create your own ID you have to make sure it's really unique for
  * each transactions, otherwise it'll be rejected by the bank.
  * It will also have to create the SAME ID every time it's called for the same transaction.
- */ 
+ */
 function esr_civicrm_modify_endtoendid(&$end2endID, $contribution, $creditor) {
   // we use the end2end ID to generate the ESR and pass it to the LSV file
   CRM_Esr_LSVGenerator::generateESR_E2EID($end2endID, $contribution, $creditor);

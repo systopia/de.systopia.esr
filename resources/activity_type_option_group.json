@@ -1,0 +1,12 @@
+{
+  "_lookup": ["name"],
+  "name": "activity_type",
+  "_values": [
+   {
+      "_lookup": ["label"],
+      "label": "ESR Code Generierung",
+      "name": "esr_code_generated",
+      "is_active": "1"
+    }
+  ]
+}
