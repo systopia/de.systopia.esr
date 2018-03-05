@@ -23,7 +23,7 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
 
     // TODO: settings?
     $template->assign('ta875_BC_ZP',  $config->get_ta875_BC_ZP());
-    $template->assign('ta875_EDAT',   date('Ymd');
+    $template->assign('ta875_EDAT',   date('Ymd'));
     $template->assign('ta875_BC_ZE',  $config->get_ta875_BC_ZE());
     $template->assign('ta875_ESR_TN', $config->get_ta875_ESR_TN());
   }
