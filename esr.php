@@ -82,14 +82,9 @@ function esr_civicrm_uninstall() {
 function esr_civicrm_enable() {
   _esr_civix_civicrm_enable();
 
-  // make sure the activiy type is there
-  $activity_type = (int) CRM_Core_OptionGroup::getValue('activity_type', 'ESR Code Generierung');
-  if (!$activity_type) {
-    civicrm_api3('OptionValue', 'create', array(
-      'option_group_id' => 'activity_type',
-      'label'           => 'ESR Code Generierung',
-      ));
-  }
+  $customData = new CRM_Esr_CustomData('de.systopia.esr');
+  $customData->syncOptionGroup(__DIR__ . '/resources/formats_option_group.json');
+  $customData->syncOptionGroup(__DIR__ . '/resources/activity_type_option_group.json');
 }
 
 /**
@@ -166,4 +161,3 @@ _esr_civix_civicrm_angularModules($angularModules);
 function esr_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _esr_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
-
