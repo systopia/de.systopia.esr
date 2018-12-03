@@ -12,10 +12,10 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
-<h3>Parameter</h3>
+<h3>{ts domain="de.systopia.esr"}Parameters{/ts}</h3>
 
 <div class="crm-section">
-  <div class="label">{$form.amount.label} <a onclick='CRM.help("Betrag", {literal}{"id":"id-amount","file":"CRM\/Esr\/Form\/Task\/Contact"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
+  <div class="label">{$form.amount.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}Amount{/ts}", {literal}{"id":"id-amount","file":"CRM\/Esr\/Form\/Task\/Contact"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.amount.html}&nbsp;CHF</div>
   <div class="clear"></div>
 </div>
