@@ -15,6 +15,8 @@
 
 require_once 'CRM/Core/Form.php';
 
+use CRM_Esr_ExtensionUtil as E;
+
 /**
  * Form controller class
  *
@@ -23,7 +25,7 @@ require_once 'CRM/Core/Form.php';
 class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
   public function buildQuickForm() {
-    CRM_Utils_System::setTitle("ESR Code Generierung");
+    CRM_Utils_System::setTitle(E::ts('ESR Code Generation'));
 
     // // make sure we're only talking about individuals
     // if (!$this->onlyIndividuals()) {
@@ -44,7 +46,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'is_active' => 1,
       'option.limit' => 0,
       ));
-    $campaign_list = array('0' => 'Keine Kampagne');
+    $campaign_list = array('0' => E::ts('No campaign'));
     foreach ($campaigns['values'] as $campaign) {
       $campaign_list[$campaign['id']] = $campaign['title'];
     }
@@ -52,43 +54,43 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     $this->add(
       'text',
       'amount',
-      "Betrag",
+      E::ts('Amount'),
       array('class' => 'tiny'),
       FALSE
     );
-    $this->addRule('amount', "Bitte einen gültigen Betrag eingeben", 'money');
+    $this->addRule('amount', E::ts('Please enter a valid amount'), 'money');
 
     $this->add(
       'text',
       'tn_number',
-      "Teilnehmer-Nummer",
+      E::ts('Participant number'),
       array('class' => 'huge'),
       TRUE
     );
-    $this->addRule('tn_number', "Bitte nur Ziffern eingeben", 'digits_only');
+    $this->addRule('tn_number', E::ts('Please enter digits only'), 'digits_only');
 
     $this->add(
       'text',
       'mailcode',
-      "Mailcode",
+      E::ts('Mail code'),
       array('class' => 'huge'),
       TRUE
     );
-    $this->addRule('mailcode', "Bitte nur Ziffern eingeben", 'digits_only');
+    $this->addRule('mailcode', E::ts('Please enter digits only'), 'digits_only');
 
     $this->add(
       'select',
       'campaign',
-      "Mailcode für Kampagne",
+      E::ts('Mail code for campaign'),
       $campaign_list,
       TRUE
     );
-    $this->addRule('mailcode', "Bitte nur Ziffern eingeben", 'digits_only');
+    $this->addRule('mailcode', E::ts('Please enter digits only'), 'digits_only');
 
     $this->add(
       'text',
       'custom_text',
-      "Textbaustein",
+      E::ts('Text module'),
       array('class' => 'huge'),
       FALSE
     );
@@ -98,17 +100,17 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     $this->addButtons(array(
       array(
         'type' => 'next',
-        'name' => "Abschließen",
+        'name' => E::ts('Complete'),
         'isDefault' => TRUE,
       ),
       array(
         'type' => 'submit',
-        'name' => "CSV Erstellen",
+        'name' => E::ts('Create CSV'),
         'isDefault' => TRUE,
       ),
       array(
         'type' => 'cancel',
-        'name' => "Abbrechen",
+        'name' => E::ts('Cancel'),
         'isDefault' => FALSE,
       ),
     ));
@@ -151,9 +153,9 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     } elseif (isset($all_values['_qf_Contact_next'])) {
       // CREATE ACTIVITY
       $result = civicrm_api3('Activity', 'create', array(
-        'activity_type_id'   => (int) CRM_Core_OptionGroup::getValue('activity_type', 'ESR Code Generierung'),
+        'activity_type_id'   => (int) CRM_Core_OptionGroup::getValue('activity_type', E::ts('ESR Code Generation')),
         'activity_date_time' => date('YmdHis'),
-        'subject'            => "Ein ESR Code wurde generiert",
+        'subject'            => E::ts('A ESR code has been generated'),
         'source_contact_id'  => CRM_Core_Session::getLoggedInContactID(),
         'target_id'          => $this->_contactIds,
       ));

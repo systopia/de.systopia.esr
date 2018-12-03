@@ -15,6 +15,7 @@
 
 require_once 'CRM/Core/Form.php';
 
+use CRM_Esr_ExtensionUtil as E;
 
 /**
  * ESR Number generator logic

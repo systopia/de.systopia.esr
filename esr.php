@@ -15,6 +15,7 @@
 
 require_once 'esr.civix.php';
 
+use CRM_Esr_ExtensionUtil as E;
 
 /**
 * Add an action for creating donation receipts after doing a search
@@ -29,7 +30,7 @@ function esr_civicrm_searchTasks($objectType, &$tasks) {
   if ($objectType == 'contact') {
     // this object is only available for the 'merge' mode
     $tasks['generate_esr'] = array(
-        'title'  => "ESR-Generierung",
+        'title'  => E::ts('ESR Generation'),
         'class'  => 'CRM_Esr_Form_Task_Contact',
         'result' => false);
   }

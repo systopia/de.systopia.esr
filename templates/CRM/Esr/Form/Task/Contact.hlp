@@ -13,5 +13,5 @@
 +-------------------------------------------------------*}
 
 {htxt id='id-amount'}
-    <p>Dieser feste Betrag wird auf dem ESR Zahlschein aufgedruckt. Wird kein Betrag angegeben, so wird eine ESR+ ohne vorgedruckten Betrag erstellt.</p>
+    <p>{ts domain="de.systopia.esr"}This fixed amount will be printed on the ESR payment form. If no amount is declared, an ESR+ without a pre-printed amount will be created.{/ts}</p>
 {/htxt}
