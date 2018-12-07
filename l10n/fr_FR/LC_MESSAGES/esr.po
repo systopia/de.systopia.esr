@@ -1,0 +1,190 @@
+# Copyright CiviCRM LLC (c) 2004-2015
+# This file is distributed under the same license as the CiviCRM package.
+# If you contribute heavily to a translation and deem your work copyrightable,
+# make sure you license it to CiviCRM LLC under Academic Free License 3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: esr\n"
+"POT-Creation-Date: 2018-12-03 16:20+0100\n"
+"Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm."
+"org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: \n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "ESR Code Generation"
+msgstr "Génération de code de référence pour BVR"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "No campaign"
+msgstr "Sans campagne"
+
+#: CRM/Esr/Form/Task/Contact.php templates/CRM/Esr/Form/Task/Contact.tpl
+msgid "Amount"
+msgstr "Montant"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Please enter a valid amount"
+msgstr "Veuillez entrer un montant valide"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Participant number"
+msgstr "Numéro du participant"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Please enter digits only"
+msgstr "Veuillez entrer uniquement des chiffres."
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Generator.php
+msgid "Mail code"
+msgstr "Code"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Mail code for campaign"
+msgstr "Code pour campagne"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Generator.php
+msgid "Text module"
+msgstr "Module de texte"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Complete"
+msgstr "Terminé"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Create CSV"
+msgstr "Créer un fichier CSV"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "Cancel"
+msgstr "Annuler"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "A ESR code has been generated"
+msgstr "Un code de référence pour BVR a été généré"
+
+#: CRM/Esr/Generator.php
+msgid "Registration number"
+msgstr "Enregistrement numéro"
+
+#: CRM/Esr/Generator.php
+msgid "Address line 1"
+msgstr "Adresse ligne 1"
+
+#: CRM/Esr/Generator.php
+msgid "Address line 2"
+msgstr "Adresse ligne 2"
+
+#: CRM/Esr/Generator.php
+msgid "Address line 3"
+msgstr "Votre adresse (ligne 3)"
+
+#: CRM/Esr/Generator.php
+msgid "Address line 4"
+msgstr "Ligne d'adresse 4"
+
+#: CRM/Esr/Generator.php
+msgid "Address line 5"
+msgstr "Ligne d'adresse 5"
+
+#: CRM/Esr/Generator.php
+msgid "Address line 6"
+msgstr "Ligne d'adresse 6"
+
+#: CRM/Esr/Generator.php
+msgid "Street"
+msgstr "Rue"
+
+#: CRM/Esr/Generator.php
+msgid "Street number"
+msgstr "Numéro de rue"
+
+#: CRM/Esr/Generator.php
+msgid "Postal code"
+msgstr "Code postal"
+
+#: CRM/Esr/Generator.php
+msgid "City"
+msgstr "Localité"
+
+#: CRM/Esr/Generator.php
+msgid "Country"
+msgstr "Pays"
+
+#: CRM/Esr/Generator.php
+msgid "Salutation"
+msgstr "Salutation"
+
+#: CRM/Esr/Generator.php
+msgid "Postal mailing salutation"
+msgstr "Salutation pour courrier postal"
+
+#: CRM/Esr/Generator.php
+msgid "Formal title"
+msgstr "Titre officiel"
+
+#: CRM/Esr/Generator.php
+msgid "First name"
+msgstr "Prénom"
+
+#: CRM/Esr/Generator.php
+msgid "Last name"
+msgstr "Nom"
+
+#: CRM/Esr/Generator.php
+msgid "Name 2"
+msgstr "Nom 2"
+
+#: CRM/Esr/Generator.php
+msgid "VESR number"
+msgstr "Numéro VESR"
+
+#: CRM/Esr/Generator.php
+msgid "ESR 1"
+msgstr "ESR 1"
+
+#: CRM/Esr/Generator.php
+msgid "ESR 1 Ref Row"
+msgstr "ESR 1 Ref Row"
+
+#: CRM/Esr/Generator.php
+msgid "ESR 1 Ref Row Grp"
+msgstr "ESR 1 Ref Row GRP"
+
+#: CRM/Esr/Generator.php
+msgid "ESR 1 Identity"
+msgstr "Identité ESR 1"
+
+#: CRM/Esr/Generator.php
+msgid "Data Matrix Code Type 20 from digit 37"
+msgstr "Code de matrice de données type 20 (digit 37)"
+
+#: CRM/Esr/Generator.php
+msgid "Data Matrix Code"
+msgstr "Code de matrice de données"
+
+#: CRM/Esr/Generator.php
+msgid "Packet number"
+msgstr "Numéro de paquet"
+
+#: esr.php
+msgid "ESR Generation"
+msgstr "Génération ESR"
+
+#: templates/CRM/Esr/Form/Task/Contact.hlp
+msgid ""
+"This fixed amount will be printed on the ESR payment form. If no amount is "
+"declared, an ESR+ without a pre-printed amount will be created."
+msgstr ""
+"Ce montant fixe sera imprimé sur le formulaire de paiement BVR. Si aucun "
+"montant n'est déclaré, un BVR sans montant pré-imprimé sera créé."
+
+#: templates/CRM/Esr/Form/Task/Contact.tpl
+msgid "Parameters"
+msgstr "Paramètres"
