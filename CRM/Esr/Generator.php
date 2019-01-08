@@ -302,7 +302,7 @@ GROUP BY  civicrm_contact.id";
     $code .= '+ ';
 
     // then add the creditor id (Teilnehmernummer)
-    $code .= sprintf('%09d', $tn_number);
+    $code .= sprintf('%08d', $tn_number);
 
     // ...and finish with '>'
     $code .= '>';
