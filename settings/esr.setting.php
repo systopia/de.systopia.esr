@@ -28,4 +28,4 @@ return array(
     'is_contact' => 0,
     'description' => 'Last entered values in the ESR contact task',
   ),
- );
+);

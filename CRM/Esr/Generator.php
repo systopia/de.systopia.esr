@@ -15,11 +15,41 @@
 
 require_once 'CRM/Core/Form.php';
 
+use CRM_Esr_ExtensionUtil as E;
 
 /**
  * ESR Number generator logic
  */
 class CRM_Esr_Generator {
+
+  const COLUMN_PERSONAL_NUMBER = 0;
+  const COLUMN_MAIL_CODE = 1;
+  const COLUMN_ADDRESS_1 = 2;
+  const COLUMN_ADDRESS_2 = 3;
+  const COLUMN_ADDRESS_3 = 4;
+  const COLUMN_ADDRESS_4 = 5;
+  const COLUMN__ADDRESS_5 = 6;
+  const COLUMN_ADDRESS_6 = 7;
+  const COLUMN_STREET = 8;
+  const COLUMN_STREET_NUMBER = 9;
+  const COLUMN_POSTAL_CODE = 10;
+  const COLUMN_CITY = 11;
+  const COLUMN_COUNTRY = 12;
+  const COLUMN_SALUTATION = 13;
+  const COLUMN_POSTAL_MAILING_SALUTATION = 14;
+  const COLUMN_FORMAL_TITLE = 15;
+  const COLUMN_FIRST_NAME = 16;
+  const COLUMN_LAST_NAME = 17;
+  const COLUMN_NAME_2 = 18;
+  const COLUMN_VESR_NUMBER = 19;
+  const COLUMN_ESR1 = 20;
+  const COLUMN_ESR_1_REF_ROW = 21;
+  const COLUMN_ESR_1_REF_ROW_GROUP = 22;
+  const COLUMN_ESR_1_IDENTITY = 23;
+  const COLUMN_DATA_MATRIX_CODE_TYPE_20_DIGIT_37 = 24;
+  const COLUMN_DATA_MATRIX_CODE = 25;
+  const COLUMN_TEXT_MODULE = 26;
+  const COLUMN_PACKET_NUMBER = 27;
 
   // ESR TYPES BC (Belegartcode), defined by standard
   public static $BC_ESR_CHF      = '01';
@@ -42,35 +72,35 @@ class CRM_Esr_Generator {
   public function __construct() {
     // fill header
     $this->header = array(
-        'Personennummer',
-        'Mailcode',
-        'Adresszeile1',
-        'Adresszeile2',
-        'Adresszeile3',
-        'Adresszeile4',
-        'Adresszeile5',
-        'Adresszeile6',
-        'Strasse',
-        'Hausnummer',
-        'Plz',
-        'Ort',
-        'Land',
-        'Anrede',
-        'Briefanrede',
-        'Titel',
-        'Vorname',
-        'Nachname',
-        'Name2',
-        'VESRNummer',
-        'ESR1',
-        'ESR1RefZeile',
-        'ESR1RefZeileGrp',
-        'ESR1Identity',
-        'DataMatrixCodeTyp20abStelle37',
-        'DataMatrixCode',
-        'TextBaustein',
-        'Paketnummer',
-        );
+        self::COLUMN_PERSONAL_NUMBER                   => E::ts('Registration number'),
+        self::COLUMN_MAIL_CODE                         => E::ts('Mail code'),
+        self::COLUMN_ADDRESS_1                         => E::ts('Address line 1'),
+        self::COLUMN_ADDRESS_2                         => E::ts('Address line 2'),
+        self::COLUMN_ADDRESS_3                         => E::ts('Address line 3'),
+        self::COLUMN_ADDRESS_4                         => E::ts('Address line 4'),
+        self::COLUMN__ADDRESS_5                        => E::ts('Address line 5'),
+        self::COLUMN_ADDRESS_6                         => E::ts('Address line 6'),
+        self::COLUMN_STREET                            => E::ts('Street'),
+        self::COLUMN_STREET_NUMBER                     => E::ts('Street number'),
+        self::COLUMN_POSTAL_CODE                       => E::ts('Postal code'),
+        self::COLUMN_CITY                              => E::ts('City'),
+        self::COLUMN_COUNTRY                           => E::ts('Country'),
+        self::COLUMN_SALUTATION                        => E::ts('Salutation'),
+        self::COLUMN_POSTAL_MAILING_SALUTATION         => E::ts('Postal mailing salutation'),
+        self::COLUMN_FORMAL_TITLE                      => E::ts('Formal title'),
+        self::COLUMN_FIRST_NAME                        => E::ts('First name'),
+        self::COLUMN_LAST_NAME                         => E::ts('Last name'),
+        self::COLUMN_NAME_2                            => E::ts('Name 2'),
+        self::COLUMN_VESR_NUMBER                       => E::ts('VESR number'),
+        self::COLUMN_ESR1                              => E::ts('ESR 1'),
+        self::COLUMN_ESR_1_REF_ROW                     => E::ts('ESR 1 Ref Row'),
+        self::COLUMN_ESR_1_REF_ROW_GROUP               => E::ts('ESR 1 Ref Row Grp'),
+        self::COLUMN_ESR_1_IDENTITY                    => E::ts('ESR 1 Identity'),
+        self::COLUMN_DATA_MATRIX_CODE_TYPE_20_DIGIT_37 => E::ts('Data Matrix Code Type 20 from digit 37'),
+        self::COLUMN_DATA_MATRIX_CODE                  => E::ts('Data Matrix Code'),
+        self::COLUMN_TEXT_MODULE                       => E::ts('Text module'),
+        self::COLUMN_PACKET_NUMBER                     => E::ts('Packet number'),
+    );
 
     // fill prefix lookup
     $prefixes = civicrm_api3('OptionValue', 'get', array('option_group_id' => 'individual_prefix', 'return' => 'value,label'));
@@ -125,9 +155,9 @@ class CRM_Esr_Generator {
     while ($query->fetch()) {
       $record = $this->generateRecord($type, $query, $params);
       $csv_line = array();
-      foreach ($this->header as $field) {
-        if (isset($record[$field])) {
-          $csv_line[] = $record[$field];
+      foreach ($this->header as $field_index => $field) {
+        if (isset($record[$field_index])) {
+          $csv_line[] = $record[$field_index];
         } else {
           $csv_line[] = '';
         }
@@ -197,49 +227,49 @@ GROUP BY  civicrm_contact.id";
     $record = array();
 
     // basic information
-    $record['Personennummer'] = $query->contact_id;
-    $record['Mailcode']       = $params['mailcode'];
+    $record[self::COLUMN_PERSONAL_NUMBER] = $query->contact_id;
+    $record[self::COLUMN_MAIL_CODE]       = $params['mailcode'];
 
     // address lines
-    $record['Adresszeile1'] = $this->id2prefix[$query->prefix_id];
-    $record['Adresszeile2'] = $this->generateName($query);
-    $record['Adresszeile3'] = $query->street_address;
-    $record['Adresszeile4'] = "{$query->postal_code} {$query->city}";
-    $record['Adresszeile5'] = $query->supplemental_address_1;
-    $record['Adresszeile6'] = $query->supplemental_address_2;
+    $record[self::COLUMN_ADDRESS_1] = $this->id2prefix[$query->prefix_id];
+    $record[self::COLUMN_ADDRESS_2] = $this->generateName($query);
+    $record[self::COLUMN_ADDRESS_3] = $query->street_address;
+    $record[self::COLUMN_ADDRESS_4] = "{$query->postal_code} {$query->city}";
+    $record[self::COLUMN__ADDRESS_5] = $query->supplemental_address_1;
+    $record[self::COLUMN_ADDRESS_6] = $query->supplemental_address_2;
 
     // parsed address
-    $record['Plz']          = $query->postal_code;
-    $record['Ort']          = $query->city;
-    $record['Land']         = $this->id2country[$query->country_id];
+    $record[self::COLUMN_POSTAL_CODE]          = $query->postal_code;
+    $record[self::COLUMN_CITY]          = $query->city;
+    $record[self::COLUMN_COUNTRY]         = $this->id2country[$query->country_id];
     if (preg_match($this->street_parser, $query->street_address, $matches)) {
-      $record['Strasse']    = $matches['street'];
-      $record['Hausnummer'] = $matches['number'];
+      $record[self::COLUMN_STREET]    = $matches['street'];
+      $record[self::COLUMN_STREET_NUMBER] = $matches['number'];
     } else {
-      $record['Strasse']    = $query->street_address;
-      $record['Hausnummer'] = '';
+      $record[self::COLUMN_STREET]    = $query->street_address;
+      $record[self::COLUMN_STREET_NUMBER] = '';
     }
 
     // personalised data
-    $record['Anrede']       = $this->id2prefix[$query->prefix_id];
-    $record['Briefanrede']  = $query->postal_greeting_display;
-    $record['Titel']        = $query->formal_title;
-    $record['Vorname']      = $query->first_name;
-    $record['Nachname']     = $query->last_name;
-    $record['Name2']        = '';  // unused
+    $record[self::COLUMN_SALUTATION]       = $this->id2prefix[$query->prefix_id];
+    $record[self::COLUMN_POSTAL_MAILING_SALUTATION]  = $query->postal_greeting_display;
+    $record[self::COLUMN_FORMAL_TITLE]        = $query->formal_title;
+    $record[self::COLUMN_FIRST_NAME]      = $query->first_name;
+    $record[self::COLUMN_LAST_NAME]     = $query->last_name;
+    $record[self::COLUMN_NAME_2]        = '';  // unused
 
     // codes
     $esr_ref = $this->create_reference($type, array('contact_id' => $query->contact_id, 'mailcode' => $params['mailcode']));
     $amount  = $this->getFullAmount($params['amount']);
     $bc_type = empty($amount) ? self::$BC_ESR_PLUS_CHF : self::$BC_ESR_CHF;
     $esr1    = $this->create_code($bc_type, $amount, $esr_ref, $params['tn_number']);
-    $record['VESRNummer']       = $params['tn_number'];
-    $record['ESR1']             = $esr1;
-    $record['ESR1RefZeile']     = $esr_ref;
-    $record['ESR1RefZeileGrp']  = $this->format_code($esr_ref);
+    $record[self::COLUMN_VESR_NUMBER]       = $params['tn_number'];
+    $record[self::COLUMN_ESR1]             = $esr1;
+    $record[self::COLUMN_ESR_1_REF_ROW]     = $esr_ref;
+    $record[self::COLUMN_ESR_1_REF_ROW_GROUP]  = $this->format_code($esr_ref);
 
     // misc
-    $record['TextBaustein'] = $params['custom_text'];
+    $record[self::COLUMN_TEXT_MODULE] = $params['custom_text'];
 
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
     return $record;
