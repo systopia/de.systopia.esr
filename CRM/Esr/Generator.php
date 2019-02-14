@@ -50,6 +50,7 @@ class CRM_Esr_Generator {
   const COLUMN_DATA_MATRIX_CODE = 25;
   const COLUMN_TEXT_MODULE = 26;
   const COLUMN_PACKET_NUMBER = 27;
+  const COLUMN_ORGANISATION_NAME = 28;
 
   // ESR TYPES BC (Belegartcode), defined by standard
   public static $BC_ESR_CHF      = '01';
@@ -100,6 +101,7 @@ class CRM_Esr_Generator {
         self::COLUMN_DATA_MATRIX_CODE                  => E::ts('Data Matrix Code'),
         self::COLUMN_TEXT_MODULE                       => E::ts('Text module'),
         self::COLUMN_PACKET_NUMBER                     => E::ts('Packet number'),
+        self::COLUMN_ORGANISATION_NAME                 => E::ts('Organisation Name'),
     );
 
     // fill prefix lookup
@@ -212,9 +214,11 @@ SELECT    civicrm_contact.id                        AS contact_id,
           civicrm_address.supplemental_address_1    AS supplemental_address_1,
           civicrm_address.supplemental_address_2    AS supplemental_address_2,
           civicrm_address.city                      AS city,
-          civicrm_address.country_id                AS country_id
+          civicrm_address.country_id                AS country_id,
+          civicrm_value_org_4.nom_organisation_17   AS organisation_name
 FROM      civicrm_contact
 LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+LEFT JOIN civicrm_value_org_4 ON civicrm_value_org_4.entity_id = civicrm_contact.id
 WHERE     {$where_clause}
 GROUP BY  civicrm_contact.id";
     return $sql;
@@ -270,6 +274,9 @@ GROUP BY  civicrm_contact.id";
 
     // misc
     $record[self::COLUMN_TEXT_MODULE] = $params['custom_text'];
+
+    // custom field
+    $record[self::COLUMN_ORGANISATION_NAME] = $query->organisation_name;
 
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
     return $record;
