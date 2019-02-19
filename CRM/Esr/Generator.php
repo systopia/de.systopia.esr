@@ -195,6 +195,19 @@ class CRM_Esr_Generator {
       $where_clause = "civicrm_contact.id IN ({$contact_id_list})";
     }
 
+    // load custom field
+    $CUSTOM_SELECT = "'' AS organisation_name";
+    $CUSTOM_JOIN   = "";
+    if (!empty($params['custom_field_id'])) {
+      $custom_field_id = (int) $params['custom_field_id'];
+      if ($custom_field_id) {
+        $custom_field = civicrm_api3('CustomField', 'getsingle', ['id' => $custom_field_id]);
+        $custom_group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $custom_field['custom_group_id']]);
+        $CUSTOM_SELECT = "{$custom_group['table_name']}.{$custom_field['column_name']} AS organisation_name";
+        $CUSTOM_JOIN   = "LEFT JOIN {$custom_group['table_name']} ON {$custom_group['table_name']}.entity_id = civicrm_contact.id";
+      }
+    }
+
     $sql = "
 SELECT    civicrm_contact.id                        AS contact_id,
           civicrm_contact.contact_type              AS contact_type,
@@ -215,10 +228,10 @@ SELECT    civicrm_contact.id                        AS contact_id,
           civicrm_address.supplemental_address_2    AS supplemental_address_2,
           civicrm_address.city                      AS city,
           civicrm_address.country_id                AS country_id,
-          civicrm_value_org_4.nom_organisation_17   AS organisation_name
+          {$CUSTOM_SELECT}
 FROM      civicrm_contact
 LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
-LEFT JOIN civicrm_value_org_4 ON civicrm_value_org_4.entity_id = civicrm_contact.id
+{$CUSTOM_JOIN}
 WHERE     {$where_clause}
 GROUP BY  civicrm_contact.id";
     return $sql;

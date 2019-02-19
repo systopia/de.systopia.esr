@@ -95,6 +95,14 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       FALSE
     );
 
+    $this->add(
+        'text',
+        'custom_field_id',
+        E::ts('Organisation Name Field ID (Custom)'),
+        array('class' => 'huge'),
+        FALSE
+    );
+
     parent::buildQuickForm();
 
     $this->addButtons(array(
@@ -142,6 +150,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'tn_number'   => CRM_Utils_Array::value('tn_number', $all_values),
       'mailcode'    => CRM_Utils_Array::value('mailcode', $all_values),
       'custom_text' => CRM_Utils_Array::value('custom_text', $all_values),
+      'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.contact' => $values));
 
