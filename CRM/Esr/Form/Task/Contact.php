@@ -153,7 +153,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     } elseif (isset($all_values['_qf_Contact_next'])) {
       // CREATE ACTIVITY
       $result = civicrm_api3('Activity', 'create', array(
-        'activity_type_id'   => (int) CRM_Core_OptionGroup::getValue('activity_type', E::ts('ESR Code Generation')),
+        'activity_type_id'   => CRM_Esr_Config::getESRActivityTypeID(),
         'activity_date_time' => date('YmdHis'),
         'subject'            => E::ts('A ESR code has been generated'),
         'source_contact_id'  => CRM_Core_Session::getLoggedInContactID(),
