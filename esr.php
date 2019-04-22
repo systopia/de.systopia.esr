@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | ESR Codes Extension                                    |
-| Copyright (C) 2016 SYSTOPIA                            |
+| Copyright (C) 2016-2019 SYSTOPIA                       |
 | Author: B. Endres (endres@systopia.de)                 |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
@@ -26,12 +26,18 @@ use CRM_Esr_ExtensionUtil as E;
 * @access public
 */
 function esr_civicrm_searchTasks($objectType, &$tasks) {
-  // add MERGE INTO HOUSEHOLD task to contact list
+  // add ESR generation tasks
   if ($objectType == 'contact') {
     // this object is only available for the 'merge' mode
     $tasks['generate_esr'] = array(
         'title'  => E::ts('ESR Generation'),
         'class'  => 'CRM_Esr_Form_Task_Contact',
+        'result' => false);
+  } elseif ($objectType == 'membership') {
+    // this object is only available for the 'merge' mode
+    $tasks['generate_esr'] = array(
+        'title'  => E::ts('ESR Generation'),
+        'class'  => 'CRM_Esr_Form_Task_Membership',
         'result' => false);
   }
 }

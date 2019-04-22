@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | ESR Codes Extension                                    |
-| Copyright (C) 2016 SYSTOPIA                            |
+| Copyright (C) 2016-2019 SYSTOPIA                       |
 | Author: B. Endres (endres@systopia.de)                 |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
@@ -60,6 +60,7 @@ class CRM_Esr_Generator {
 
   // Reference type indicators (self defined)
   public static $REFTYPE_BULK_SIMPLE  = '01';
+  public static $REFTYPE_MEMBERSHIP   = '02';
 
 
   protected $header     = NULL;
@@ -122,10 +123,10 @@ class CRM_Esr_Generator {
    * Will generate a CSV file and write into a file or the HTTP stream
    *
    * @param $type        String reference type, e.g. self::$REFTYPE_BULK_SIMPLE
-   * @param $contact_ids array  list of contact ids
+   * @param $entity_ids  array  list of entity ids, e.g. contact IDs or membership IDs
    * @param $params      array  list of additional parameters
    */
-  public function generate($type, $contact_ids, $params, $out = 'php://output') {
+  public function generate($type, $entity_ids, $params, $out = 'php://output') {
     if ($out == 'php://output') {
       // we want to write into the outstream
       $filename = "ESR-" . date('YmdHis') . '.csv';
@@ -150,7 +151,7 @@ class CRM_Esr_Generator {
     fputcsv($output_stream, $this->header);
 
     // create the query and go through the lines
-    $sql = $this->generateSQL($contact_ids, $params);
+    $sql = $this->generateSQL($type, $entity_ids , $params);
     $query = CRM_Core_DAO::executeQuery($sql);
     while ($query->fetch()) {
       $record = $this->generateRecord($type, $query, $params);
@@ -177,15 +178,80 @@ class CRM_Esr_Generator {
   /**
    * generate the SQL needed to collect all necessary data
    */
-  protected function generateSQL($contact_ids, $params) {
-    $filtered_contact_ids = array();
-    foreach ($contact_ids as $contact_id) {
-      $filtered_contact_id = (int) $contact_id;
-      if ($filtered_contact_id) {
-        $filtered_contact_ids[] = $filtered_contact_id;
+  protected function generateSQL($type, $entity_ids, $params) {
+    // filter IDs
+    $filtered_entity_ids = array();
+    foreach ($entity_ids as $entity_id) {
+      $filtered_entity_id = (int) $entity_id;
+      if ($filtered_entity_id) {
+        $filtered_entity_ids[] = $filtered_entity_id;
       }
     }
 
+    // delegate to generator
+    switch ($type) {
+      case self::$REFTYPE_MEMBERSHIP:
+        return $this->generateMembershipSQL($filtered_entity_ids, $params);
+
+      default:
+      case self::$REFTYPE_BULK_SIMPLE:
+        return $this->generateBasicSQL($filtered_entity_ids, $params);
+    }
+  }
+
+  /**
+   * generate the SQL needed to collect all necessary data
+   */
+  protected function generateMembershipSQL($membership_ids, $params) {
+    if (empty($filtered_contact_ids)) {
+      $where_clause = 'FALSE';
+    } else {
+      $membership_id_list = implode(',', $membership_ids);
+      $where_clause = "civicrm_membership.id IN ({$membership_id_list})";
+    }
+
+    // payment term
+    $buyer_term = "TODO";
+
+    // amount
+    $amount_term = "TODO";
+
+
+    $sql = "
+SELECT    civicrm_contact.id                        AS contact_id,
+          civicrm_contact.contact_type              AS contact_type,
+          civicrm_contact.prefix_id                 AS prefix_id,
+          civicrm_contact.display_name              AS display_name,
+          civicrm_contact.first_name                AS first_name,
+          civicrm_contact.last_name                 AS last_name,
+          civicrm_contact.household_name            AS household_name,
+          civicrm_contact.organization_name         AS organization_name,
+          civicrm_contact.formal_title              AS formal_title,
+          civicrm_contact.addressee_display         AS addressee_display,
+          civicrm_contact.postal_greeting_display   AS postal_greeting_display,
+          civicrm_contact.first_name                AS first_name,
+          civicrm_contact.last_name                 AS last_name,
+          civicrm_address.street_address            AS street_address,
+          civicrm_address.postal_code               AS postal_code,
+          civicrm_address.supplemental_address_1    AS supplemental_address_1,
+          civicrm_address.supplemental_address_2    AS supplemental_address_2,
+          civicrm_address.city                      AS city,
+          civicrm_address.country_id                AS country_id,
+          {$amount_term}                            AS amount
+FROM      civicrm_membership
+FROM      civicrm_contact ON civicrm_contact.id = {$buyer_term}
+LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+WHERE     {$where_clause}
+GROUP BY  civicrm_membership.id";
+    return $sql;
+  }
+
+}
+
+  /**
+   * generate the SQL needed to collect all necessary data
+   */
+  protected function generateBasicSQL($contact_ids, $params) {
     if (empty($filtered_contact_ids)) {
       $where_clause = 'FALSE';
     } else {

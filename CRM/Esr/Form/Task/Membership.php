@@ -22,43 +22,13 @@ use CRM_Esr_ExtensionUtil as E;
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
+class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
 
   public function buildQuickForm() {
     CRM_Utils_System::setTitle(E::ts('ESR Code Generation'));
 
-    // // make sure we're only talking about individuals
-    // if (!$this->onlyIndividuals()) {
-    //   $session = CRM_Core_Session::singleton();
-    //   CRM_Core_Session::setStatus("Es können ausschließlich Kontakte vom Typ 'Individual' verarbeitet werden", "Ungültige Auswahl", 'error');
-    //   CRM_Utils_System::redirect($session->readUserContext());
-    // }
-
     // register rule
     $this->registerRule('digits_only', 'callback', 'digits_only', 'CRM_Esr_Form_Task_Contact');
-
-    // default settings for campaign mailcodes
-    $this->assign('campaign_mailcode_prefix', '313');
-    $this->assign('campaign_mailcode_length', 9);
-
-    // load campaigns
-    $campaigns = civicrm_api3('Campaign', 'get', array(
-      'is_active' => 1,
-      'option.limit' => 0,
-      ));
-    $campaign_list = array('0' => E::ts('No campaign'));
-    foreach ($campaigns['values'] as $campaign) {
-      $campaign_list[$campaign['id']] = $campaign['title'];
-    }
-
-    $this->add(
-      'text',
-      'amount',
-      E::ts('Amount'),
-      array('class' => 'tiny'),
-      FALSE
-    );
-    $this->addRule('amount', E::ts('Please enter a valid amount'), 'money');
 
     $this->add(
       'text',
@@ -69,23 +39,31 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     );
     $this->addRule('tn_number', E::ts('Please enter digits only'), 'digits_only');
 
-    $this->add(
-      'text',
-      'mailcode',
-      E::ts('Mail code'),
-      array('class' => 'huge'),
-      TRUE
-    );
-    $this->addRule('mailcode', E::ts('Please enter digits only'), 'digits_only');
 
     $this->add(
       'select',
-      'campaign',
-      E::ts('Mail code for campaign'),
-      $campaign_list,
+      'paying_contact',
+      E::ts('Paying Contact'),
+      $this->getPayingOptions(),
       TRUE
     );
-    $this->addRule('mailcode', E::ts('Please enter digits only'), 'digits_only');
+
+    $this->add(
+        'select',
+        'amount_option',
+        E::ts('Payment Amount'),
+        $this->getAmountOptions(),
+        TRUE
+    );
+
+    $this->add(
+        'text',
+        'amount',
+        E::ts('Amount'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+    $this->addRule('amount', E::ts('Please enter a valid amount'), 'money');
 
     $this->add(
       'text',
@@ -122,7 +100,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
    * get the last iteration's values
    */
   public function setDefaultValues() {
-    $values = civicrm_api3('Setting', 'getvalue', array('name' => 'de.systopia.esr.contact', 'group' => 'de.systopia.esr'));
+    $values = civicrm_api3('Setting', 'getvalue', array('name' => 'de.systopia.esr.membership', 'group' => 'de.systopia.esr'));
     if (empty($values) || !is_array($values)) {
       return array();
     } else {
@@ -138,21 +116,22 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     //Contact:submit
     $values = array(
-      'amount'      => CRM_Utils_Array::value('amount', $all_values),
-      'tn_number'   => CRM_Utils_Array::value('tn_number', $all_values),
-      'mailcode'    => CRM_Utils_Array::value('mailcode', $all_values),
-      'custom_text' => CRM_Utils_Array::value('custom_text', $all_values),
+        'tn_number'      => CRM_Utils_Array::value('tn_number', $all_values),
+        'paying_contact' => CRM_Utils_Array::value('paying_contact', $all_values),
+        'amount'         => CRM_Utils_Array::value('amount', $all_values),
+        'amount_option'  => CRM_Utils_Array::value('amount_option', $all_values),
+        'custom_text'    => CRM_Utils_Array::value('custom_text', $all_values),
     );
-    civicrm_api3('Setting', 'create', array('de.systopia.esr.contact' => $values));
+    civicrm_api3('Setting', 'create', array('de.systopia.esr.membership' => $values));
 
     if (isset($all_values['_qf_Contact_submit'])) {
       // CREATE CSV
       $generator = new CRM_Esr_Generator();
-      $generator->generate(CRM_Esr_Generator::$REFTYPE_BULK_SIMPLE, $this->_contactIds, $values);
+      $generator->generate(CRM_Esr_Generator::$REFTYPE_MEMBERSHIP, $this->_memberIds, $values);
 
     } elseif (isset($all_values['_qf_Contact_next'])) {
       // CREATE ACTIVITY
-      $result = civicrm_api3('Activity', 'create', array(
+      civicrm_api3('Activity', 'create', array(
         'activity_type_id'   => CRM_Esr_Config::getESRActivityTypeID(),
         'activity_date_time' => date('YmdHis'),
         'subject'            => E::ts('A ESR code has been generated'),
@@ -195,5 +174,69 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
    */
   public static function digits_only($value) {
     return preg_match('/^\d+$/', $value);
+  }
+
+  /**
+   * Get the list of options to determine who is paying for the membership
+   */
+  public function getPayingOptions() {
+    $options = [
+        'member' => E::ts("Member (itself)"),
+    ];
+
+    // add all membership custom fields that reference contacts
+    $membership_group_ids = $this->getMembershipCustomGroupIDs();
+    if (!empty($membership_group_ids)) {
+      $fields = civicrm_api3('CustomField', 'get', [
+          'custom_group_id' => ['IN' => $membership_group_ids],
+          'data_type'       => "ContactReference",
+          'is_active'       => 1,
+          'sequential'      => 1,
+          'return'          => 'id,label']);
+      foreach ($fields['values'] as $field) {
+        $options[$field['id']] = E::ts("Field: %1", [1 => $field['label']]);
+      }
+    }
+
+    return $options;
+  }
+
+  /**
+   * Get the list of options to determine who is paying for the membership
+   */
+  public function getAmountOptions() {
+    $options = [
+        'type'  => E::ts("Membership Type"),
+        'fixed' => E::ts("Fixed Amount"),
+    ];
+
+    // add all membership custom fields that reference contacts
+    $membership_group_ids = $this->getMembershipCustomGroupIDs();
+    if (!empty($membership_group_ids)) {
+      $fields = civicrm_api3('CustomField', 'get', [
+          'custom_group_id' => ['IN' => $membership_group_ids],
+          'data_type'       => "Money",
+          'is_active'       => 1,
+          'sequential'      => 1,
+          'return'          => 'id,label']);
+      foreach ($fields['values'] as $field) {
+        $options[$field['id']] = E::ts("Field: %1", [1 => $field['label']]);
+      }
+    }
+
+    return $options;
+  }
+
+  /**
+   * Get the list of membership custom group IDs
+   */
+  public function getMembershipCustomGroupIDs() {
+    $query = civicrm_api3('CustomGroup', 'get', [
+        'extends'      => 'Membership',
+        'is_active'    => 1,
+        'sequential'   => 0,
+        'option.limit' => 0,
+        'return'       => 'id']);
+    return array_keys($query['values']);
   }
 }
