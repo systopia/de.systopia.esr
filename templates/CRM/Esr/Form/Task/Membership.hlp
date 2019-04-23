@@ -21,7 +21,7 @@
     <ol>
         <li>{ts domain="de.systopia.esr"}"Fixed Amount" - enter an amount that is then issued for alle memberships{/ts}</li>
         <li>{ts domain="de.systopia.esr"}"Membership Type" - use the minimum fee amount from membership's respective type.{/ts}</li>
-        <li>{ts domain="de.systopia.esr"}"Field X" - take the fee amount from a 'Money' type custom field assigned to the membership.{/ts}</li>
+        <li>{ts domain="de.systopia.esr"}"Field X" - take the fee amount from a 'Money' type custom field assigned to the membership. If that field is empty, the minimum fee amount from membership's respective type is used.{/ts}</li>
     </ol>
 {/htxt}
 
