@@ -28,7 +28,7 @@ class CRM_Esr_Generator {
   const COLUMN_ADDRESS_2 = 3;
   const COLUMN_ADDRESS_3 = 4;
   const COLUMN_ADDRESS_4 = 5;
-  const COLUMN__ADDRESS_5 = 6;
+  const COLUMN_ADDRESS_5 = 6;
   const COLUMN_ADDRESS_6 = 7;
   const COLUMN_STREET = 8;
   const COLUMN_STREET_NUMBER = 9;
@@ -79,7 +79,7 @@ class CRM_Esr_Generator {
         self::COLUMN_ADDRESS_2                         => E::ts('Address line 2'),
         self::COLUMN_ADDRESS_3                         => E::ts('Address line 3'),
         self::COLUMN_ADDRESS_4                         => E::ts('Address line 4'),
-        self::COLUMN__ADDRESS_5                        => E::ts('Address line 5'),
+        self::COLUMN_ADDRESS_5                         => E::ts('Address line 5'),
         self::COLUMN_ADDRESS_6                         => E::ts('Address line 6'),
         self::COLUMN_STREET                            => E::ts('Street'),
         self::COLUMN_STREET_NUMBER                     => E::ts('Street number'),
@@ -203,86 +203,111 @@ class CRM_Esr_Generator {
    * generate the SQL needed to collect all necessary data
    */
   protected function generateMembershipSQL($membership_ids, $params) {
-    if (empty($filtered_contact_ids)) {
-      $where_clause = 'FALSE';
+    // membership IDs
+    if (empty($membership_ids)) {
+      $WHERE_CLAUSE = 'FALSE';
     } else {
       $membership_id_list = implode(',', $membership_ids);
-      $where_clause = "civicrm_membership.id IN ({$membership_id_list})";
+      $WHERE_CLAUSE = "civicrm_contact.id IN ({$membership_id_list})";
+    }
+
+    // amount
+    if (is_numeric($params['amount_option'])) {
+      $field = civicrm_api3('CustomField', 'getsingle', ['id' => $params['amount_option']]);
+      $group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $field['custom_group_id']]);
+      $AMOUNT_TERM = "COALESCE(amount_group.`{$field['column_name']}`, civicrm_membership_type.minimum_fee)";
+      $AMOUNT_JOIN = "LEFT JOIN {$group['table_name']} amount_group ON amount_group.entity_id = civicrm_membership.id";
+    } elseif ($params['amount_option'] == 'fixed') {
+      $AMOUNT_TERM = sprintf("'%.2f'", (float) $params['amount']);
+      $AMOUNT_JOIN = '';
+    } elseif ($params['amount_option'] == 'type') {
+      $AMOUNT_TERM = 'civicrm_membership_type.minimum_fee';
+      $AMOUNT_JOIN = '';
+    } else {
+      throw new Exception("Unknown amount_option '{$params['amount_option']}'");
     }
 
     // payment term
-    $buyer_term = "TODO";
-
-    // amount
-    $amount_term = "TODO";
-
+    if (is_numeric($params['paying_contact'])) {
+      $field = civicrm_api3('CustomField', 'getsingle', ['id' => $params['paying_contact']]);
+      $group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $field['custom_group_id']]);
+      $BUYER_TERM = "COALESCE(buyer_group.`{$field['column_name']}`, civicrm_membership.contact_id)";
+      $BUYER_JOIN = "LEFT JOIN {$group['table_name']} buyer_group ON buyer_group.entity_id = civicrm_membership.id";
+    } elseif ($params['paying_contact'] == 'member') {
+      $BUYER_TERM = "civicrm_membership.contact_id";
+      $BUYER_JOIN = "";
+    } else {
+      throw new Exception("Unknown paying_contact option '{$params['paying_contact']}'");
+    }
 
     $sql = "
-SELECT    civicrm_contact.id                        AS contact_id,
-          civicrm_contact.contact_type              AS contact_type,
-          civicrm_contact.prefix_id                 AS prefix_id,
-          civicrm_contact.display_name              AS display_name,
-          civicrm_contact.first_name                AS first_name,
-          civicrm_contact.last_name                 AS last_name,
-          civicrm_contact.household_name            AS household_name,
-          civicrm_contact.organization_name         AS organization_name,
-          civicrm_contact.formal_title              AS formal_title,
-          civicrm_contact.addressee_display         AS addressee_display,
-          civicrm_contact.postal_greeting_display   AS postal_greeting_display,
-          civicrm_contact.first_name                AS first_name,
-          civicrm_contact.last_name                 AS last_name,
-          civicrm_address.street_address            AS street_address,
-          civicrm_address.postal_code               AS postal_code,
-          civicrm_address.supplemental_address_1    AS supplemental_address_1,
-          civicrm_address.supplemental_address_2    AS supplemental_address_2,
-          civicrm_address.city                      AS city,
-          civicrm_address.country_id                AS country_id,
-          {$amount_term}                            AS amount
-FROM      civicrm_membership
-FROM      civicrm_contact ON civicrm_contact.id = {$buyer_term}
-LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
-WHERE     {$where_clause}
-GROUP BY  civicrm_membership.id";
+      SELECT    civicrm_contact.id                        AS contact_id,
+                civicrm_contact.contact_type              AS contact_type,
+                civicrm_contact.prefix_id                 AS prefix_id,
+                civicrm_contact.display_name              AS display_name,
+                civicrm_contact.first_name                AS first_name,
+                civicrm_contact.last_name                 AS last_name,
+                civicrm_contact.household_name            AS household_name,
+                civicrm_contact.organization_name         AS organization_name,
+                civicrm_contact.formal_title              AS formal_title,
+                civicrm_contact.addressee_display         AS addressee_display,
+                civicrm_contact.postal_greeting_display   AS postal_greeting_display,
+                civicrm_contact.first_name                AS first_name,
+                civicrm_contact.last_name                 AS last_name,
+                civicrm_address.street_address            AS street_address,
+                civicrm_address.postal_code               AS postal_code,
+                civicrm_address.supplemental_address_1    AS supplemental_address_1,
+                civicrm_address.supplemental_address_2    AS supplemental_address_2,
+                civicrm_address.city                      AS city,
+                civicrm_address.country_id                AS country_id,
+                civicrm_membership.id                     AS membership_id,
+                {$AMOUNT_TERM}                            AS amount
+      FROM      civicrm_membership
+      LEFT JOIN civicrm_membership_type ON civicrm_membership.membership_type_id = civicrm_membership_type.id  
+      {$BUYER_JOIN}
+      LEFT JOIN civicrm_contact         ON civicrm_contact.id = {$BUYER_TERM}
+      LEFT JOIN civicrm_address         ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+      {$AMOUNT_JOIN}
+      WHERE     {$WHERE_CLAUSE}
+      GROUP BY  civicrm_membership.id";
     return $sql;
   }
-
-}
 
   /**
    * generate the SQL needed to collect all necessary data
    */
   protected function generateBasicSQL($contact_ids, $params) {
-    if (empty($filtered_contact_ids)) {
-      $where_clause = 'FALSE';
+    if (empty($contact_ids)) {
+      $WHERE_CLAUSE = 'FALSE';
     } else {
-      $contact_id_list = implode(',', $filtered_contact_ids);
-      $where_clause = "civicrm_contact.id IN ({$contact_id_list})";
+      $contact_id_list = implode(',', $contact_ids);
+      $WHERE_CLAUSE = "civicrm_contact.id IN ({$contact_id_list})";
     }
 
     $sql = "
-SELECT    civicrm_contact.id                        AS contact_id,
-          civicrm_contact.contact_type              AS contact_type,
-          civicrm_contact.prefix_id                 AS prefix_id,
-          civicrm_contact.display_name              AS display_name,
-          civicrm_contact.first_name                AS first_name,
-          civicrm_contact.last_name                 AS last_name,
-          civicrm_contact.household_name            AS household_name,
-          civicrm_contact.organization_name         AS organization_name,
-          civicrm_contact.formal_title              AS formal_title,
-          civicrm_contact.addressee_display         AS addressee_display,
-          civicrm_contact.postal_greeting_display   AS postal_greeting_display,
-          civicrm_contact.first_name                AS first_name,
-          civicrm_contact.last_name                 AS last_name,
-          civicrm_address.street_address            AS street_address,
-          civicrm_address.postal_code               AS postal_code,
-          civicrm_address.supplemental_address_1    AS supplemental_address_1,
-          civicrm_address.supplemental_address_2    AS supplemental_address_2,
-          civicrm_address.city                      AS city,
-          civicrm_address.country_id                AS country_id
-FROM      civicrm_contact
-LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
-WHERE     {$where_clause}
-GROUP BY  civicrm_contact.id";
+      SELECT    civicrm_contact.id                        AS contact_id,
+                civicrm_contact.contact_type              AS contact_type,
+                civicrm_contact.prefix_id                 AS prefix_id,
+                civicrm_contact.display_name              AS display_name,
+                civicrm_contact.first_name                AS first_name,
+                civicrm_contact.last_name                 AS last_name,
+                civicrm_contact.household_name            AS household_name,
+                civicrm_contact.organization_name         AS organization_name,
+                civicrm_contact.formal_title              AS formal_title,
+                civicrm_contact.addressee_display         AS addressee_display,
+                civicrm_contact.postal_greeting_display   AS postal_greeting_display,
+                civicrm_contact.first_name                AS first_name,
+                civicrm_contact.last_name                 AS last_name,
+                civicrm_address.street_address            AS street_address,
+                civicrm_address.postal_code               AS postal_code,
+                civicrm_address.supplemental_address_1    AS supplemental_address_1,
+                civicrm_address.supplemental_address_2    AS supplemental_address_2,
+                civicrm_address.city                      AS city,
+                civicrm_address.country_id                AS country_id
+      FROM      civicrm_contact
+      LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+      WHERE     {$WHERE_CLAUSE}
+      GROUP BY  civicrm_contact.id";
     return $sql;
   }
 
@@ -301,38 +326,49 @@ GROUP BY  civicrm_contact.id";
     $record[self::COLUMN_ADDRESS_2] = $this->generateName($query);
     $record[self::COLUMN_ADDRESS_3] = $query->street_address;
     $record[self::COLUMN_ADDRESS_4] = "{$query->postal_code} {$query->city}";
-    $record[self::COLUMN__ADDRESS_5] = $query->supplemental_address_1;
+    $record[self::COLUMN_ADDRESS_5] = $query->supplemental_address_1;
     $record[self::COLUMN_ADDRESS_6] = $query->supplemental_address_2;
 
     // parsed address
-    $record[self::COLUMN_POSTAL_CODE]          = $query->postal_code;
-    $record[self::COLUMN_CITY]          = $query->city;
-    $record[self::COLUMN_COUNTRY]         = $this->id2country[$query->country_id];
+    $record[self::COLUMN_POSTAL_CODE] = $query->postal_code;
+    $record[self::COLUMN_CITY]        = $query->city;
+    $record[self::COLUMN_COUNTRY]     = $this->id2country[$query->country_id];
     if (preg_match($this->street_parser, $query->street_address, $matches)) {
-      $record[self::COLUMN_STREET]    = $matches['street'];
+      $record[self::COLUMN_STREET]        = $matches['street'];
       $record[self::COLUMN_STREET_NUMBER] = $matches['number'];
     } else {
-      $record[self::COLUMN_STREET]    = $query->street_address;
+      $record[self::COLUMN_STREET]        = $query->street_address;
       $record[self::COLUMN_STREET_NUMBER] = '';
     }
 
     // personalised data
-    $record[self::COLUMN_SALUTATION]       = $this->id2prefix[$query->prefix_id];
-    $record[self::COLUMN_POSTAL_MAILING_SALUTATION]  = $query->postal_greeting_display;
-    $record[self::COLUMN_FORMAL_TITLE]        = $query->formal_title;
-    $record[self::COLUMN_FIRST_NAME]      = $query->first_name;
-    $record[self::COLUMN_LAST_NAME]     = $query->last_name;
-    $record[self::COLUMN_NAME_2]        = '';  // unused
+    $record[self::COLUMN_SALUTATION]                = $this->id2prefix[$query->prefix_id];
+    $record[self::COLUMN_POSTAL_MAILING_SALUTATION] = $query->postal_greeting_display;
+    $record[self::COLUMN_FORMAL_TITLE]              = $query->formal_title;
+    $record[self::COLUMN_FIRST_NAME]                = $query->first_name;
+    $record[self::COLUMN_LAST_NAME]                 = $query->last_name;
+    $record[self::COLUMN_NAME_2]                    = '';  // unused
+
+    // amount
+    switch ($type) {
+      case self::$REFTYPE_MEMBERSHIP:
+        $amount = $query->amount;
+        break;
+
+      default:
+      case self::$REFTYPE_BULK_SIMPLE:
+        $amount = $this->getFullAmount($params['amount']);
+        break;
+    }
 
     // codes
-    $esr_ref = $this->create_reference($type, array('contact_id' => $query->contact_id, 'mailcode' => $params['mailcode']));
-    $amount  = $this->getFullAmount($params['amount']);
-    $bc_type = empty($amount) ? self::$BC_ESR_PLUS_CHF : self::$BC_ESR_CHF;
-    $esr1    = $this->create_code($bc_type, $amount, $esr_ref, $params['tn_number']);
-    $record[self::COLUMN_VESR_NUMBER]       = $params['tn_number'];
-    $record[self::COLUMN_ESR1]             = $esr1;
-    $record[self::COLUMN_ESR_1_REF_ROW]     = $esr_ref;
-    $record[self::COLUMN_ESR_1_REF_ROW_GROUP]  = $this->format_code($esr_ref);
+    $esr_ref                                  = $this->create_reference($type, $query, $params);
+    $bc_type                                  = empty($amount) ? self::$BC_ESR_PLUS_CHF : self::$BC_ESR_CHF;
+    $esr1                                     = $this->create_code($bc_type, $amount, $esr_ref, $params['tn_number']);
+    $record[self::COLUMN_VESR_NUMBER]         = $params['tn_number'];
+    $record[self::COLUMN_ESR1]                = $esr1;
+    $record[self::COLUMN_ESR_1_REF_ROW]       = $esr_ref;
+    $record[self::COLUMN_ESR_1_REF_ROW_GROUP] = $this->format_code($esr_ref);
 
     // misc
     $record[self::COLUMN_TEXT_MODULE] = $params['custom_text'];
@@ -379,16 +415,18 @@ GROUP BY  civicrm_contact.id";
   /**
    * generate an ESR reference
    */
-  protected function create_reference($type, $params) {
+  protected function create_reference($type, $query, $params) {
     switch ($type) {
       case self::$REFTYPE_BULK_SIMPLE:
-        $reference = sprintf("%02d%014d%010d", $type, $params['mailcode'], $params['contact_id']);
+        $reference = sprintf("%02d%014d%010d", $type, $params['mailcode'], $query->contact_id);
+        break;
+
+      case self::$REFTYPE_MEMBERSHIP:
+        $reference = sprintf("%02d%010d%09d09999", $type, $query->contact_id, $query->membership_id);
         break;
 
       default:
-        error_log("Unknown type: '{$type}'");
-        $reference = '00000000000000000000000000';
-          break;
+        throw new Exception("Unknown reference type: '{$type}'");
     }
 
     $reference .= $this->calculate_checksum($reference);

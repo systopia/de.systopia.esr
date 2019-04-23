@@ -56,28 +56,17 @@
 </div>
 
 <script type="text/javascript">
-var campaign_mailcode_prefix = "{$campaign_mailcode_prefix}";
-var campaign_mailcode_length = {$campaign_mailcode_length};
 {literal}
-
-cj("#campaign").change(function(e) {
-  var campaign_id = cj(e.target).val();
-  if (campaign_id == '0') {
-    cj("#mailcode").val('');
+function esr_show_amount() {
+  let current_value = cj("#amount_option").val();
+  if (current_value == 'fixed') {
+    cj("#amount_option").parent().show();
   } else {
-    // compile mailcode
-    var mailcode = campaign_mailcode_prefix;
-    while (mailcode.length + campaign_id.length < campaign_mailcode_length) {
-      mailcode = mailcode + '0';
-    }
-    mailcode = mailcode + campaign_id;
-    cj("#mailcode").val(mailcode);
+    cj("#amount_option").parent().hide();
   }
-});
+}
 
-cj("#mailcode").change(function(e) {
-  cj("#campaign").val('0');
-});
-
+cj("#amount_option").change(esr_show_amount());
+esr_show_amount();
 {/literal}
 </script>

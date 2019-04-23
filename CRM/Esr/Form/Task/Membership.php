@@ -124,12 +124,12 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.membership' => $values));
 
-    if (isset($all_values['_qf_Contact_submit'])) {
+    if (isset($all_values['_qf_Membership_submit'])) {
       // CREATE CSV
       $generator = new CRM_Esr_Generator();
       $generator->generate(CRM_Esr_Generator::$REFTYPE_MEMBERSHIP, $this->_memberIds, $values);
 
-    } elseif (isset($all_values['_qf_Contact_next'])) {
+    } elseif (isset($all_values['_qf_Membership_next'])) {
       // CREATE ACTIVITY
       civicrm_api3('Activity', 'create', array(
         'activity_type_id'   => CRM_Esr_Config::getESRActivityTypeID(),
