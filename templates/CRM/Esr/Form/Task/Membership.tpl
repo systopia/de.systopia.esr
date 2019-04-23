@@ -15,32 +15,26 @@
 <h3>{ts domain="de.systopia.esr"}Parameters{/ts}</h3>
 
 <div class="crm-section">
-  <div class="label">{$form.tn_number.label}</div>
+  <div class="label">{$form.tn_number.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}ESR Registration{/ts}", {literal}{"id":"id-number","file":"CRM\/Esr\/Form\/Task\/Membership"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.tn_number.html}</div>
   <div class="clear"></div>
 </div>
 
 <div class="crm-section">
-  <div class="label">{$form.paying_contact.label}</div>
+  <div class="label">{$form.paying_contact.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}Buyer Options{/ts}", {literal}{"id":"id-buyer","file":"CRM\/Esr\/Form\/Task\/Membership"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.paying_contact.html}</div>
   <div class="clear"></div>
 </div>
 
 <div class="crm-section">
-  <div class="label">{$form.amount_option.label}</div>
+  <div class="label">{$form.amount_option.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}Amount Options{/ts}", {literal}{"id":"id-amount","file":"CRM\/Esr\/Form\/Task\/Membership"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.amount_option.html}</div>
   <div class="clear"></div>
 </div>
 
 <div class="crm-section">
-  <div class="label">{$form.amount.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}Amount{/ts}", {literal}{"id":"id-amount","file":"CRM\/Esr\/Form\/Task\/Contact"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
+  <div class="label">{$form.amount.label}</div>
   <div class="content">{$form.amount.html}&nbsp;CHF</div>
-  <div class="clear"></div>
-</div>
-
-<div class="crm-section">
-  <div class="label">{$form.mailcode.label}</div>
-  <div class="content">{$form.mailcode.html}</div>
   <div class="clear"></div>
 </div>
 
@@ -59,14 +53,15 @@
 {literal}
 function esr_show_amount() {
   let current_value = cj("#amount_option").val();
+  console.log(current_value);
   if (current_value == 'fixed') {
-    cj("#amount_option").parent().show();
+    cj("#amount").parent().parent().show();
   } else {
-    cj("#amount_option").parent().hide();
+    cj("#amount").parent().parent().hide();
   }
 }
 
-cj("#amount_option").change(esr_show_amount());
+cj("#amount_option").change(esr_show_amount);
 esr_show_amount();
 {/literal}
 </script>

@@ -12,6 +12,10 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
+{htxt id='id-number'}
+    <p>{ts domain="de.systopia.esr"}The ESR participant number is your organisation's registration number for the ESR system.{/ts}</p>
+{/htxt}
+
 {htxt id='id-amount'}
     <p>{ts domain="de.systopia.esr"}This fixed amount will be printed on the ESR payment form. If no amount is declared, an ESR+ without a pre-printed amount will be created.{/ts}</p>
 {/htxt}

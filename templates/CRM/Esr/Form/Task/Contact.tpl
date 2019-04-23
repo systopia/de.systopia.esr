@@ -20,7 +20,7 @@
   <div class="clear"></div>
 </div>
 <div class="crm-section">
-  <div class="label">{$form.tn_number.label}</div>
+  <div class="label">{$form.tn_number.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}ESR Number{/ts}", {literal}{"id":"id-number","file":"CRM\/Esr\/Form\/Task\/Contact"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.tn_number.html}</div>
   <div class="clear"></div>
 </div>

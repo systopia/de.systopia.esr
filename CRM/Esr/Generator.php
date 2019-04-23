@@ -319,7 +319,7 @@ class CRM_Esr_Generator {
 
     // basic information
     $record[self::COLUMN_PERSONAL_NUMBER] = $query->contact_id;
-    $record[self::COLUMN_MAIL_CODE]       = $params['mailcode'];
+    $record[self::COLUMN_MAIL_CODE]       = isset($params['mailcode']) ? $params['mailcode'] : '';
 
     // address lines
     $record[self::COLUMN_ADDRESS_1] = $this->id2prefix[$query->prefix_id];
