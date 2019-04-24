@@ -22,34 +22,41 @@ use CRM_Esr_ExtensionUtil as E;
  */
 class CRM_Esr_Generator {
 
-  const COLUMN_PERSONAL_NUMBER = 0;
-  const COLUMN_MAIL_CODE = 1;
-  const COLUMN_ADDRESS_1 = 2;
-  const COLUMN_ADDRESS_2 = 3;
-  const COLUMN_ADDRESS_3 = 4;
-  const COLUMN_ADDRESS_4 = 5;
-  const COLUMN_ADDRESS_5 = 6;
-  const COLUMN_ADDRESS_6 = 7;
-  const COLUMN_STREET = 8;
-  const COLUMN_STREET_NUMBER = 9;
-  const COLUMN_POSTAL_CODE = 10;
-  const COLUMN_CITY = 11;
-  const COLUMN_COUNTRY = 12;
-  const COLUMN_SALUTATION = 13;
-  const COLUMN_POSTAL_MAILING_SALUTATION = 14;
-  const COLUMN_FORMAL_TITLE = 15;
-  const COLUMN_FIRST_NAME = 16;
-  const COLUMN_LAST_NAME = 17;
-  const COLUMN_NAME_2 = 18;
-  const COLUMN_VESR_NUMBER = 19;
-  const COLUMN_ESR1 = 20;
-  const COLUMN_ESR_1_REF_ROW = 21;
-  const COLUMN_ESR_1_REF_ROW_GROUP = 22;
-  const COLUMN_ESR_1_IDENTITY = 23;
+  const COLUMN_PERSONAL_NUMBER                   = 0;
+  const COLUMN_MAIL_CODE                         = 1;
+  const COLUMN_ADDRESS_1                         = 2;
+  const COLUMN_ADDRESS_2                         = 3;
+  const COLUMN_ADDRESS_3                         = 4;
+  const COLUMN_ADDRESS_4                         = 5;
+  const COLUMN_ADDRESS_5                         = 6;
+  const COLUMN_ADDRESS_6                         = 7;
+  const COLUMN_STREET                            = 8;
+  const COLUMN_STREET_NUMBER                     = 9;
+  const COLUMN_POSTAL_CODE                       = 10;
+  const COLUMN_CITY                              = 11;
+  const COLUMN_COUNTRY                           = 12;
+  const COLUMN_SALUTATION                        = 13;
+  const COLUMN_POSTAL_MAILING_SALUTATION         = 14;
+  const COLUMN_FORMAL_TITLE                      = 15;
+  const COLUMN_FIRST_NAME                        = 16;
+  const COLUMN_LAST_NAME                         = 17;
+  const COLUMN_NAME_2                            = 18;
+  const COLUMN_VESR_NUMBER                       = 19;
+  const COLUMN_ESR1                              = 20;
+  const COLUMN_ESR_1_REF_ROW                     = 21;
+  const COLUMN_ESR_1_REF_ROW_GROUP               = 22;
+  const COLUMN_ESR_1_IDENTITY                    = 23;
   const COLUMN_DATA_MATRIX_CODE_TYPE_20_DIGIT_37 = 24;
-  const COLUMN_DATA_MATRIX_CODE = 25;
-  const COLUMN_TEXT_MODULE = 26;
-  const COLUMN_PACKET_NUMBER = 27;
+  const COLUMN_DATA_MATRIX_CODE                  = 25;
+  const COLUMN_TEXT_MODULE                       = 26;
+  const COLUMN_PACKET_NUMBER                     = 27;
+
+  // additional headers for membership
+  const COLUMN_SECOND_CONTACT_IDENTICAL          = 28;
+  const COLUMN_SECOND_PERSONAL_NUMBER            = 29;
+  const SECOND_ADDRESS_OFFSET                    = +28; // offset
+  const SECOND_ADDRESS_LENGTH                    = 16;
+
 
   // ESR TYPES BC (Belegartcode), defined by standard
   public static $BC_ESR_CHF      = '01';
@@ -63,16 +70,16 @@ class CRM_Esr_Generator {
   public static $REFTYPE_MEMBERSHIP   = '02';
 
 
-  protected $header     = NULL;
-  protected $id2country = NULL;
-  protected $id2prefix  = NULL;
+  protected $base_header    = NULL;
+  protected $id2country     = NULL;
+  protected $id2prefix      = NULL;
   protected $street_parser  = '#^(?P<street>.*) +(?P<number>[\d\/-]+( ?[A-Za-z]+)?)$#';
   protected $checksum_table = '0946827135'; // used by calculate_checksum
 
 
   public function __construct() {
     // fill header
-    $this->header = array(
+    $this->base_header = array(
         self::COLUMN_PERSONAL_NUMBER                   => E::ts('Registration number'),
         self::COLUMN_MAIL_CODE                         => E::ts('Mail code'),
         self::COLUMN_ADDRESS_1                         => E::ts('Address line 1'),
@@ -127,6 +134,7 @@ class CRM_Esr_Generator {
    * @param $params      array  list of additional parameters
    */
   public function generate($type, $entity_ids, $params, $out = 'php://output') {
+    $headers = $this->getHeaders($type, $params);
     if ($out == 'php://output') {
       // we want to write into the outstream
       $filename = "ESR-" . date('YmdHis') . '.csv';
@@ -148,7 +156,7 @@ class CRM_Esr_Generator {
     }
 
     // write header line
-    fputcsv($output_stream, $this->header);
+    fputcsv($output_stream, $headers);
 
     // create the query and go through the lines
     $sql = $this->generateSQL($type, $entity_ids , $params);
@@ -156,7 +164,7 @@ class CRM_Esr_Generator {
     while ($query->fetch()) {
       $record = $this->generateRecord($type, $query, $params);
       $csv_line = array();
-      foreach ($this->header as $field_index => $field) {
+      foreach ($headers as $field_index => $field) {
         if (isset($record[$field_index])) {
           $csv_line[] = $record[$field_index];
         } else {
@@ -208,7 +216,7 @@ class CRM_Esr_Generator {
       $WHERE_CLAUSE = 'FALSE';
     } else {
       $membership_id_list = implode(',', $membership_ids);
-      $WHERE_CLAUSE = "civicrm_contact.id IN ({$membership_id_list})";
+      $WHERE_CLAUSE = "civicrm_membership.id IN ({$membership_id_list})";
     }
 
     // amount
@@ -261,12 +269,35 @@ class CRM_Esr_Generator {
                 civicrm_address.city                      AS city,
                 civicrm_address.country_id                AS country_id,
                 civicrm_membership.id                     AS membership_id,
+                
+                second_contact.id                         AS second_contact_id,
+                second_contact.contact_type               AS second_contact_type,
+                second_contact.prefix_id                  AS second_prefix_id,
+                second_contact.display_name               AS second_display_name,
+                second_contact.first_name                 AS second_first_name,
+                second_contact.last_name                  AS second_last_name,
+                second_contact.household_name             AS second_household_name,
+                second_contact.organization_name          AS second_organization_name,
+                second_contact.formal_title               AS second_formal_title,
+                second_contact.addressee_display          AS second_addressee_display,
+                second_contact.postal_greeting_display    AS second_postal_greeting_display,
+                second_contact.first_name                 AS second_first_name,
+                second_contact.last_name                  AS second_last_name,
+                second_address.street_address             AS second_street_address,
+                second_address.postal_code                AS second_postal_code,
+                second_address.supplemental_address_1     AS second_supplemental_address_1,
+                second_address.supplemental_address_2     AS second_supplemental_address_2,
+                second_address.city                       AS second_city,
+                second_address.country_id                 AS second_country_id,
+                
                 {$AMOUNT_TERM}                            AS amount
       FROM      civicrm_membership
       LEFT JOIN civicrm_membership_type ON civicrm_membership.membership_type_id = civicrm_membership_type.id  
       {$BUYER_JOIN}
-      LEFT JOIN civicrm_contact         ON civicrm_contact.id = {$BUYER_TERM}
-      LEFT JOIN civicrm_address         ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+      LEFT JOIN civicrm_contact civicrm_contact  ON civicrm_contact.id = {$BUYER_TERM}
+      LEFT JOIN civicrm_address civicrm_address  ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+      LEFT JOIN civicrm_contact second_contact   ON second_contact.id = civicrm_membership.contact_id
+      LEFT JOIN civicrm_address second_address   ON second_address.contact_id = second_contact.id AND second_address.is_primary = 1
       {$AMOUNT_JOIN}
       WHERE     {$WHERE_CLAUSE}
       GROUP BY  civicrm_membership.id";
@@ -311,6 +342,31 @@ class CRM_Esr_Generator {
     return $sql;
   }
 
+
+  /**
+   * Get the list of headers for the CSV file
+   *
+   * @param $type   int   format type
+   * @param $params array generation parameters
+   * @return array index => column name
+   */
+  public function getHeaders($type, $params) {
+    $header = $this->base_header;
+
+    // add more columns
+    if ($type == self::$REFTYPE_MEMBERSHIP) {
+      // add second contact data
+      $header[self::COLUMN_SECOND_CONTACT_IDENTICAL] = E::ts('Second Contact Identical');
+      $header[self::COLUMN_SECOND_PERSONAL_NUMBER]   = E::ts('Registration number') . ' - 2';
+      for ($index = self::COLUMN_SECOND_PERSONAL_NUMBER + 1; $index < self::COLUMN_SECOND_CONTACT_IDENTICAL + self::SECOND_ADDRESS_LENGTH; $index++) {
+        $header[$index] = $header[$index - self::SECOND_ADDRESS_OFFSET] . ' - 2';
+      }
+    }
+
+    return $header;
+  }
+
+
   /**
    * generate a new record on the next line of the query result
    */
@@ -318,45 +374,30 @@ class CRM_Esr_Generator {
     $record = array();
 
     // basic information
-    $record[self::COLUMN_PERSONAL_NUMBER] = $query->contact_id;
     $record[self::COLUMN_MAIL_CODE]       = isset($params['mailcode']) ? $params['mailcode'] : '';
 
-    // address lines
-    $record[self::COLUMN_ADDRESS_1] = $this->id2prefix[$query->prefix_id];
-    $record[self::COLUMN_ADDRESS_2] = $this->generateName($query);
-    $record[self::COLUMN_ADDRESS_3] = $query->street_address;
-    $record[self::COLUMN_ADDRESS_4] = "{$query->postal_code} {$query->city}";
-    $record[self::COLUMN_ADDRESS_5] = $query->supplemental_address_1;
-    $record[self::COLUMN_ADDRESS_6] = $query->supplemental_address_2;
+    // add all contact data
+    $this->addContactData($query, $record);
 
-    // parsed address
-    $record[self::COLUMN_POSTAL_CODE] = $query->postal_code;
-    $record[self::COLUMN_CITY]        = $query->city;
-    $record[self::COLUMN_COUNTRY]     = $this->id2country[$query->country_id];
-    if (preg_match($this->street_parser, $query->street_address, $matches)) {
-      $record[self::COLUMN_STREET]        = $matches['street'];
-      $record[self::COLUMN_STREET_NUMBER] = $matches['number'];
-    } else {
-      $record[self::COLUMN_STREET]        = $query->street_address;
-      $record[self::COLUMN_STREET_NUMBER] = '';
-    }
-
-    // personalised data
-    $record[self::COLUMN_SALUTATION]                = $this->id2prefix[$query->prefix_id];
-    $record[self::COLUMN_POSTAL_MAILING_SALUTATION] = $query->postal_greeting_display;
-    $record[self::COLUMN_FORMAL_TITLE]              = $query->formal_title;
-    $record[self::COLUMN_FIRST_NAME]                = $query->first_name;
-    $record[self::COLUMN_LAST_NAME]                 = $query->last_name;
-    $record[self::COLUMN_NAME_2]                    = '';  // unused
-
-    // amount
+    // custom stuff
     switch ($type) {
       case self::$REFTYPE_MEMBERSHIP:
-        $amount = $query->amount;
+        // add second contact data
+        $this->addContactData($query, $record, self::SECOND_ADDRESS_OFFSET, 'second_');
+
+        // set the extra fields
+        $contact_id        = $this->getQueryResult($query, 'contact_id');
+        $second_contact_id = $this->getQueryResult($query, 'contact_id', 'second_');
+        $record[self::COLUMN_SECOND_PERSONAL_NUMBER]   = $second_contact_id;
+        $record[self::COLUMN_SECOND_CONTACT_IDENTICAL] = ($contact_id == $second_contact_id) ? '1' : '0';
+
+        // set amount
+        $amount = $this->getQueryResult($query, 'amount');
         break;
 
       default:
       case self::$REFTYPE_BULK_SIMPLE:
+        // take amount from the contact data
         $amount = $this->getFullAmount($params['amount']);
         break;
     }
@@ -375,6 +416,60 @@ class CRM_Esr_Generator {
 
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
     return $record;
+  }
+
+  /**
+   * Add the contact base data to the record
+   * @param $query         CRM_Core_DAO query result
+   * @param $record        array record data
+   * @param $offset        int offset to the generic fields
+   * @param $prefix        string prefix in the query field
+   */
+  protected function addContactData($query, &$record, $offset = 0, $prefix = '') {
+    // address lines
+    $record[$offset + self::COLUMN_PERSONAL_NUMBER] = $this->getQueryResult($query, 'contact_id', $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_1]       = $this->id2prefix[$this->getQueryResult($query, 'prefix_id', $prefix)];
+    $record[$offset + self::COLUMN_ADDRESS_2]       = $this->generateName($query, $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_3]       = $this->getQueryResult($query, 'street_address', $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_4]       = $this->getQueryResult($query, 'postal_code', $prefix) . ' ' . $this->getQueryResult($query, 'city', $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_5]       = $this->getQueryResult($query, 'supplemental_address_1', $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_6]       = $this->getQueryResult($query, 'supplemental_address_2', $prefix);
+
+    // parsed address
+    $record[$offset + self::COLUMN_POSTAL_CODE] = $this->getQueryResult($query, 'postal_code', $prefix);
+    $record[$offset + self::COLUMN_CITY]        = $this->getQueryResult($query, 'city', $prefix);
+    $record[$offset + self::COLUMN_COUNTRY]     = $this->id2country[$this->getQueryResult($query, 'country_id', $prefix)];
+    if (preg_match($this->street_parser, $this->getQueryResult($query, 'street_address', $prefix), $matches)) {
+      $record[$offset + self::COLUMN_STREET]        = $matches['street'];
+      $record[$offset + self::COLUMN_STREET_NUMBER] = $matches['number'];
+    } else {
+      $record[$offset + self::COLUMN_STREET]        = $this->getQueryResult($query, 'street_address', $prefix);
+      $record[$offset + self::COLUMN_STREET_NUMBER] = '';
+    }
+
+    // personalised data
+    $record[$offset + self::COLUMN_SALUTATION]                = $this->id2prefix[$this->getQueryResult($query, 'prefix_id', $prefix)];
+    $record[$offset + self::COLUMN_POSTAL_MAILING_SALUTATION] = $this->getQueryResult($query, 'postal_greeting_display', $prefix);
+    $record[$offset + self::COLUMN_FORMAL_TITLE]              = $this->getQueryResult($query, 'formal_title', $prefix);
+    $record[$offset + self::COLUMN_FIRST_NAME]                = $this->getQueryResult($query, 'first_name', $prefix);
+    $record[$offset + self::COLUMN_LAST_NAME]                 = $this->getQueryResult($query, 'last_name', $prefix);
+    $record[$offset + self::COLUMN_NAME_2]                    = '';  // unused
+  }
+
+  /**
+   * Get the given attribute from the query result
+   * @param $query  CRM_Core_DAO query result
+   * @param $name   string attribute name
+   * @param $prefix string name prefix
+   * @return mixed attribute value
+   */
+  protected function getQueryResult($query, $name, $prefix = '') {
+    $attribute_name = $prefix . $name;
+    if (isset($query->$attribute_name)) {
+      return $query->$attribute_name;
+    } else {
+      return NULL;
+    }
   }
 
 
@@ -493,19 +588,21 @@ class CRM_Esr_Generator {
    * Generate a name: "{Titel} {Vorname} {Nachname}"
    * @see https://projekte.systopia.de/redmine/issues/3937#change-24931
    */
-  protected function generateName($contact) {
-    switch ($contact->contact_type) {
+  protected function generateName($contact, $prefix = '') {
+    switch ($this->getQueryResult($contact, 'contact_type', $prefix)) {
       case 'Organization':
-        return $contact->organization_name;
+        return $this->getQueryResult($contact, 'organization_name', $prefix);
         break;
 
       case 'Household':
-        return $contact->household_name;
+        return $this->getQueryResult($contact, 'household_name', $prefix);
         break;
 
       default:
       case 'Individual':
-        $name = "{$contact->formal_title} {$contact->first_name} {$contact->last_name}";
+        $name = $this->getQueryResult($contact, 'formal_title', $prefix);
+        $name .= ' ' . $this->getQueryResult($contact, 'first_name', $prefix);
+        $name .= ' ' . $this->getQueryResult($contact, 'last_name', $prefix);
         $name = str_replace('  ', ' ', $name); // remove double whitespaces
         $name = trim($name); // remove leading/trailing whitespaces
         return $name;
