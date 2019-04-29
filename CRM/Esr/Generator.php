@@ -226,7 +226,8 @@ class CRM_Esr_Generator {
       $AMOUNT_TERM = "COALESCE(amount_group.`{$field['column_name']}`, civicrm_membership_type.minimum_fee)";
       $AMOUNT_JOIN = "LEFT JOIN {$group['table_name']} amount_group ON amount_group.entity_id = civicrm_membership.id";
     } elseif ($params['amount_option'] == 'fixed') {
-      $AMOUNT_TERM = sprintf("'%.2f'", (float) $params['amount']);
+      $amount = $this->getFullAmount($params['amount']);
+      $AMOUNT_TERM = sprintf("'%.2f'", (float) ($amount / 100.0));
       $AMOUNT_JOIN = '';
     } elseif ($params['amount_option'] == 'type') {
       $AMOUNT_TERM = 'civicrm_membership_type.minimum_fee';
@@ -392,7 +393,7 @@ class CRM_Esr_Generator {
         $record[self::COLUMN_SECOND_CONTACT_IDENTICAL] = ($contact_id == $second_contact_id) ? '1' : '0';
 
         // set amount
-        $amount = $this->getQueryResult($query, 'amount');
+        $amount = (int) (100.0 * $this->getQueryResult($query, 'amount'));
         break;
 
       default:
