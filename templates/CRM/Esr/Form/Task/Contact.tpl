@@ -39,6 +39,12 @@
   <div class="content">{$form.custom_text.html}</div>
   <div class="clear"></div>
 </div>
+<div class="crm-section">
+  <div class="label">{$form.custom_field_id.label}</div>
+  <div class="content">{$form.custom_field_id.html}</div>
+  <div class="clear"></div>
+</div>
+
 
 <br/>
 <div class="crm-submit-buttons">

@@ -50,11 +50,12 @@ class CRM_Esr_Generator {
   const COLUMN_DATA_MATRIX_CODE                  = 25;
   const COLUMN_TEXT_MODULE                       = 26;
   const COLUMN_PACKET_NUMBER                     = 27;
+  const COLUMN_ORGANISATION_NAME                 = 28;
 
   // additional headers for membership
-  const COLUMN_SECOND_CONTACT_IDENTICAL          = 28;
-  const COLUMN_SECOND_PERSONAL_NUMBER            = 29;
-  const SECOND_ADDRESS_OFFSET                    = +28; // offset
+  const COLUMN_SECOND_CONTACT_IDENTICAL          = 29;
+  const COLUMN_SECOND_PERSONAL_NUMBER            = 30;
+  const SECOND_ADDRESS_OFFSET                    = +29; // offset
   const SECOND_ADDRESS_LENGTH                    = 16;
 
 
@@ -108,6 +109,7 @@ class CRM_Esr_Generator {
         self::COLUMN_DATA_MATRIX_CODE                  => E::ts('Data Matrix Code'),
         self::COLUMN_TEXT_MODULE                       => E::ts('Text module'),
         self::COLUMN_PACKET_NUMBER                     => E::ts('Packet number'),
+        self::COLUMN_ORGANISATION_NAME                 => E::ts('Organisation Name'),
     );
 
     // fill prefix lookup
@@ -290,7 +292,6 @@ class CRM_Esr_Generator {
                 second_address.supplemental_address_2     AS second_supplemental_address_2,
                 second_address.city                       AS second_city,
                 second_address.country_id                 AS second_country_id,
-                
                 {$AMOUNT_TERM}                            AS amount
       FROM      civicrm_membership
       LEFT JOIN civicrm_membership_type ON civicrm_membership.membership_type_id = civicrm_membership_type.id  
@@ -316,6 +317,23 @@ class CRM_Esr_Generator {
       $WHERE_CLAUSE = "civicrm_contact.id IN ({$contact_id_list})";
     }
 
+    // organisation name term
+    if (is_numeric($params['custom_field_id'])) {
+      $custom_field_id = (int) $params['custom_field_id'];
+      $custom_field = civicrm_api3('CustomField', 'getsingle', ['id' => $custom_field_id]);
+      $custom_group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $custom_field['custom_group_id']]);
+      $ORGNAME_TERM = "{$custom_group['table_name']}.{$custom_field['column_name']}";
+      $ORGNAME_JOIN = "LEFT JOIN {$custom_group['table_name']} ON {$custom_group['table_name']}.entity_id = civicrm_contact.id";
+    } elseif ($params['custom_field_id'] == 'organization_name') {
+      $ORGNAME_TERM = "civicrm_contact.organization_name";
+      $ORGNAME_JOIN = "";
+    } else {
+      // this should be an error...
+      $ORGNAME_TERM = "'ERROR'";
+      $ORGNAME_JOIN = "";
+    }
+
+    // compile the query
     $sql = "
       SELECT    civicrm_contact.id                        AS contact_id,
                 civicrm_contact.contact_type              AS contact_type,
@@ -335,9 +353,11 @@ class CRM_Esr_Generator {
                 civicrm_address.supplemental_address_1    AS supplemental_address_1,
                 civicrm_address.supplemental_address_2    AS supplemental_address_2,
                 civicrm_address.city                      AS city,
-                civicrm_address.country_id                AS country_id
+                civicrm_address.country_id                AS country_id,
+                {$ORGNAME_TERM}                           AS organisation_name
       FROM      civicrm_contact
       LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+      {$ORGNAME_JOIN}
       WHERE     {$WHERE_CLAUSE}
       GROUP BY  civicrm_contact.id";
     return $sql;
@@ -400,6 +420,7 @@ class CRM_Esr_Generator {
       case self::$REFTYPE_BULK_SIMPLE:
         // take amount from the contact data
         $amount = $this->getFullAmount($params['amount']);
+        $record[self::COLUMN_ORGANISATION_NAME] = $this->getQueryResult($query, 'organisation_name');
         break;
     }
 
@@ -414,6 +435,9 @@ class CRM_Esr_Generator {
 
     // misc
     $record[self::COLUMN_TEXT_MODULE] = $params['custom_text'];
+
+    // custom field
+    $record[self::COLUMN_ORGANISATION_NAME] = $query->organisation_name;
 
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
     return $record;
