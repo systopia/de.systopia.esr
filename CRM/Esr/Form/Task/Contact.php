@@ -147,11 +147,11 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     //Contact:submit
     $values = array(
-      'amount'      => CRM_Utils_Array::value('amount', $all_values),
-      'tn_number'   => CRM_Utils_Array::value('tn_number', $all_values),
-      'mailcode'    => CRM_Utils_Array::value('mailcode', $all_values),
-      'custom_text' => CRM_Utils_Array::value('custom_text', $all_values),
-      'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
+        'amount'          => CRM_Utils_Array::value('amount', $all_values),
+        'tn_number'       => CRM_Utils_Array::value('tn_number', $all_values),
+        'mailcode'        => CRM_Utils_Array::value('mailcode', $all_values),
+        'custom_text'     => CRM_Utils_Array::value('custom_text', $all_values),
+        'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.contact' => $values));
 

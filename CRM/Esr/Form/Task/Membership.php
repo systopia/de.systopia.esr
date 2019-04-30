@@ -73,6 +73,15 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
       FALSE
     );
 
+    $this->add(
+        'select',
+        'custom_field_id',
+        E::ts('Organisation Name'),
+        CRM_Esr_Form_Task_Contact::getOrganisationNameFields(),
+        FALSE,
+        array('class' => 'huge')
+    );
+
     parent::buildQuickForm();
 
     $this->addButtons(array(
@@ -116,11 +125,12 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
 
     //Contact:submit
     $values = array(
-        'tn_number'      => CRM_Utils_Array::value('tn_number', $all_values),
-        'paying_contact' => CRM_Utils_Array::value('paying_contact', $all_values),
-        'amount'         => CRM_Utils_Array::value('amount', $all_values),
-        'amount_option'  => CRM_Utils_Array::value('amount_option', $all_values),
-        'custom_text'    => CRM_Utils_Array::value('custom_text', $all_values),
+        'tn_number'       => CRM_Utils_Array::value('tn_number', $all_values),
+        'paying_contact'  => CRM_Utils_Array::value('paying_contact', $all_values),
+        'amount'          => CRM_Utils_Array::value('amount', $all_values),
+        'amount_option'   => CRM_Utils_Array::value('amount_option', $all_values),
+        'custom_text'     => CRM_Utils_Array::value('custom_text', $all_values),
+        'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.membership' => $values));
 
@@ -220,7 +230,7 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
           'sequential'      => 1,
           'return'          => 'id,label']);
       foreach ($fields['values'] as $field) {
-        $options[$field['id']] = E::ts("Field: %1", [1 => $field['label']]);
+        $options[$field['id']] = E::ts("Custom: %1", [1 => $field['label']]);
       }
     }
 
@@ -236,6 +246,7 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
         'is_active'    => 1,
         'sequential'   => 0,
         'option.limit' => 0,
+        'is_multiple'  => 0,
         'return'       => 'id']);
     return array_keys($query['values']);
   }

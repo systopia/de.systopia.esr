@@ -209,6 +209,7 @@ class CRM_Esr_Generator {
     }
   }
 
+
   /**
    * generate the SQL needed to collect all necessary data
    */
@@ -251,6 +252,28 @@ class CRM_Esr_Generator {
       throw new Exception("Unknown paying_contact option '{$params['paying_contact']}'");
     }
 
+    // organisation name term
+    if (is_numeric($params['custom_field_id'])) {
+      $custom_field_id = (int) $params['custom_field_id'];
+      $custom_field  = civicrm_api3('CustomField', 'getsingle', ['id' => $custom_field_id]);
+      $custom_group  = civicrm_api3('CustomGroup', 'getsingle', ['id' => $custom_field['custom_group_id']]);
+      $ORGNAME1_JOIN = "LEFT JOIN {$custom_group['table_name']} contact_orgname        ON contact_orgname.entity_id = civicrm_contact.id";
+      $ORGNAME2_JOIN = "LEFT JOIN {$custom_group['table_name']} second_contact_orgname ON second_contact_orgname.entity_id = second_contact.id";
+      $ORGNAME1_TERM = "contact_orgname.{$custom_field['column_name']}";
+      $ORGNAME2_TERM = "second_contact_orgname.{$custom_field['column_name']}";
+    } elseif ($params['custom_field_id'] == 'organization_name') {
+      $ORGNAME1_JOIN = "";
+      $ORGNAME2_JOIN = "";
+      $ORGNAME1_TERM = "civicrm_contact.organization_name";
+      $ORGNAME2_TERM = "second_contact.organization_name";
+    } else {
+      // this should be an error...
+      $ORGNAME1_JOIN = "";
+      $ORGNAME2_JOIN = "";
+      $ORGNAME1_TERM = "ERROR";
+      $ORGNAME2_TERM = "ERROR";
+    }
+
     $sql = "
       SELECT    civicrm_contact.id                        AS contact_id,
                 civicrm_contact.contact_type              AS contact_type,
@@ -271,6 +294,7 @@ class CRM_Esr_Generator {
                 civicrm_address.supplemental_address_2    AS supplemental_address_2,
                 civicrm_address.city                      AS city,
                 civicrm_address.country_id                AS country_id,
+                {$ORGNAME1_TERM}                          AS organisation_name,
                 civicrm_membership.id                     AS membership_id,
                 
                 second_contact.id                         AS second_contact_id,
@@ -292,6 +316,7 @@ class CRM_Esr_Generator {
                 second_address.supplemental_address_2     AS second_supplemental_address_2,
                 second_address.city                       AS second_city,
                 second_address.country_id                 AS second_country_id,
+                {$ORGNAME2_TERM}                          AS second_organisation_name,
                 {$AMOUNT_TERM}                            AS amount
       FROM      civicrm_membership
       LEFT JOIN civicrm_membership_type ON civicrm_membership.membership_type_id = civicrm_membership_type.id  
@@ -301,6 +326,8 @@ class CRM_Esr_Generator {
       LEFT JOIN civicrm_contact second_contact   ON second_contact.id = civicrm_membership.contact_id
       LEFT JOIN civicrm_address second_address   ON second_address.contact_id = second_contact.id AND second_address.is_primary = 1
       {$AMOUNT_JOIN}
+      {$ORGNAME1_JOIN}
+      {$ORGNAME2_JOIN}
       WHERE     {$WHERE_CLAUSE}
       GROUP BY  civicrm_membership.id";
     return $sql;
@@ -382,6 +409,7 @@ class CRM_Esr_Generator {
       for ($index = self::COLUMN_SECOND_PERSONAL_NUMBER + 1; $index < self::COLUMN_SECOND_CONTACT_IDENTICAL + self::SECOND_ADDRESS_LENGTH; $index++) {
         $header[$index] = $header[$index - self::SECOND_ADDRESS_OFFSET] . ' - 2';
       }
+      $header[self::SECOND_ADDRESS_OFFSET + self::SECOND_ADDRESS_LENGTH] =  $header[self::COLUMN_ORGANISATION_NAME] . ' - 2';
     }
 
     return $header;
@@ -412,15 +440,20 @@ class CRM_Esr_Generator {
         $record[self::COLUMN_SECOND_PERSONAL_NUMBER]   = $second_contact_id;
         $record[self::COLUMN_SECOND_CONTACT_IDENTICAL] = ($contact_id == $second_contact_id) ? '1' : '0';
 
+        // organisation name doesn't fit the scheme below...
+        $record[self::COLUMN_ORGANISATION_NAME] = $this->getQueryResult($query, 'organisation_name');
+        $record[self::SECOND_ADDRESS_OFFSET + self::SECOND_ADDRESS_LENGTH] = $this->getQueryResult($query, 'second_organisation_name');
+
         // set amount
         $amount = (int) (100.0 * $this->getQueryResult($query, 'amount'));
         break;
 
       default:
       case self::$REFTYPE_BULK_SIMPLE:
+        // organisation name doesn't fit the scheme below...
+        $record[self::COLUMN_ORGANISATION_NAME] = $this->getQueryResult($query, 'organisation_name');
         // take amount from the contact data
         $amount = $this->getFullAmount($params['amount']);
-        $record[self::COLUMN_ORGANISATION_NAME] = $this->getQueryResult($query, 'organisation_name');
         break;
     }
 
