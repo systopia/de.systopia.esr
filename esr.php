@@ -82,6 +82,9 @@ function esr_civicrm_uninstall() {
  */
 function esr_civicrm_enable() {
   _esr_civix_civicrm_enable();
+
+  $customData = new CRM_Esr_CustomData('de.systopia.esr');
+  $customData->syncOptionGroup(__DIR__ . '/resources/formats_option_group.json');
 }
 
 /**
