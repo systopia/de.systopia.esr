@@ -16,7 +16,7 @@
 class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
 
   /** cache for Creditor ID to IBAN mapping */
-  protected $creditor2iban = array();
+  protected $creditor_by_id = NULL;
 
   /** cached generator version */
   protected $generator = NULL;
@@ -32,6 +32,19 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
     $template->assign('ta875_EDAT',   date('Ymd'));
     // $template->assign('ta875_BC_ZE',  $config->get_ta875_BC_ZE());
     $template->assign('ta875_ESR_TN', $config->get_ta875_ESR_TN());
+  }
+
+  /**
+   * Get the creditor data
+   * @param $creditor_id
+   * @return array|null creditor data if exists
+   */
+  public function getCreditor($creditor_id) {
+    if ($this->creditor_by_id === NULL) {
+      $creditors = civicrm_api3('SepaCreditor', 'get', ['sequential' => 0, 'option.limit' => 0]);
+      $this->creditor_by_id = $creditors['values'];
+    }
+    return CRM_Utils_Array::value($creditor_id, $this->creditor_by_id, NULL);
   }
 
   /**
@@ -62,6 +75,19 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
     // add creditor CH bank code (BLZ)
     $creditor_iban = $this->getIBANfromCreditor($creditor_id);
     $trxn['ta875_BC_ZE']  = $this->getBLZfromIBAN($creditor_iban);
+
+    // add creditor address lines
+    $address_lines = [];
+    $creditor = $this->getCreditor($creditor_id);
+    $address = explode(',', $creditor['address']);
+    foreach ($address as $address_segment) {
+      while (strlen($address_segment) > 34) {
+        $address_lines[] = substr($address_segment, 0, 34);
+        $address_segment = trim(substr($address_segment, 34));
+      }
+      $address_lines[] = trim($address_segment);
+    }
+    $trxn['creditor_address_lines'] = $address_lines;
   }
 
 
@@ -70,14 +96,8 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
    * get the IBAN for the given creditor
    */
   protected function getIBANfromCreditor($creditor_id) {
-    if (!isset($this->creditor2iban[$creditor_id])) {
-      $creditor = civicrm_api3('SepaCreditor', 'getsingle', array(
-        'id'     => $creditor_id,
-        'return' => 'iban'
-      ));
-      $this->creditor2iban[$creditor_id] = $creditor['iban'];
-    }
-    return $this->creditor2iban[$creditor_id];
+    $creditor = $this->getCreditor($creditor_id);
+    return $creditor['iban'];
   }
 
   /**
