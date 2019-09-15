@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | ESR Codes Extension                                    |
-| Copyright (C) 2016 SYSTOPIA                            |
+| Copyright (C) 2016-2019 SYSTOPIA                       |
 | Author: B. Endres (endres@systopia.de)                 |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
@@ -27,5 +27,15 @@ return array(
     'is_domain' => 1,
     'is_contact' => 0,
     'description' => 'Last entered values in the ESR contact task',
+  ),
+  'de.systopia.esr.membership' => array(
+      'group_name' => 'de.systopia.esr',
+      'group' => 'de.systopia.esr.membership',
+      'name' => 'de.systopia.esr.membership',
+      'type' => 'Array',
+      'add' => '4.6',
+      'is_domain' => 1,
+      'is_contact' => 0,
+      'description' => 'Last entered values in the ESR membership task',
   ),
 );

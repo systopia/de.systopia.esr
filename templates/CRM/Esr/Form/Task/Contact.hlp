@@ -1,6 +1,6 @@
 {*-------------------------------------------------------+
 | ESR Codes Extension                                    |
-| Copyright (C) 2016 SYSTOPIA                            |
+| Copyright (C) 2016-2019 SYSTOPIA                       |
 | Author: B. Endres (endres@systopia.de)                 |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
@@ -11,6 +11,10 @@
 | copyright header is strictly prohibited without        |
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
+
+{htxt id='id-number'}
+    <p>{ts domain="de.systopia.esr"}The ESR participant number is your organisation's registration number for the ESR system.{/ts}</p>
+{/htxt}
 
 {htxt id='id-amount'}
     <p>{ts domain="de.systopia.esr"}This fixed amount will be printed on the ESR payment form. If no amount is declared, an ESR+ without a pre-printed amount will be created.{/ts}</p>
