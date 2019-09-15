@@ -57,6 +57,8 @@ class CRM_Esr_Generator {
   const COLUMN_SECOND_PERSONAL_NUMBER            = 30;
   const SECOND_ADDRESS_OFFSET                    = +29; // offset
   const SECOND_ADDRESS_LENGTH                    = 16;
+  const COLUMN_AMOUNT_INT                        = self::SECOND_ADDRESS_OFFSET + self::SECOND_ADDRESS_LENGTH + 1;
+  const COLUMN_AMOUNT_CENTS                      = self::COLUMN_AMOUNT_INT + 1;
 
 
   // ESR TYPES BC (Belegartcode), defined by standard
@@ -410,6 +412,10 @@ class CRM_Esr_Generator {
         $header[$index] = $header[$index - self::SECOND_ADDRESS_OFFSET] . ' - 2';
       }
       $header[self::SECOND_ADDRESS_OFFSET + self::SECOND_ADDRESS_LENGTH] =  $header[self::COLUMN_ORGANISATION_NAME] . ' - 2';
+
+      // add amount split
+      $header[self::COLUMN_AMOUNT_INT]   = E::ts('Amount (main)');
+      $header[self::COLUMN_AMOUNT_CENTS] = E::ts('Amount (cents)');
     }
 
     return $header;
@@ -445,7 +451,10 @@ class CRM_Esr_Generator {
         $record[self::SECOND_ADDRESS_OFFSET + self::SECOND_ADDRESS_LENGTH] = $this->getQueryResult($query, 'second_organisation_name');
 
         // set amount
-        $amount = (int) (100.0 * $this->getQueryResult($query, 'amount'));
+        $full_amount = $this->getQueryResult($query, 'amount');
+        $record[self::COLUMN_AMOUNT_INT]   = (int) $full_amount;
+        $record[self::COLUMN_AMOUNT_CENTS] = ((int) ($full_amount * 100)) % 100;
+        $amount = (int) (100.0 * $full_amount);
         break;
 
       default:
