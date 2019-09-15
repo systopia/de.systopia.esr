@@ -26,6 +26,34 @@ class CRM_Esr_Config {
   public static $esr_activity_type_id = NULL;
 
   /**
+   * Get this extension's settings
+   */
+  public static function getSettings() {
+    $settings = Civi::settings()->get('systopia_esr_settings');
+    if (is_array($settings)) {
+      return $settings;
+    } else {
+      return [];
+    }
+  }
+
+  /**
+   * Get this extension's settings
+   */
+  public static function setSettings($settings) {
+    Civi::settings()->set('systopia_esr_settings', $settings);
+  }
+
+  /**
+   * Get this extension's settings
+   */
+  public static function setSetting($key, $value) {
+    $settings = self::getSettings();
+    $settings[$key] = $value;
+    self::setSettings($settings);
+  }
+
+  /**
    * Get the ESR code's activity type
    *
    * @param $recursion bool activates recursion protection
@@ -73,19 +101,15 @@ class CRM_Esr_Config {
 
   /**
    * Value for TA875 file format:
-   *
    */
   public function get_ta875_ESR_TN() {
-    // TODO: move to settings
-    return '010092520';
+    return CRM_Utils_Array::value('esr_tn', self::getSettings(), '010000000');
   }
 
   /**
    * Value for TA875 file format:
-   *
    */
   public function get_ta875_LSV_ID() {
-    // TODO: move to settings
-    return '900003';
+    return CRM_Utils_Array::value('lsv_id', self::getSettings(), '900000');
   }
 }

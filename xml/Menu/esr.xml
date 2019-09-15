@@ -6,4 +6,13 @@
     <title>Task_Contact</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/admin/setting/esr</path>
+    <page_callback>CRM_Esr_Form_Settings</page_callback>
+    <title>ESR Settings</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+    <adminGroup>Communications</adminGroup>
+    <icon>admin/small/case_type.png</icon>
+    <weight>400</weight>
+  </item>
 </menu>

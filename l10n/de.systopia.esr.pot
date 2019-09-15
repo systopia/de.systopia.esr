@@ -4,32 +4,25 @@
 # make sure you license it to CiviCRM LLC under Academic Free License 3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: esr\n"
+"Project-Id-Version: de.systopia.esr\n"
 "POT-Creation-Date: 2019-09-15 17:20+0200\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
-"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: CRM/Esr/Config.php CRM/Esr/Form/Task/Contact.php
 #: CRM/Esr/Form/Task/Membership.php
 msgid "ESR Code Generation"
-msgstr "ESR Code Generierung"
+msgstr ""
 
 #: CRM/Esr/Form/Settings.php
 msgid "ESR Configuration"
-msgstr "ESR Einstellungen"
+msgstr ""
 
 #: CRM/Esr/Form/Settings.php
-#, fuzzy
-#| msgid "Participant number"
 msgid "Participant Number (ESR_TN)"
-msgstr "Teilnehmer-Nummer"
+msgstr ""
 
 #: CRM/Esr/Form/Settings.php
 msgid "LSV Identification (LSV_ID)"
@@ -49,58 +42,58 @@ msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php
 msgid "No campaign"
-msgstr "Keine Kampagne"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 #: templates/CRM/Esr/Form/Task/Contact.tpl
 msgid "Amount"
-msgstr "Betrag"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Please enter a valid amount"
-msgstr "Bitte einen gültigen Betrag eingeben"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Participant number"
-msgstr "Teilnehmer-Nummer"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Please enter digits only"
-msgstr "Bitte nur Ziffern eingeben"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Generator.php
 msgid "Mail code"
-msgstr "Mailcode"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php
 msgid "Mail code for campaign"
-msgstr "Mailcode für Kampagne"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 #: CRM/Esr/Generator.php
 msgid "Text module"
-msgstr "Textbaustein"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 #: CRM/Esr/Generator.php
 msgid "Organisation Name"
-msgstr "Organisationsname"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Complete"
-msgstr "Abschließen"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Create CSV"
-msgstr "CSV Erstellen"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "A ESR code has been generated"
-msgstr "Ein ESR-Code wurde generiert"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Contact.php
 msgid "Organisation Name / Employer"
@@ -116,7 +109,7 @@ msgstr ""
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Payment Amount"
-msgstr "Zahlbetrag"
+msgstr ""
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Member (itself)"
@@ -132,111 +125,111 @@ msgstr ""
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Fixed Amount"
-msgstr "Festbetrag"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Registration number"
-msgstr "Personennummer"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Address line 1"
-msgstr "Adresszeile 1"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Address line 2"
-msgstr "Adresszeile 2"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Address line 3"
-msgstr "Adresszeile 3"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Address line 4"
-msgstr "Adresszeile 4"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Address line 5"
-msgstr "Adresszeile "
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Address line 6"
-msgstr "Adresszeile "
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Street"
-msgstr "Straße"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Street number"
-msgstr "Hausnummer"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Postal code"
-msgstr "Postleitzahl"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "City"
-msgstr "Ort"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Country"
-msgstr "Land"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Salutation"
-msgstr "Anrede"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Postal mailing salutation"
-msgstr "Briefanrede"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Formal title"
-msgstr "Titel"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "First name"
-msgstr "Vorname"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Last name"
-msgstr "Nachname"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Name 2"
-msgstr "Name 2"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "VESR number"
-msgstr "VESR-Nummer"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "ESR 1"
-msgstr "ESR 1"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "ESR 1 Ref Row"
-msgstr "ESR 1 Ref Zeile"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "ESR 1 Ref Row Grp"
-msgstr "ESR 1 Ref Zeile Grp"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "ESR 1 Identity"
-msgstr "ESR 1 Identität"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Data Matrix Code Type 20 from digit 37"
-msgstr "Data Matrix Code Typ 20 ab Stelle 37"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Data Matrix Code"
-msgstr "Data Matrix Code"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Packet number"
-msgstr "Paketnummer"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Second Contact Identical"
@@ -244,11 +237,11 @@ msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Amount (main)"
-msgstr "Betrag (Ganzzahl)"
+msgstr ""
 
 #: CRM/Esr/Generator.php
 msgid "Amount (cents)"
-msgstr "Betrag (Cents)"
+msgstr ""
 
 #: CRM/Esr/Upgrader/Base.php
 msgid "Upgrade %1 to revision %2"
@@ -256,7 +249,7 @@ msgstr ""
 
 #: esr.php
 msgid "ESR Generation"
-msgstr "ESR-Generierung"
+msgstr ""
 
 #: templates/CRM/Esr/Form/Settings.tpl
 msgid "TA875/LSV+ CiviSEPA Format"
@@ -274,17 +267,15 @@ msgid ""
 "This fixed amount will be printed on the ESR payment form. If no amount is "
 "declared, an ESR+ without a pre-printed amount will be created."
 msgstr ""
-"Dieser feste Betrag wird auf dem ESR Zahlschein aufgedruckt. Wird kein "
-"Betrag angegeben, so wird eine ESR+ ohne vorgedruckten Betrag erstellt."
 
 #: templates/CRM/Esr/Form/Task/Contact.tpl
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Parameters"
-msgstr "Parameter"
+msgstr ""
 
 #: templates/CRM/Esr/Form/Task/Contact.tpl
 msgid "ESR Number"
-msgstr "ESR-Nummer"
+msgstr ""
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
@@ -328,7 +319,7 @@ msgstr ""
 
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "ESR Registration"
-msgstr "ESR Registrierung"
+msgstr ""
 
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Buyer Options"
@@ -336,13 +327,4 @@ msgstr ""
 
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Amount Options"
-msgstr "Betragsoptionen"
-
-#~ msgid "Please enter a valid amount."
-#~ msgstr "Bitte einen gültigen Betrag eingeben"
-
-#~ msgid "Please enter digits only."
-#~ msgstr "Bitte nur Ziffern eingeben"
-
-#~ msgid "A ESR code has been generated."
-#~ msgstr "Ein ESR Code wurde generiert"
+msgstr ""
