@@ -22,6 +22,7 @@ use CRM_Esr_ExtensionUtil as E;
 class CRM_Esr_Form_Settings extends CRM_Core_Form {
 
   public function buildQuickForm() {
+    CRM_Utils_System::setTitle(E::ts("ESR Configuration"));
     $this->add(
       'text',
       'esr_tn',
