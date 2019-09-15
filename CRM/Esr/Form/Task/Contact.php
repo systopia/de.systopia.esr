@@ -95,6 +95,15 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       FALSE
     );
 
+    $this->add(
+        'select',
+        'custom_field_id',
+        E::ts('Organisation Name'),
+        self::getOrganisationNameFields(),
+        FALSE,
+        array('class' => 'huge')
+    );
+
     parent::buildQuickForm();
 
     $this->addButtons(array(
@@ -138,10 +147,11 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     //Contact:submit
     $values = array(
-      'amount'      => CRM_Utils_Array::value('amount', $all_values),
-      'tn_number'   => CRM_Utils_Array::value('tn_number', $all_values),
-      'mailcode'    => CRM_Utils_Array::value('mailcode', $all_values),
-      'custom_text' => CRM_Utils_Array::value('custom_text', $all_values),
+        'amount'          => CRM_Utils_Array::value('amount', $all_values),
+        'tn_number'       => CRM_Utils_Array::value('tn_number', $all_values),
+        'mailcode'        => CRM_Utils_Array::value('mailcode', $all_values),
+        'custom_text'     => CRM_Utils_Array::value('custom_text', $all_values),
+        'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.contact' => $values));
 
@@ -195,5 +205,41 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
    */
   public static function digits_only($value) {
     return preg_match('/^\d+$/', $value);
+  }
+
+  /**
+   * Get a list of custom fields that could be used as 'organisation name'
+   */
+  public static function getOrganisationNameFields() {
+    $options = [
+        'organization_name' => E::ts("Organisation Name / Employer"),
+    ];
+
+    // get custom group IDs
+    $group_query = civicrm_api3('CustomGroup', 'get', [
+        'extends'      => ['IN' => ['Contact', 'Organization', 'Individual']],
+        'is_active'    => 1,
+        'sequential'   => 0,
+        'option.limit' => 0,
+        'is_multiple'  => 0,
+        'return'       => 'id']);
+    $custom_group_ids = array_keys($group_query['values']);
+
+    // get the custom fields
+    if ($custom_group_ids) {
+      $fields = civicrm_api3('CustomField', 'get', [
+          'custom_group_id' => ['IN' => $custom_group_ids],
+          'is_active'       => 1,
+          'data_type'       => 'String',
+          'html_type'       => 'Text',
+          'sequential'      => 0,
+          'option.limit'    => 0,
+          'return'          => 'id,label']);
+      foreach ($fields['values'] as $field) {
+        $options[$field['id']] = E::ts("Custom: %1", [1 => $field['label']]);
+      }
+    }
+
+    return $options;
   }
 }
