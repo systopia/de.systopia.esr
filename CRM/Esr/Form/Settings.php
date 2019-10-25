@@ -37,6 +37,13 @@ class CRM_Esr_Form_Settings extends CRM_Core_Form {
         FALSE
     );
 
+    $this->add(
+        'text',
+        'lsv_prefix',
+        E::ts('TA850 File Prefix'),
+        FALSE
+    );
+
     $this->addButtons([
         [
             'type'      => 'submit',
@@ -53,6 +60,7 @@ class CRM_Esr_Form_Settings extends CRM_Core_Form {
 
   public function postProcess() {
     $values = $this->exportValues(NULL, TRUE);
+    unset($values['qfKey'], $values['entryURL']);
 
     // store settings
     CRM_Esr_Config::setSettings($values);

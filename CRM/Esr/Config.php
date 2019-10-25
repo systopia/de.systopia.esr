@@ -31,6 +31,7 @@ class CRM_Esr_Config {
   public static function getSettings() {
     $settings = Civi::settings()->get('systopia_esr_settings');
     if (is_array($settings)) {
+      unset($settings['qfKey'], $settings['entryURL']);
       return $settings;
     } else {
       return [];
@@ -112,4 +113,13 @@ class CRM_Esr_Config {
   public function get_ta875_LSV_ID() {
     return CRM_Utils_Array::value('lsv_id', self::getSettings(), '900000');
   }
+
+  /**
+   * Prefix for TA875 files:
+   */
+  public function get_ta875_ESR_Prefix() {
+    return CRM_Utils_Array::value('lsv_prefix', self::getSettings(), 'AVNC-');
+  }
+
+
 }

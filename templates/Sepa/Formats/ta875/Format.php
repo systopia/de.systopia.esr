@@ -51,7 +51,8 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
    * proposed group prefix
    */
   public function getDDFilePrefix() {
-    return 'AVNC-';
+    $config = new CRM_Esr_Config();
+    return $config->get_ta875_ESR_Prefix();
   }
 
   /**
