@@ -101,6 +101,28 @@ class CRM_Esr_Config {
   }
 
   /**
+   * Format the creditor (TN) number according to the settings
+   *
+   * @param $creditor_id integer creditor (TN) number
+   * @param $context     string  indicator of where it's being used
+   * @return string formatted number
+   */
+  public static function formatCreditorID($creditor_id, $context) {
+    $format = CRM_Utils_Array::value('esr_tn_format', self::getSettings(), '8');
+    switch ($format) {
+      case '9': # 9 digits
+        return sprintf('%09d', $creditor_id);
+
+      case 'X': # do not format
+        return $creditor_id;
+
+      default:  # 8 digits
+      case '8':
+        return sprintf('%08d', $creditor_id);
+    }
+  }
+
+  /**
    * Value for TA875 file format:
    */
   public function get_ta875_ESR_TN() {

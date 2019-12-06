@@ -566,7 +566,7 @@ class CRM_Esr_Generator {
     $code .= '+ ';
 
     // then add the creditor id (Teilnehmernummer)
-    $code .= sprintf('%08d', $tn_number);
+    $code .= CRM_Esr_Config::formatCreditorID($tn_number, 'generator');
 
     // ...and finish with '>'
     $code .= '>';
