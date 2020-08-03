@@ -16,8 +16,9 @@
 use CRM_Esr_ExtensionUtil as E;
 
 /**
- * Configuration form for ESR:
- *   - TA875
+ * Configuration form for ESR
+ *   - Code generation
+ *   - TA875 SEPA export format
  */
 class CRM_Esr_Form_Settings extends CRM_Core_Form {
 
@@ -28,6 +29,14 @@ class CRM_Esr_Form_Settings extends CRM_Core_Form {
       'esr_tn',
       E::ts('Participant Number (ESR_TN)'),
       FALSE
+    );
+
+    $this->add(
+        'select',
+        'esr_tn_format',
+        E::ts('Participant Number (ESR_TN) Format'),
+        ['8' => E::ts("8 digits, leading zeros"), '9' => E::ts("9 digits, leading zeros"), 'X' => E::ts("unformatted")],
+        FALSE
     );
 
     $this->add(

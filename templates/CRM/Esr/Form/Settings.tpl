@@ -13,6 +13,15 @@
 +-------------------------------------------------------*}
 
 
+<h3>{ts domain="de.systopia.esr"}ESR Code Generation{/ts}</h3>
+
+<div class="crm-section">
+  <div class="label">{$form.esr_tn_format.label}</div>
+  <div class="content">{$form.esr_tn_format.html}</div>
+  <div class="clear"></div>
+</div>
+
+<br/>
 <h3>{ts domain="de.systopia.esr"}TA875/LSV+ CiviSEPA Format{/ts}</h3>
 
 <div class="crm-section">

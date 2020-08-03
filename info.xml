@@ -2,7 +2,7 @@
 <extension key="de.systopia.esr" type="module">
   <file>esr</file>
   <name>ESR Codes</name>
-  <description>Support for the Swiss ESR payment slips</description>
+  <description>Support for the Swiss ESR payment slips and the LSV+/TA850 collection files</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>SYSTOPIA</author>

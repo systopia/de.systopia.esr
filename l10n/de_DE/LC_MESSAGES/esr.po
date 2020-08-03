@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: esr\n"
-"POT-Creation-Date: 2019-09-15 17:20+0200\n"
+"POT-Creation-Date: 2019-12-06 07:27+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: CRM/Esr/Config.php CRM/Esr/Form/Task/Contact.php
-#: CRM/Esr/Form/Task/Membership.php
+#: CRM/Esr/Form/Task/Membership.php templates/CRM/Esr/Form/Settings.tpl
 msgid "ESR Code Generation"
 msgstr "ESR Code Generierung"
 
@@ -32,20 +32,40 @@ msgid "Participant Number (ESR_TN)"
 msgstr "Teilnehmer-Nummer"
 
 #: CRM/Esr/Form/Settings.php
+msgid "Participant Number (ESR_TN) Format"
+msgstr "Teilnehmer-Nummer Format"
+
+#: CRM/Esr/Form/Settings.php
+msgid "8 digits, leading zeros"
+msgstr "8 Ziffern mit führender Null"
+
+#: CRM/Esr/Form/Settings.php
+msgid "9 digits, leading zeros"
+msgstr "8 Ziffern mit führender Null"
+
+#: CRM/Esr/Form/Settings.php
+msgid "unformatted"
+msgstr "unformatiert"
+
+#: CRM/Esr/Form/Settings.php
 msgid "LSV Identification (LSV_ID)"
-msgstr ""
+msgstr "LSV Identifikation (LSV_ID)"
+
+#: CRM/Esr/Form/Settings.php
+msgid "TA850 File Prefix"
+msgstr "TA850 Datei-Präfix"
 
 #: CRM/Esr/Form/Settings.php
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: CRM/Esr/Form/Settings.php
 msgid "Settings stored"
-msgstr ""
+msgstr "Einstellungen gespeichert"
 
 #: CRM/Esr/Form/Settings.php
 msgid "Success"
-msgstr ""
+msgstr "Erfolg"
 
 #: CRM/Esr/Form/Task/Contact.php
 msgid "No campaign"
@@ -104,15 +124,11 @@ msgstr "Ein ESR-Code wurde generiert"
 
 #: CRM/Esr/Form/Task/Contact.php
 msgid "Organisation Name / Employer"
-msgstr ""
-
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
-msgid "Custom: %1"
-msgstr ""
+msgstr "Organisationsname / Arbeitgeber"
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Paying Contact"
-msgstr ""
+msgstr "Zahlender Kontakt"
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Payment Amount"
@@ -120,15 +136,11 @@ msgstr "Zahlbetrag"
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Member (itself)"
-msgstr ""
-
-#: CRM/Esr/Form/Task/Membership.php
-msgid "Field: %1"
-msgstr ""
+msgstr "Mitglied (selbst)"
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Membership Type"
-msgstr ""
+msgstr "Mitgliedsart"
 
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Fixed Amount"
@@ -240,7 +252,7 @@ msgstr "Paketnummer"
 
 #: CRM/Esr/Generator.php
 msgid "Second Contact Identical"
-msgstr ""
+msgstr "Zweitkontakt Identisch"
 
 #: CRM/Esr/Generator.php
 msgid "Amount (main)"
@@ -260,14 +272,14 @@ msgstr "ESR-Generierung"
 
 #: templates/CRM/Esr/Form/Settings.tpl
 msgid "TA875/LSV+ CiviSEPA Format"
-msgstr ""
+msgstr "TA875/LSV+ CiviSEPA Format"
 
 #: templates/CRM/Esr/Form/Task/Contact.hlp
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
 "The ESR participant number is your organisation's registration number for "
 "the ESR system."
-msgstr ""
+msgstr "Dies ist die Teilnehmernummer Ihrer Organisation am ESR Verfahren"
 
 #: templates/CRM/Esr/Form/Task/Contact.hlp
 msgid ""
@@ -291,17 +303,21 @@ msgid ""
 "You have the following options to determine the amount that is supposed to "
 "be collected:"
 msgstr ""
+"Sie haben die folgenden Optionen zu definieren, welcher Betrag eingezogen "
+"wird"
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
 "\"Fixed Amount\" - enter an amount that is then issued for alle memberships"
-msgstr ""
+msgstr "\"Festbetrag\" - einen beliebigen Festbetrag hier eintrage"
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
 "\"Membership Type\" - use the minimum fee amount from membership's "
 "respective type."
 msgstr ""
+"\"Mitgliedsart\" - der Minimalbeitrag der entsprechenden Mitgliedsart wird "
+"verwendet"
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
@@ -309,22 +325,30 @@ msgid ""
 "to the membership. If that field is empty, the minimum fee amount from "
 "membership's respective type is used."
 msgstr ""
+"\"Feld X\" - Der Einzugsbetrag wird aus diesem benutzerdefinierten Feld an "
+"der Mitglidschaft entnommen. Falls das Feld leer ist, wird die "
+"Minimalbeitrag aus der Mitgliedschaftsart verwendet."
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
 "You have the following options to determine <i>which</i> contact is sent the "
 "code"
 msgstr ""
+"Diese Enstellung entscheided, an <i>welchen</i> Kontakt der Code gesendet "
+"wird."
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid "\"Member (itself)\" - the member"
-msgstr ""
+msgstr "\"Mitglied (selbst)\" - das Mitglied"
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
 "\"Field X\" - use the contact in this custom 'Contact-Reference' type custom "
 "field assigned to the membership. If it is empty, the member contact is used."
 msgstr ""
+"\"Feld X\" - verwende dieses 'Contact-Reference' Feld an der Mitgleidschaft "
+"um den Fremdzahler/Sponsor zu ermitten. Ist das Feld leer, wird das Mitglied "
+"selbst angeschrieben"
 
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "ESR Registration"
@@ -332,7 +356,7 @@ msgstr "ESR Registrierung"
 
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Buyer Options"
-msgstr ""
+msgstr "Fremdzahler Optionen"
 
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Amount Options"
