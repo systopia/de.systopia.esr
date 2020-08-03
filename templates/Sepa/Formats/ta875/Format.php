@@ -132,7 +132,7 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
 
 
     // lead with 6-digit LSV-ID
-    $reference = sprintf('%06d', $config->get_ta875_LSV_ID());
+    $reference = sprintf('%06d', $config->get_ta875_LSV_ID($creditor_id));
 
     // add fixed '0850' string
     $reference .= '0850';

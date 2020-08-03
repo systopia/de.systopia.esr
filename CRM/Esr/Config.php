@@ -130,9 +130,31 @@ class CRM_Esr_Config {
   }
 
   /**
-   * Value for TA875 file format:
+   * Value for TA875 file format: the LSV-ID
+   *
+   * @param integer $creditor_id
+   *   the creditor's ID for an override
+   *
+   * @return string LSV ID
+   *    the 6 digit LSV id, usually 9xxxxx
    */
-  public function get_ta875_LSV_ID() {
+  public function get_ta875_LSV_ID($creditor_id) {
+    // first: see if there's an override in the creditor identifier
+    $identifier = civicrm_api3('SepaCreditor', 'getvalue', [
+        'id'     => $creditor_id,
+        'return' => 'identifier'
+    ]);
+    if (strstr($identifier, '/')) {
+      $lsv_id = explode('/', $identifier, 2)[1];
+      if (preg_match('/^[0-9]{6}$/', $lsv_id)) {
+        // this seems to check out
+        return $lsv_id;
+      } else {
+        Civi::log()->warning("Badly formatted LSV-ID override '{$identifier}'. Should be 6 digits. Override ignored.");
+      }
+    }
+
+    // no override: simply return the standard
     return CRM_Utils_Array::value('lsv_id', self::getSettings(), '900000');
   }
 
