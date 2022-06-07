@@ -104,6 +104,16 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         array('class' => 'huge')
     );
 
+    $this->add(
+        'select',
+        'exporter_class',
+        E::ts('Export Format'),
+        CRM_Esr_Generator::getGeneratorOptions(),
+        true,
+        array('class' => 'huge')
+    );
+
+
     parent::buildQuickForm();
 
     $this->addButtons(array(
@@ -157,7 +167,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     if (isset($all_values['_qf_Contact_submit'])) {
       // CREATE CSV
-      $generator = new CRM_Esr_Generator();
+      $generator = CRM_Esr_Generator::getInstance($all_values['exporter_class']);
       $generator->generate(CRM_Esr_Generator::$REFTYPE_BULK_SIMPLE, $this->_contactIds, $values);
 
     } elseif (isset($all_values['_qf_Contact_next'])) {
