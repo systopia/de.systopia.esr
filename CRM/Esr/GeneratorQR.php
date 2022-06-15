@@ -30,27 +30,38 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
   const COLUMN_ADDRESS_4                         = 5;
   const COLUMN_ADDRESS_5                         = 6;
   const COLUMN_ADDRESS_6                         = 7;
-  const COLUMN_STREET                            = 8;
-  const COLUMN_STREET_NUMBER                     = 9;
-  const COLUMN_POSTAL_CODE                       = 10;
-  const COLUMN_CITY                              = 11;
-  const COLUMN_COUNTRY                           = 12;
-  const COLUMN_SALUTATION                        = 13;
+  const COLUMN_STREET                            = 9;
+  const COLUMN_STREET_NUMBER                     = 10;
+  const COLUMN_POSTAL_CODE                       = 11;
+  const COLUMN_CITY                              = 12;
+  const COLUMN_COUNTRY                           = 13;
   const COLUMN_POSTAL_MAILING_SALUTATION         = 14;
   const COLUMN_FORMAL_TITLE                      = 15;
   const COLUMN_FIRST_NAME                        = 16;
   const COLUMN_LAST_NAME                         = 17;
-  const COLUMN_NAME_2                            = 18;
-  const COLUMN_VESR_NUMBER                       = 19;
   const COLUMN_ESR1                              = 20;
   const COLUMN_ESR_1_REF_ROW                     = 21;
   const COLUMN_ESR_1_REF_ROW_GROUP               = 22;
-  const COLUMN_ESR_1_IDENTITY                    = 23;
   const COLUMN_DATA_MATRIX_CODE_TYPE_20_DIGIT_37 = 24;
   const COLUMN_DATA_MATRIX_CODE                  = 25;
   const COLUMN_TEXT_MODULE                       = 26;
   const COLUMN_PACKET_NUMBER                     = 27;
   const COLUMN_ORGANISATION_NAME                 = 28;
+  const COLUMN_QR_TYPE                           = 31;
+  const COLUMN_VERSION                           = 32;
+  const COLUMN_CODING_TYPE                       = 33;
+  const COLUMN_QR_ACCOUNT                        = 34;
+  const COLUMN_ZE_ADDRESS_TYPE                   = 35;
+  const COLUMN_ZE_NAME                           = 36;
+  const COLUMN_ZE_STREET                         = 37;
+  const COLUMN_ZE_STREET_NUMBER                  = 38;
+  const COLUMN_ZE_POSTAL_CODE                    = 39;
+  const COLUMN_ZE_CITY                           = 40;
+  const COLUMN_ZE_COUTRY                         = 41;
+  const COLUMN_CURRENCY                          = 42;
+  const COLUMN_EZP_ADDRESS_TYPE                  = 43;
+  const COLUMN_EZP_NAME                          = 44;
+  const COLUMN_REF_TYPE                          = 45;
 
   // additional headers for membership
   const COLUMN_SECOND_CONTACT_IDENTICAL          = 29;
@@ -71,7 +82,29 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
   public function __construct() {
     // fill header
     $this->base_header = array(
-        self::COLUMN_PERSONAL_NUMBER                   => E::ts('Registration number'),
+        self::COLUMN_QR_TYPE                           => E::ts('QR Type'),
+        self::COLUMN_VERSION                           => E::ts('Version'),
+        self::COLUMN_CODING_TYPE                       => E::ts('Coding Type'),
+        self::COLUMN_QR_ACCOUNT                        => E::ts('QR Account'),
+        self::COLUMN_ZE_ADDRESS_TYPE                   => E::ts('ZE Address Type'),
+        self::COLUMN_ZE_NAME                           => E::ts('ZE Name'),
+        self::COLUMN_ZE_STREET                         => E::ts('ZE Street'),
+        self::COLUMN_ZE_STREET_NUMBER                  => E::ts('ZE Street number'),
+        self::COLUMN_ZE_POSTAL_CODE                    => E::ts('ZE Postal Code'),
+        self::COLUMN_ZE_CITY                           => E::ts('ZE City'),
+        self::COLUMN_ZE_COUTRY                         => E::ts('ZE Country'),
+        self::COLUMN_CURRENCY                          => E::ts('Currency'),
+        self::COLUMN_EZP_ADDRESS_TYPE                  => E::ts('EZP Address Type'),
+        self::COLUMN_EZP_NAME                          => E::ts('EZP Name'),
+        self::COLUMN_STREET                            => E::ts('EZP Street/Address'),
+        self::COLUMN_STREET_NUMBER                     => E::ts('EZP Street number'),
+        self::COLUMN_POSTAL_CODE                       => E::ts('EZP Postal code'),
+        self::COLUMN_CITY                              => E::ts('EZP City'),
+        self::COLUMN_COUNTRY                           => E::ts('EZP Country'),
+        self::COLUMN_REF_TYPE                          => E::ts('ESR Reference Type'),
+        self::COLUMN_ESR_1_REF_ROW                     => E::ts('ESR Reference'),
+        self::COLUMN_ESR_1_REF_ROW_GROUP               => E::ts('ESR 1 Ref Row Grp'),
+        self::COLUMN_PERSONAL_NUMBER                   => E::ts('Personal number QR'),
         self::COLUMN_MAIL_CODE                         => E::ts('Mail code'),
         self::COLUMN_ADDRESS_1                         => E::ts('Address line 1'),
         self::COLUMN_ADDRESS_2                         => E::ts('Address line 2'),
@@ -79,22 +112,10 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
         self::COLUMN_ADDRESS_4                         => E::ts('Address line 4'),
         self::COLUMN_ADDRESS_5                         => E::ts('Address line 5'),
         self::COLUMN_ADDRESS_6                         => E::ts('Address line 6'),
-        self::COLUMN_STREET                            => E::ts('Street'),
-        self::COLUMN_STREET_NUMBER                     => E::ts('Street number'),
-        self::COLUMN_POSTAL_CODE                       => E::ts('Postal code'),
-        self::COLUMN_CITY                              => E::ts('City'),
-        self::COLUMN_COUNTRY                           => E::ts('Country'),
-        self::COLUMN_SALUTATION                        => E::ts('Salutation'),
-        self::COLUMN_POSTAL_MAILING_SALUTATION         => E::ts('Postal mailing salutation'),
         self::COLUMN_FORMAL_TITLE                      => E::ts('Formal title'),
         self::COLUMN_FIRST_NAME                        => E::ts('First name'),
         self::COLUMN_LAST_NAME                         => E::ts('Last name'),
-        self::COLUMN_NAME_2                            => E::ts('Name 2'),
-        self::COLUMN_VESR_NUMBER                       => E::ts('VESR number'),
-        self::COLUMN_ESR1                              => E::ts('ESR 1'),
-        self::COLUMN_ESR_1_REF_ROW                     => E::ts('ESR 1 Ref Row'),
-        self::COLUMN_ESR_1_REF_ROW_GROUP               => E::ts('ESR 1 Ref Row Grp'),
-        self::COLUMN_ESR_1_IDENTITY                    => E::ts('ESR 1 Identity'),
+        self::COLUMN_POSTAL_MAILING_SALUTATION         => E::ts('Postal mailing salutation'),
         self::COLUMN_DATA_MATRIX_CODE_TYPE_20_DIGIT_37 => E::ts('Data Matrix Code Type 20 from digit 37'),
         self::COLUMN_DATA_MATRIX_CODE                  => E::ts('Data Matrix Code'),
         self::COLUMN_TEXT_MODULE                       => E::ts('Text module'),
@@ -286,7 +307,7 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
                 civicrm_address.country_id                AS country_id,
                 {$ORGNAME1_TERM}                          AS organisation_name,
                 civicrm_membership.id                     AS membership_id,
-                
+
                 second_contact.id                         AS second_contact_id,
                 second_contact.contact_type               AS second_contact_type,
                 second_contact.prefix_id                  AS second_prefix_id,
@@ -309,7 +330,7 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
                 {$ORGNAME2_TERM}                          AS second_organisation_name,
                 {$AMOUNT_TERM}                            AS amount
       FROM      civicrm_membership
-      LEFT JOIN civicrm_membership_type ON civicrm_membership.membership_type_id = civicrm_membership_type.id  
+      LEFT JOIN civicrm_membership_type ON civicrm_membership.membership_type_id = civicrm_membership_type.id
       {$BUYER_JOIN}
       LEFT JOIN civicrm_contact civicrm_contact  ON civicrm_contact.id = {$BUYER_TERM}
       LEFT JOIN civicrm_address civicrm_address  ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
@@ -458,13 +479,26 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
     $esr_ref                                  = $this->create_reference($type, $query, $params);
     $bc_type                                  = empty($amount) ? self::$BC_ESR_PLUS_CHF : self::$BC_ESR_CHF;
     $esr1                                     = $this->create_code($bc_type, $amount, $esr_ref, $params['tn_number']);
-    $record[self::COLUMN_VESR_NUMBER]         = $params['tn_number'];
     $record[self::COLUMN_ESR1]                = $esr1;
     $record[self::COLUMN_ESR_1_REF_ROW]       = $esr_ref;
     $record[self::COLUMN_ESR_1_REF_ROW_GROUP] = $this->format_code($esr_ref);
 
     // misc
     $record[self::COLUMN_TEXT_MODULE] = $params['custom_text'];
+    $record[self::COLUMN_QR_TYPE] = $params['qr_type'];
+    $record[self::COLUMN_VERSION] = $params['qr_version'];
+    $record[self::COLUMN_CODING_TYPE] = $params['qr_coding_type'];
+    $record[self::COLUMN_QR_ACCOUNT] = $params['qr_account'];
+    $record[self::COLUMN_REF_TYPE] = $params['esr_reference_type'];
+    $record[self::COLUMN_ZE_ADDRESS_TYPE] = $params['ze_address_type'];
+    $record[self::COLUMN_ZE_NAME] = $params['ze_name'];
+    $record[self::COLUMN_ZE_STREET] = $params['ze_street'];
+    $record[self::COLUMN_ZE_STREET_NUMBER] = $params['ze_street_number'];
+    $record[self::COLUMN_ZE_POSTAL_CODE] = $params['ze_postal_code'];
+    $record[self::COLUMN_ZE_CITY] = $params['ze_city'];
+    $record[self::COLUMN_ZE_COUTRY] = $params['ze_country'];
+    $record[self::COLUMN_CURRENCY] = $params['ze_currency'];
+    $record[self::COLUMN_EZP_ADDRESS_TYPE] = $params['ezp_address_type'];
 
     // custom field
     $record[self::COLUMN_ORGANISATION_NAME] = $query->organisation_name;
@@ -486,8 +520,8 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
     $record[$offset + self::COLUMN_ADDRESS_1]       = $this->id2prefix[$this->getQueryResult($query, 'prefix_id', $prefix)];
     $record[$offset + self::COLUMN_ADDRESS_2]       = $this->generateName($query, $prefix);
     $record[$offset + self::COLUMN_ADDRESS_3]       = $this->getQueryResult($query, 'street_address', $prefix);
-    $record[$offset + self::COLUMN_ADDRESS_4]       = $this->getQueryResult($query, 'postal_code', $prefix) . ' ' . $this->getQueryResult($query, 'city', $prefix);
-    $record[$offset + self::COLUMN_ADDRESS_5]       = $this->getQueryResult($query, 'supplemental_address_1', $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_4]       = $this->getQueryResult($query, 'supplemental_address_1', $prefix);
+    $record[$offset + self::COLUMN_ADDRESS_5]       = $this->getQueryResult($query, 'postal_code', $prefix) . ' ' . $this->getQueryResult($query, 'city', $prefix);
     $record[$offset + self::COLUMN_ADDRESS_6]       = $this->getQueryResult($query, 'supplemental_address_2', $prefix);
 
     // parsed address
@@ -503,12 +537,13 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
     }
 
     // personalised data
-    $record[$offset + self::COLUMN_SALUTATION]                = $this->id2prefix[$this->getQueryResult($query, 'prefix_id', $prefix)];
     $record[$offset + self::COLUMN_POSTAL_MAILING_SALUTATION] = $this->getQueryResult($query, 'postal_greeting_display', $prefix);
     $record[$offset + self::COLUMN_FORMAL_TITLE]              = $this->getQueryResult($query, 'formal_title', $prefix);
     $record[$offset + self::COLUMN_FIRST_NAME]                = $this->getQueryResult($query, 'first_name', $prefix);
     $record[$offset + self::COLUMN_LAST_NAME]                 = $this->getQueryResult($query, 'last_name', $prefix);
-    $record[$offset + self::COLUMN_NAME_2]                    = '';  // unused
+
+    // EZP COLUMNS
+    $record[$offset + self::COLUMN_EZP_NAME]       = $this->generateName($query, $prefix);
   }
 
   /**

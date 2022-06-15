@@ -113,6 +113,117 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         array('class' => 'huge')
     );
 
+    $this->add(
+        'text',
+        'qr_type',
+        E::ts('QR Type'),
+        array('class' => 'huge'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'qr_version',
+        E::ts('Version'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'qr_coding_type',
+        E::ts('Coding Type'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'qr_account',
+        E::ts('QR Account'),
+        array('class' => 'huge'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'esr_reference_type',
+        E::ts('ESR Reference Type'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_address_type',
+        E::ts('ZE Address Type'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_name',
+        E::ts('ZE Name'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_street',
+        E::ts('ZE Street'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_street_number',
+        E::ts('ZE Street Number'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_postal_code',
+        E::ts('ZE Postal Code'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_city',
+        E::ts('ZE City'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_country',
+        E::ts('ZE Country'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ze_currency',
+        E::ts('Currency'),
+        array('class' => 'tiny'),
+        FALSE
+    );
+
+    $this->add(
+        'text',
+        'ezp_address_type',
+        E::ts('EZP Address Type'),
+        array('class' => 'tiny'),
+        FALSE
+    );
 
     parent::buildQuickForm();
 
@@ -157,11 +268,25 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     //Contact:submit
     $values = array(
-        'amount'          => CRM_Utils_Array::value('amount', $all_values),
-        'tn_number'       => CRM_Utils_Array::value('tn_number', $all_values),
-        'mailcode'        => CRM_Utils_Array::value('mailcode', $all_values),
-        'custom_text'     => CRM_Utils_Array::value('custom_text', $all_values),
-        'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
+        'amount'              => CRM_Utils_Array::value('amount', $all_values),
+        'tn_number'           => CRM_Utils_Array::value('tn_number', $all_values),
+        'mailcode'            => CRM_Utils_Array::value('mailcode', $all_values),
+        'custom_text'         => CRM_Utils_Array::value('custom_text', $all_values),
+        'custom_field_id'     => CRM_Utils_Array::value('custom_field_id', $all_values),
+        'qr_type'             => CRM_Utils_Array::value('qr_type', $all_values),
+        'qr_version'          => CRM_Utils_Array::value('qr_version', $all_values),
+        'qr_coding_type'      => CRM_Utils_Array::value('qr_coding_type', $all_values),
+        'qr_account'          => CRM_Utils_Array::value('qr_account', $all_values),
+        'esr_reference_type'  => CRM_Utils_Array::value('esr_reference_type', $all_values),
+        'ze_address_type'     => CRM_Utils_Array::value('ze_address_type', $all_values),
+        'ze_name'             => CRM_Utils_Array::value('ze_name', $all_values),
+        'ze_street'           => CRM_Utils_Array::value('ze_street', $all_values),
+        'ze_street_number'    => CRM_Utils_Array::value('ze_street_number', $all_values),
+        'ze_postal_code'      => CRM_Utils_Array::value('ze_postal_code', $all_values),
+        'ze_city'             => CRM_Utils_Array::value('ze_city', $all_values),
+        'ze_country'          => CRM_Utils_Array::value('ze_country', $all_values),
+        'ze_currency'         => CRM_Utils_Array::value('ze_currency', $all_values),
+        'ezp_address_type'    => CRM_Utils_Array::value('ezp_address_type', $all_values),
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.contact' => $values));
 
