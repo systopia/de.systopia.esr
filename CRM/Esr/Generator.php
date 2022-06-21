@@ -41,8 +41,8 @@ abstract class CRM_Esr_Generator {
    */
   public static function getGeneratorOptions() {
     return [
-        'CRM_Esr_GeneratorClassic' => E::ts('Legacy'),
-        'CRM_Esr_GeneratorQR' => E::ts('With QR Codes'),
+        'CRM_Esr_GeneratorClassic' => E::ts('Legacy Format'),
+        'CRM_Esr_GeneratorQR' => E::ts('QR Code Format'),
     ];
   }
 
