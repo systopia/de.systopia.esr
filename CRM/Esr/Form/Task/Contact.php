@@ -244,6 +244,8 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'isDefault' => FALSE,
       ),
     ));
+
+    Civi::resources()->addScriptFile(E::LONG_NAME, 'js/contact-task-form.js');
   }
 
 
