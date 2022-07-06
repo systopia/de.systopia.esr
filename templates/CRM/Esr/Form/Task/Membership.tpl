@@ -15,6 +15,11 @@
 <h3>{ts domain="de.systopia.esr"}Parameters{/ts}</h3>
 
 <div class="crm-section">
+  <div class="label">{$form.exporter_class.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}Generator{/ts}", {literal}{"id":"id-exporter_class","file":"CRM\/Esr\/Form\/Task\/Membership"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
+  <div class="content">{$form.exporter_class.html}</div>
+  <div class="clear"></div>
+</div>
+<div class="crm-section">
   <div class="label">{$form.tn_number.label} <a onclick='CRM.help("{ts domain="de.systopia.esr"}ESR Registration{/ts}", {literal}{"id":"id-number","file":"CRM\/Esr\/Form\/Task\/Membership"}{/literal}); return false;' href="#" title="Help" class="helpicon">&nbsp;</a></div>
   <div class="content">{$form.tn_number.html}</div>
   <div class="clear"></div>

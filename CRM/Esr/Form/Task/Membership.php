@@ -31,6 +31,15 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
     $this->registerRule('digits_only', 'callback', 'digits_only', 'CRM_Esr_Form_Task_Contact');
 
     $this->add(
+        'select',
+        'exporter_class',
+        E::ts('Export Format'),
+        CRM_Esr_Generator::getGeneratorOptions(),
+        true,
+        array('class' => 'huge')
+    );
+
+    $this->add(
       'text',
       'tn_number',
       E::ts('Participant number'),
@@ -136,7 +145,7 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
 
     if (isset($all_values['_qf_Membership_submit'])) {
       // CREATE CSV
-      $generator = new CRM_Esr_Generator();
+      $generator = CRM_Esr_Generator::getInstance($all_values['exporter_class']);
       $generator->generate(CRM_Esr_Generator::$REFTYPE_MEMBERSHIP, $this->_memberIds, $values);
 
     } elseif (isset($all_values['_qf_Membership_next'])) {

@@ -1,342 +1,428 @@
-# Copyright CiviCRM LLC (c) 2004-2015
-# This file is distributed under the same license as the CiviCRM package.
-# If you contribute heavily to a translation and deem your work copyrightable,
-# make sure you license it to CiviCRM LLC under Academic Free License 3.0.
-msgid ""
-msgstr ""
-"Project-Id-Version: de.systopia.esr\n"
-"POT-Creation-Date: 2019-12-06 07:27+0100\n"
-"Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-
-#: CRM/Esr/Config.php CRM/Esr/Form/Task/Contact.php
-#: CRM/Esr/Form/Task/Membership.php templates/CRM/Esr/Form/Settings.tpl
+#: ./CRM/Esr/Config.php ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php ./templates/CRM/Esr/Form/Settings.tpl
 msgid "ESR Code Generation"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "ESR Configuration"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "Participant Number (ESR_TN)"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "Participant Number (ESR_TN) Format"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "8 digits, leading zeros"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "9 digits, leading zeros"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "unformatted"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "LSV Identification (LSV_ID)"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "TA850 File Prefix"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "Save"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "Settings stored"
 msgstr ""
 
-#: CRM/Esr/Form/Settings.php
+#: ./CRM/Esr/Form/Settings.php
 msgid "Success"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php
+#: ./CRM/Esr/Form/Task/Contact.php
 msgid "No campaign"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
-#: templates/CRM/Esr/Form/Task/Contact.tpl
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php ./templates/CRM/Esr/Form/Task/Contact.tpl
 msgid "Amount"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "Please enter a valid amount"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "Participant number"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "Please enter digits only"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Generator.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Mail code"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php
+#: ./CRM/Esr/Form/Task/Contact.php
 msgid "Mail code for campaign"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Text module"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Organisation Name"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
+msgid "Export Format"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "QR Type"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "Version"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "Coding Type"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "QR Account"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ESR Reference Type"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ZE Address Type"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ZE Name"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ZE Street"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php
+msgid "ZE Street Number"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ZE Postal Code"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ZE City"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "ZE Country"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "Currency"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/GeneratorQR.php
+msgid "EZP Address Type"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "Complete"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "Create CSV"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "Cancel"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
 msgid "A ESR code has been generated"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Contact.php
+#: ./CRM/Esr/Form/Task/Contact.php
 msgid "Organisation Name / Employer"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Contact.php ./CRM/Esr/Form/Task/Membership.php
+msgid "Custom: %1"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Membership.php
 msgid "Paying Contact"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Membership.php
 msgid "Payment Amount"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Membership.php
 msgid "Member (itself)"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Membership.php
+msgid "Field: %1"
+msgstr ""
+
+#: ./CRM/Esr/Form/Task/Membership.php
 msgid "Membership Type"
 msgstr ""
 
-#: CRM/Esr/Form/Task/Membership.php
+#: ./CRM/Esr/Form/Task/Membership.php
 msgid "Fixed Amount"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/Generator.php
+msgid "Legacy Format"
+msgstr ""
+
+#: ./CRM/Esr/Generator.php
+msgid "QR Code Format"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Registration number"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Address line 1"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Address line 2"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Address line 3"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Address line 4"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Address line 5"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Address line 6"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "Street"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "Street number"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "Postal code"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "City"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "Country"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "Salutation"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Postal mailing salutation"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Formal title"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "First name"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Last name"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "Name 2"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "VESR number"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "ESR 1"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "ESR 1 Ref Row"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "ESR 1 Ref Row Grp"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php
 msgid "ESR 1 Identity"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Data Matrix Code Type 20 from digit 37"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Data Matrix Code"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Packet number"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Second Contact Identical"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Amount (main)"
 msgstr ""
 
-#: CRM/Esr/Generator.php
+#: ./CRM/Esr/GeneratorClassic.php ./CRM/Esr/GeneratorQR.php
 msgid "Amount (cents)"
 msgstr ""
 
-#: CRM/Esr/Upgrader/Base.php
+#: ./CRM/Esr/GeneratorQR.php
+msgid "ZE Street number"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "EZP Name"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "EZP Street/Address"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "EZP Street number"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "EZP Postal code"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "EZP City"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "EZP Country"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "ESR Reference"
+msgstr ""
+
+#: ./CRM/Esr/GeneratorQR.php
+msgid "Personal number QR"
+msgstr ""
+
+#: ./CRM/Esr/Upgrader/Base.php
 msgid "Upgrade %1 to revision %2"
 msgstr ""
 
-#: esr.php
+#: ./esr.php
 msgid "ESR Generation"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Settings.tpl
+#: ./templates/CRM/Esr/Form/Settings.tpl
 msgid "TA875/LSV+ CiviSEPA Format"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Contact.hlp
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"The ESR participant number is your organisation's registration number for "
-"the ESR system."
+#: ./templates/CRM/Esr/Form/Task/Contact.hlp ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "The ESR participant number is your organisation's registration number for the ESR system."
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Contact.hlp
-msgid ""
-"This fixed amount will be printed on the ESR payment form. If no amount is "
-"declared, an ESR+ without a pre-printed amount will be created."
+#: ./templates/CRM/Esr/Form/Task/Contact.hlp
+msgid "This fixed amount will be printed on the ESR payment form. If no amount is declared, an ESR+ without a pre-printed amount will be created."
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Contact.tpl
-#: templates/CRM/Esr/Form/Task/Membership.tpl
+#: ./templates/CRM/Esr/Form/Task/Contact.tpl ./templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Parameters"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Contact.tpl
+#: ./templates/CRM/Esr/Form/Task/Contact.tpl ./templates/CRM/Esr/Form/Task/Membership.tpl
+msgid "Generator"
+msgstr ""
+
+#: ./templates/CRM/Esr/Form/Task/Contact.tpl
 msgid "ESR Number"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"You have the following options to determine the amount that is supposed to "
-"be collected:"
+#: ./templates/CRM/Esr/Form/Task/Contact.tpl
+msgid "Parameters for QR Code Format"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"\"Fixed Amount\" - enter an amount that is then issued for alle memberships"
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "You have the following options to determine the amount that is supposed to be collected:"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"\"Membership Type\" - use the minimum fee amount from membership's "
-"respective type."
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "\"Fixed Amount\" - enter an amount that is then issued for alle memberships"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"\"Field X\" - take the fee amount from a 'Money' type custom field assigned "
-"to the membership. If that field is empty, the minimum fee amount from "
-"membership's respective type is used."
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "\"Membership Type\" - use the minimum fee amount from membership's respective type."
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"You have the following options to determine <i>which</i> contact is sent the "
-"code"
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "\"Field X\" - take the fee amount from a 'Money' type custom field assigned to the membership. If that field is empty, the minimum fee amount from membership's respective type is used."
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "You have the following options to determine <i>which</i> contact is sent the code"
+msgstr ""
+
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
 msgid "\"Member (itself)\" - the member"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.hlp
-msgid ""
-"\"Field X\" - use the contact in this custom 'Contact-Reference' type custom "
-"field assigned to the membership. If it is empty, the member contact is used."
+#: ./templates/CRM/Esr/Form/Task/Membership.hlp
+msgid "\"Field X\" - use the contact in this custom 'Contact-Reference' type custom field assigned to the membership. If it is empty, the member contact is used."
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.tpl
+#: ./templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "ESR Registration"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.tpl
+#: ./templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Buyer Options"
 msgstr ""
 
-#: templates/CRM/Esr/Form/Task/Membership.tpl
+#: ./templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Amount Options"
 msgstr ""
+

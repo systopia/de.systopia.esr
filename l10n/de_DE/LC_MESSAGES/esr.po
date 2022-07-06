@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: esr\n"
-"POT-Creation-Date: 2019-12-06 07:27+0100\n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
@@ -13,8 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1\n"
 
 #: CRM/Esr/Config.php CRM/Esr/Form/Task/Contact.php
 #: CRM/Esr/Form/Task/Membership.php templates/CRM/Esr/Form/Settings.tpl
@@ -41,7 +41,7 @@ msgstr "8 Ziffern mit führender Null"
 
 #: CRM/Esr/Form/Settings.php
 msgid "9 digits, leading zeros"
-msgstr "8 Ziffern mit führender Null"
+msgstr "9 Ziffern mit führender Null"
 
 #: CRM/Esr/Form/Settings.php
 msgid "unformatted"
@@ -88,7 +88,8 @@ msgstr "Teilnehmer-Nummer"
 msgid "Please enter digits only"
 msgstr "Bitte nur Ziffern eingeben"
 
-#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Generator.php
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorClassic.php
+#: CRM/Esr/GeneratorQR.php
 msgid "Mail code"
 msgstr "Mailcode"
 
@@ -97,14 +98,74 @@ msgid "Mail code for campaign"
 msgstr "Mailcode für Kampagne"
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Text module"
 msgstr "Textbaustein"
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Organisation Name"
 msgstr "Organisationsname"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+msgid "Export Format"
+msgstr "Exportformat"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "QR Type"
+msgstr "QRType"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "Version"
+msgstr "Version"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "Coding Type"
+msgstr "Coding Type"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "QR Account"
+msgstr "Konto"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ESR Reference Type"
+msgstr "Referenztyp"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ZE Address Type"
+msgstr "ZE Adresstyp"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ZE Name"
+msgstr "ZE Name"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ZE Street"
+msgstr "ZE Strasse"
+
+#: CRM/Esr/Form/Task/Contact.php
+msgid "ZE Street Number"
+msgstr "ZE Haus-Nr."
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ZE Postal Code"
+msgstr "ZE PLZ"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ZE City"
+msgstr "ZE Ort"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "ZE Country"
+msgstr "ZE Land"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "Currency"
+msgstr "Währung"
+
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/GeneratorQR.php
+msgid "EZP Address Type"
+msgstr "EZP Adress-Typ"
 
 #: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
 msgid "Complete"
@@ -126,6 +187,10 @@ msgstr "Ein ESR-Code wurde generiert"
 msgid "Organisation Name / Employer"
 msgstr "Organisationsname / Arbeitgeber"
 
+#: CRM/Esr/Form/Task/Contact.php CRM/Esr/Form/Task/Membership.php
+msgid "Custom: %1"
+msgstr ""
+
 #: CRM/Esr/Form/Task/Membership.php
 msgid "Paying Contact"
 msgstr "Zahlender Kontakt"
@@ -139,6 +204,10 @@ msgid "Member (itself)"
 msgstr "Mitglied (selbst)"
 
 #: CRM/Esr/Form/Task/Membership.php
+msgid "Field: %1"
+msgstr ""
+
+#: CRM/Esr/Form/Task/Membership.php
 msgid "Membership Type"
 msgstr "Mitgliedsart"
 
@@ -147,120 +216,164 @@ msgid "Fixed Amount"
 msgstr "Festbetrag"
 
 #: CRM/Esr/Generator.php
+msgid "Legacy Format"
+msgstr "Altes Exportformat"
+
+#: CRM/Esr/Generator.php
+msgid "QR Code Format"
+msgstr "QR Code Format"
+
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Registration number"
 msgstr "Personennummer"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Address line 1"
 msgstr "Adresszeile 1"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Address line 2"
 msgstr "Adresszeile 2"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Address line 3"
 msgstr "Adresszeile 3"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Address line 4"
 msgstr "Adresszeile 4"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Address line 5"
-msgstr "Adresszeile "
+msgstr "Adresszeile 5"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Address line 6"
-msgstr "Adresszeile "
+msgstr "Adresszeile 6"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "Street"
 msgstr "Straße"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "Street number"
 msgstr "Hausnummer"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "Postal code"
 msgstr "Postleitzahl"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "City"
 msgstr "Ort"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "Country"
 msgstr "Land"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "Salutation"
 msgstr "Anrede"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Postal mailing salutation"
 msgstr "Briefanrede"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Formal title"
 msgstr "Titel"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "First name"
 msgstr "Vorname"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Last name"
 msgstr "Nachname"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "Name 2"
 msgstr "Name 2"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "VESR number"
 msgstr "VESR-Nummer"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "ESR 1"
 msgstr "ESR 1"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "ESR 1 Ref Row"
 msgstr "ESR 1 Ref Zeile"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "ESR 1 Ref Row Grp"
 msgstr "ESR 1 Ref Zeile Grp"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php
 msgid "ESR 1 Identity"
 msgstr "ESR 1 Identität"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Data Matrix Code Type 20 from digit 37"
 msgstr "Data Matrix Code Typ 20 ab Stelle 37"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Data Matrix Code"
 msgstr "Data Matrix Code"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Packet number"
 msgstr "Paketnummer"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Second Contact Identical"
 msgstr "Zweitkontakt Identisch"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Amount (main)"
 msgstr "Betrag (Ganzzahl)"
 
-#: CRM/Esr/Generator.php
+#: CRM/Esr/GeneratorClassic.php CRM/Esr/GeneratorQR.php
 msgid "Amount (cents)"
 msgstr "Betrag (Cents)"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "ZE Street number"
+msgstr "ZE Haus-Nr."
+
+#: CRM/Esr/GeneratorQR.php
+msgid "EZP Name"
+msgstr "EZP Name"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "EZP Street/Address"
+msgstr "EZP Strasse/Adresse"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "EZP Street number"
+msgstr "EZP Haus-Nr."
+
+#: CRM/Esr/GeneratorQR.php
+msgid "EZP Postal code"
+msgstr "EZP PLZ"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "EZP City"
+msgstr "EZP Ort"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "EZP Country"
+msgstr "EZP Land"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "ESR Reference"
+msgstr "Referenz"
+
+#: CRM/Esr/GeneratorQR.php
+msgid "Personal number QR"
+msgstr "PersNr"
 
 #: CRM/Esr/Upgrader/Base.php
 msgid "Upgrade %1 to revision %2"
@@ -295,8 +408,19 @@ msgid "Parameters"
 msgstr "Parameter"
 
 #: templates/CRM/Esr/Form/Task/Contact.tpl
+#: templates/CRM/Esr/Form/Task/Membership.tpl
+#, fuzzy
+#| msgid "ESR Generation"
+msgid "Generator"
+msgstr "ESR-Generierung"
+
+#: templates/CRM/Esr/Form/Task/Contact.tpl
 msgid "ESR Number"
 msgstr "ESR-Nummer"
+
+#: templates/CRM/Esr/Form/Task/Contact.tpl
+msgid "Parameters for QR Code Format"
+msgstr "Parameter für QR Code Format"
 
 #: templates/CRM/Esr/Form/Task/Membership.hlp
 msgid ""
@@ -361,6 +485,9 @@ msgstr "Fremdzahler Optionen"
 #: templates/CRM/Esr/Form/Task/Membership.tpl
 msgid "Amount Options"
 msgstr "Betragsoptionen"
+
+#~ msgid "With QR Codes"
+#~ msgstr "Für QR Code"
 
 #~ msgid "Please enter a valid amount."
 #~ msgstr "Bitte einen gültigen Betrag eingeben"
