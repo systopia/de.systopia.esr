@@ -25,5 +25,10 @@
   <comments>Initially funded by 8uhr30</comments>
   <civix>
     <namespace>CRM/Esr</namespace>
+    <format>22.05.2</format>
   </civix>
+  <mixins>
+    <mixin>menu-xml@1.0.0</mixin>
+    <mixin>setting-php@1.0.0</mixin>
+  </mixins>
 </extension>
