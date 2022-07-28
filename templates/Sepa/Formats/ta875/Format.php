@@ -155,7 +155,7 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
    */
   protected function getGenerator() {
     if ($this->generator === NULL) {
-      $this->generator = new CRM_Esr_Generator();
+      $this->generator = new CRM_Esr_GeneratorClassic();
     }
     return $this->generator;
   }
