@@ -391,10 +391,11 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
                 civicrm_address.supplemental_address_1    AS supplemental_address_1,
                 civicrm_address.supplemental_address_2    AS supplemental_address_2,
                 civicrm_address.city                      AS city,
-                civicrm_address.country_id                AS country_id,
+                civicrm_country.iso_code                  AS iso_code,
                 {$ORGNAME_TERM}                           AS organisation_name
       FROM      civicrm_contact
       LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
+      LEFT JOIN civicrm_country ON civicrm_country.id = civicrm_address.country_id
       {$ORGNAME_JOIN}
       WHERE     {$WHERE_CLAUSE}
       GROUP BY  civicrm_contact.id";
@@ -527,7 +528,7 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
     // parsed address
     $record[$offset + self::COLUMN_POSTAL_CODE] = $this->getQueryResult($query, 'postal_code', $prefix);
     $record[$offset + self::COLUMN_CITY]        = $this->getQueryResult($query, 'city', $prefix);
-    $record[$offset + self::COLUMN_COUNTRY]     = $this->id2country[$this->getQueryResult($query, 'country_id', $prefix)];
+    $record[$offset + self::COLUMN_COUNTRY]     = $this->getQueryResult($query, 'iso_code', $prefix);
     if (preg_match($this->street_parser, $this->getQueryResult($query, 'street_address', $prefix), $matches)) {
       $record[$offset + self::COLUMN_STREET]        = $matches['street'];
       $record[$offset + self::COLUMN_STREET_NUMBER] = $matches['number'];
