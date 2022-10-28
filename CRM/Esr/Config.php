@@ -136,7 +136,7 @@ class CRM_Esr_Config {
    *   the creditor's ID for an override
    *
    * @return string LSV ID
-   *    the 6 digit LSV id, usually 9xxxxx
+   *    the 6 digit LSV Fid, usually 9xxxxx
    */
   public function get_ta875_LSV_ID($creditor_id) {
     // first: see if there's an override in the creditor identifier
