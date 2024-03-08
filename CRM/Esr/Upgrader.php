@@ -18,7 +18,7 @@ use CRM_Esr_ExtensionUtil as E;
 /**
  * Collection of upgrade steps.
  */
-class CRM_Esr_Upgrader extends CRM_Esr_Upgrader_Base {
+class CRM_Esr_Upgrader extends CRM_Extension_Upgrader_Base {
   /**
    * Update menu for configuration page
    *
