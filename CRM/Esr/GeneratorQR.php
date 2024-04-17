@@ -62,6 +62,7 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
   const COLUMN_EZP_ADDRESS_TYPE                  = 43;
   const COLUMN_EZP_NAME                          = 44;
   const COLUMN_REF_TYPE                          = 45;
+  const COLUMN_TOTAL_CONTRIBUTIONS_LAST_YEAR     = 46;
 
   // additional headers for membership
   const COLUMN_SECOND_CONTACT_IDENTICAL          = 29;
@@ -121,6 +122,7 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
         self::COLUMN_TEXT_MODULE                       => E::ts('Text module'),
         self::COLUMN_PACKET_NUMBER                     => E::ts('Packet number'),
         self::COLUMN_ORGANISATION_NAME                 => E::ts('Organisation Name'),
+        self::COLUMN_TOTAL_CONTRIBUTIONS_LAST_YEAR     => E::ts('Total contributions of last fiscal year'),
     );
 
     // fill prefix lookup
@@ -371,6 +373,10 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
       $ORGNAME_JOIN = "";
     }
 
+    // get year numbers
+    $LAST_YEAR = date('Y', strtotime('-1 year'));
+    $CUR_YEAR = date('Y');
+
     // compile the query
     $sql = "
       SELECT    civicrm_contact.id                        AS contact_id,
@@ -392,10 +398,16 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
                 civicrm_address.supplemental_address_2    AS supplemental_address_2,
                 civicrm_address.city                      AS city,
                 civicrm_country.iso_code                  AS iso_code,
-                {$ORGNAME_TERM}                           AS organisation_name
+                {$ORGNAME_TERM}                           AS organisation_name,
+                SUM(civicrm_contribution.total_amount)    AS total_contributions_last_year
       FROM      civicrm_contact
       LEFT JOIN civicrm_address ON civicrm_address.contact_id = civicrm_contact.id AND civicrm_address.is_primary = 1
       LEFT JOIN civicrm_country ON civicrm_country.id = civicrm_address.country_id
+      LEFT JOIN civicrm_contribution
+        ON civicrm_contribution.contact_id = civicrm_contact.id
+        AND civicrm_contribution.contribution_recur_id is NULL
+        AND civicrm_contribution.is_test = 0
+        AND civicrm_contribution.receive_date BETWEEN '{$LAST_YEAR}-01-01 00:00:00' AND '{$CUR_YEAR}-01-01 00:00:00'
       {$ORGNAME_JOIN}
       WHERE     {$WHERE_CLAUSE}
       GROUP BY  civicrm_contact.id";
@@ -503,6 +515,9 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
 
     // custom field
     $record[self::COLUMN_ORGANISATION_NAME] = $query->organisation_name;
+
+    // add total sum of last years contributions
+    $record[$offset + self::COLUMN_TOTAL_CONTRIBUTIONS_LAST_YEAR] = $query->total_contributions_last_year;
 
     // unused: ESR1Identity, DataMatrixCodeTyp20abStelle37, DataMatrixCode, Paketnummer
     return $record;
