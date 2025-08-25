@@ -108,6 +108,7 @@ class CRM_Esr_Config {
    * @return string formatted number
    */
   public static function formatCreditorID($creditor_id, $context) {
+    $format = Civi::settings()->get('esr_tn_format', '8');
     $format = CRM_Utils_Array::value('esr_tn_format', self::getSettings(), '8');
     switch ($format) {
       case '9': # 9 digits

@@ -133,17 +133,17 @@
 </div>
 
 <script type="text/javascript">
-var campaign_mailcode_prefix = "{$campaign_mailcode_prefix}";
-var campaign_mailcode_length = {$campaign_mailcode_length};
-{literal}
+  const campaign_mailcode_prefix = "{$campaign_mailcode_prefix}";
+  const campaign_mailcode_length = {$campaign_mailcode_length};
+  {literal}
 
 cj("#campaign").change(function(e) {
-  var campaign_id = cj(e.target).val();
+  const campaign_id = cj(e.target).val();
   if (campaign_id == '0') {
     cj("#mailcode").val('');
   } else {
     // compile mailcode
-    var mailcode = campaign_mailcode_prefix;
+    let mailcode = campaign_mailcode_prefix;
     while (mailcode.length + campaign_id.length < campaign_mailcode_length) {
       mailcode = mailcode + '0';
     }
