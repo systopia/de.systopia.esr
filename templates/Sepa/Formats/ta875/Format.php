@@ -25,6 +25,7 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
    * gives the option of setting extra variables to the template
    */
   public function assignExtraVariables($template) {
+    CRM_Core_Smarty::singleton()->registerPlugin("modifier", "sprintf", "sprintf");
     $config = new CRM_Esr_Config();
 
     // TODO: settings?
