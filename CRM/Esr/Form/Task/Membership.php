@@ -134,12 +134,12 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
 
     //Contact:submit
     $values = array(
-        'tn_number'       => CRM_Utils_Array::value('tn_number', $all_values),
-        'paying_contact'  => CRM_Utils_Array::value('paying_contact', $all_values),
-        'amount'          => CRM_Utils_Array::value('amount', $all_values),
-        'amount_option'   => CRM_Utils_Array::value('amount_option', $all_values),
-        'custom_text'     => CRM_Utils_Array::value('custom_text', $all_values),
-        'custom_field_id' => CRM_Utils_Array::value('custom_field_id', $all_values),
+        'tn_number'       => $all_values['tn_number'] ?? NULL,
+        'paying_contact'  => $all_values['paying_contact'] ?? NULL,
+        'amount'          => $all_values['amount'] ?? NULL,
+        'amount_option'   => $all_values['amount_option'] ?? NULL,
+        'custom_text'     => $all_values['custom_text'] ?? NULL,
+        'custom_field_id' => $all_values['custom_field_id'] ?? NULL,
     );
     civicrm_api3('Setting', 'create', array('de.systopia.esr.membership' => $values));
 
