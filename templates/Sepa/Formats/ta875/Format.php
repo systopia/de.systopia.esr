@@ -44,7 +44,7 @@ class CRM_Sepa_Logic_Format_ta875 extends CRM_Sepa_Logic_Format {
       $creditors = civicrm_api3('SepaCreditor', 'get', ['sequential' => 0, 'option.limit' => 0]);
       $this->creditor_by_id = $creditors['values'];
     }
-    return CRM_Utils_Array::value($creditor_id, $this->creditor_by_id, NULL);
+    return $this->creditor_by_id[$creditor_id] ?? NULL;
   }
 
   /**
