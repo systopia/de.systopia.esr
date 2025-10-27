@@ -1,1 +1,1 @@
-8900{$ta875_EDAT}{"%-5.5s"|sprintf:$creditor.identifier}{counter assign=index print=false}{"%07d"|sprintf:$index}CHF{"%016.2f"|sprintf:$total|replace:'.':','}
+8900{$ta875_EDAT}{$creditor.identifier|string_format:"%-5.5s"}{counter assign=index print=false}{$index|string_format:"%07d"}CHF{$total|string_format:"%016.2f"|replace:'.':','}
