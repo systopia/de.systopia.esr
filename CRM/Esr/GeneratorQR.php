@@ -447,7 +447,7 @@ class CRM_Esr_GeneratorQR extends CRM_Esr_Generator {
   /**
    * generate a new record on the next line of the query result
    */
-  protected function generateRecord($type, $query, $params) {
+  protected function generateRecord($type, $query, $params, $offset = 0) {
     $record = array();
 
     // basic information
