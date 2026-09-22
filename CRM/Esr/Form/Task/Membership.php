@@ -36,14 +36,14 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
         E::ts('Export Format'),
         CRM_Esr_Generator::getGeneratorOptions(),
         true,
-        array('class' => 'huge')
+        ['class' => 'huge']
     );
 
     $this->add(
       'text',
       'tn_number',
       E::ts('Participant number'),
-      array('class' => 'huge'),
+      ['class' => 'huge'],
       TRUE
     );
     $this->addRule('tn_number', E::ts('Please enter digits only'), 'digits_only');
@@ -69,7 +69,7 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
         'text',
         'amount',
         E::ts('Amount'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
     $this->addRule('amount', E::ts('Please enter a valid amount'), 'money');
@@ -78,7 +78,7 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
       'text',
       'custom_text',
       E::ts('Text module'),
-      array('class' => 'huge'),
+      ['class' => 'huge'],
       FALSE
     );
 
@@ -88,28 +88,28 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
         E::ts('Organisation Name'),
         CRM_Esr_Form_Task_Contact::getOrganisationNameFields(),
         FALSE,
-        array('class' => 'huge')
+        ['class' => 'huge']
     );
 
     parent::buildQuickForm();
 
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'next',
         'name' => E::ts('Complete'),
         'isDefault' => TRUE,
-      ),
-      array(
+      ],
+      [
         'type' => 'submit',
         'name' => E::ts('Create CSV'),
         'isDefault' => TRUE,
-      ),
-      array(
+      ],
+      [
         'type' => 'cancel',
         'name' => E::ts('Cancel'),
         'isDefault' => FALSE,
-      ),
-    ));
+      ],
+    ]);
   }
 
 
@@ -118,9 +118,9 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
    * get the last iteration's values
    */
   public function setDefaultValues() {
-    $values = civicrm_api3('Setting', 'getvalue', array('name' => 'de.systopia.esr.membership', 'group' => 'de.systopia.esr'));
+    $values = civicrm_api3('Setting', 'getvalue', ['name' => 'de.systopia.esr.membership', 'group' => 'de.systopia.esr']);
     if (empty($values) || !is_array($values)) {
-      return array();
+      return [];
     } else {
       return $values;
     }
@@ -133,15 +133,15 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
     $all_values = $this->exportValues();
 
     //Contact:submit
-    $values = array(
+    $values = [
         'tn_number'       => $all_values['tn_number'] ?? NULL,
         'paying_contact'  => $all_values['paying_contact'] ?? NULL,
         'amount'          => $all_values['amount'] ?? NULL,
         'amount_option'   => $all_values['amount_option'] ?? NULL,
         'custom_text'     => $all_values['custom_text'] ?? NULL,
         'custom_field_id' => $all_values['custom_field_id'] ?? NULL,
-    );
-    civicrm_api3('Setting', 'create', array('de.systopia.esr.membership' => $values));
+    ];
+    civicrm_api3('Setting', 'create', ['de.systopia.esr.membership' => $values]);
 
     if (isset($all_values['_qf_Membership_submit'])) {
       // CREATE CSV
@@ -150,13 +150,13 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
 
     } elseif (isset($all_values['_qf_Membership_next'])) {
       // CREATE ACTIVITY
-      civicrm_api3('Activity', 'create', array(
+      civicrm_api3('Activity', 'create', [
         'activity_type_id'   => CRM_Esr_Config::getESRActivityTypeID(),
         'activity_date_time' => date('YmdHis'),
         'subject'            => E::ts('A ESR code has been generated'),
         'source_contact_id'  => CRM_Core_Session::getLoggedInContactID(),
         'target_id'          => $this->_contactIds,
-      ));
+      ]);
     }
 
     parent::postProcess();
@@ -167,7 +167,7 @@ class CRM_Esr_Form_Task_Membership extends CRM_Member_Form_Task {
    * @deprecated
    */
   protected function onlyIndividuals() {
-    $filtered_contact_ids = array();
+    $filtered_contact_ids = [];
     foreach ($this->_contactIds as $contact_id) {
       $filtered_contact_id = (int) $contact_id;
       if ($filtered_contact_id) {
