@@ -42,11 +42,11 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     $this->assign('campaign_mailcode_length', 9);
 
     // load campaigns
-    $campaigns = civicrm_api3('Campaign', 'get', array(
+    $campaigns = civicrm_api3('Campaign', 'get', [
       'is_active' => 1,
       'option.limit' => 0,
-      ));
-    $campaign_list = array('0' => E::ts('No campaign'));
+      ]);
+    $campaign_list = ['0' => E::ts('No campaign')];
     foreach ($campaigns['values'] as $campaign) {
       $campaign_list[$campaign['id']] = $campaign['title'];
     }
@@ -55,7 +55,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'text',
       'amount',
       E::ts('Amount'),
-      array('class' => 'tiny'),
+      ['class' => 'tiny'],
       FALSE
     );
     $this->addRule('amount', E::ts('Please enter a valid amount'), 'money');
@@ -64,7 +64,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'text',
       'tn_number',
       E::ts('Participant number'),
-      array('class' => 'huge'),
+      ['class' => 'huge'],
       TRUE
     );
     $this->addRule('tn_number', E::ts('Please enter digits only'), 'digits_only');
@@ -73,7 +73,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'text',
       'mailcode',
       E::ts('Mail code'),
-      array('class' => 'huge'),
+      ['class' => 'huge'],
       TRUE
     );
     $this->addRule('mailcode', E::ts('Please enter digits only'), 'digits_only');
@@ -91,7 +91,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
       'text',
       'custom_text',
       E::ts('Text module'),
-      array('class' => 'huge'),
+      ['class' => 'huge'],
       FALSE
     );
 
@@ -101,7 +101,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         E::ts('Organisation Name'),
         self::getOrganisationNameFields(),
         FALSE,
-        array('class' => 'huge')
+        ['class' => 'huge']
     );
 
     $this->add(
@@ -110,14 +110,14 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         E::ts('Export Format'),
         CRM_Esr_Generator::getGeneratorOptions(),
         true,
-        array('class' => 'huge')
+        ['class' => 'huge']
     );
 
     $this->add(
         'text',
         'qr_type',
         E::ts('QR Type'),
-        array('class' => 'huge'),
+        ['class' => 'huge'],
         FALSE
     );
 
@@ -125,7 +125,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'qr_version',
         E::ts('Version'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -133,7 +133,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'qr_coding_type',
         E::ts('Coding Type'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -141,7 +141,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'qr_account',
         E::ts('QR Account'),
-        array('class' => 'huge'),
+        ['class' => 'huge'],
         FALSE
     );
 
@@ -149,7 +149,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'esr_reference_type',
         E::ts('ESR Reference Type'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -157,7 +157,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_address_type',
         E::ts('ZE Address Type'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -165,7 +165,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_name',
         E::ts('ZE Name'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -173,7 +173,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_street',
         E::ts('ZE Street'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -181,7 +181,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_street_number',
         E::ts('ZE Street Number'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -189,7 +189,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_postal_code',
         E::ts('ZE Postal Code'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -197,7 +197,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_city',
         E::ts('ZE City'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -205,7 +205,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_country',
         E::ts('ZE Country'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -213,7 +213,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ze_currency',
         E::ts('Currency'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
@@ -221,29 +221,29 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'text',
         'ezp_address_type',
         E::ts('EZP Address Type'),
-        array('class' => 'tiny'),
+        ['class' => 'tiny'],
         FALSE
     );
 
     parent::buildQuickForm();
 
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'next',
         'name' => E::ts('Complete'),
         'isDefault' => TRUE,
-      ),
-      array(
+      ],
+      [
         'type' => 'submit',
         'name' => E::ts('Create CSV'),
         'isDefault' => TRUE,
-      ),
-      array(
+      ],
+      [
         'type' => 'cancel',
         'name' => E::ts('Cancel'),
         'isDefault' => FALSE,
-      ),
-    ));
+      ],
+    ]);
 
     Civi::resources()->addScriptFile(E::LONG_NAME, 'js/contact-task-form.js');
   }
@@ -254,9 +254,9 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
    * get the last iteration's values
    */
   public function setDefaultValues() {
-    $values = civicrm_api3('Setting', 'getvalue', array('name' => 'de.systopia.esr.contact', 'group' => 'de.systopia.esr'));
+    $values = civicrm_api3('Setting', 'getvalue', ['name' => 'de.systopia.esr.contact', 'group' => 'de.systopia.esr']);
     if (empty($values) || !is_array($values)) {
-      return array();
+      return [];
     } else {
       return $values;
     }
@@ -269,7 +269,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
     $all_values = $this->exportValues();
 
     //Contact:submit
-    $values = array(
+    $values = [
         'amount'              => $all_values['amount'] ?? NULL,
         'tn_number'           => $all_values['tn_number'] ?? NULL,
         'mailcode'            => $all_values['mailcode'] ?? NULL,
@@ -289,8 +289,8 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
         'ze_country'          => $all_values['ze_country'] ?? NULL,
         'ze_currency'         => $all_values['ze_currency'] ?? NULL,
         'ezp_address_type'    => $all_values['ezp_address_type'] ?? NULL,
-    );
-    civicrm_api3('Setting', 'create', array('de.systopia.esr.contact' => $values));
+    ];
+    civicrm_api3('Setting', 'create', ['de.systopia.esr.contact' => $values]);
 
     if (isset($all_values['_qf_Contact_submit'])) {
       // CREATE CSV
@@ -299,13 +299,13 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     } elseif (isset($all_values['_qf_Contact_next'])) {
       // CREATE ACTIVITY
-      $result = civicrm_api3('Activity', 'create', array(
+      $result = civicrm_api3('Activity', 'create', [
         'activity_type_id'   => CRM_Esr_Config::getESRActivityTypeID(),
         'activity_date_time' => date('YmdHis'),
         'subject'            => E::ts('A ESR code has been generated'),
         'source_contact_id'  => CRM_Core_Session::getLoggedInContactID(),
         'target_id'          => $this->_contactIds,
-      ));
+      ]);
     }
 
     parent::postProcess();
@@ -316,7 +316,7 @@ class CRM_Esr_Form_Task_Contact extends CRM_Contact_Form_Task {
    * @deprecated
    */
   protected function onlyIndividuals() {
-    $filtered_contact_ids = array();
+    $filtered_contact_ids = [];
     foreach ($this->_contactIds as $contact_id) {
       $filtered_contact_id = (int) $contact_id;
       if ($filtered_contact_id) {

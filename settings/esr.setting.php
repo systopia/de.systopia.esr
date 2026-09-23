@@ -17,8 +17,8 @@
 * Settings metadata file
 */
 
-return array(
-  'de.systopia.esr.contact' => array(
+return [
+  'de.systopia.esr.contact' => [
       'group_name'  => 'de.systopia.esr',
       'group'       => 'de.systopia.esr.contact',
       'name'        => 'de.systopia.esr.contact',
@@ -27,8 +27,8 @@ return array(
       'is_domain'   => 1,
       'is_contact'  => 0,
       'description' => 'Last entered values in the ESR contact task',
-  ),
-  'de.systopia.esr.membership' => array(
+  ],
+  'de.systopia.esr.membership' => [
       'group_name'  => 'de.systopia.esr',
       'group'       => 'de.systopia.esr.membership',
       'name'        => 'de.systopia.esr.membership',
@@ -37,5 +37,5 @@ return array(
       'is_domain'   => 1,
       'is_contact'  => 0,
       'description' => 'Last entered values in the ESR membership task',
-  ),
-);
+  ],
+];

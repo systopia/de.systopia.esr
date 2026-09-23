@@ -70,7 +70,7 @@ class CRM_Esr_GeneratorClassic extends CRM_Esr_Generator {
 
   public function __construct() {
     // fill header
-    $this->base_header = array(
+    $this->base_header = [
         self::COLUMN_PERSONAL_NUMBER                   => E::ts('Registration number'),
         self::COLUMN_MAIL_CODE                         => E::ts('Mail code'),
         self::COLUMN_ADDRESS_1                         => E::ts('Address line 1'),
@@ -100,11 +100,11 @@ class CRM_Esr_GeneratorClassic extends CRM_Esr_Generator {
         self::COLUMN_TEXT_MODULE                       => E::ts('Text module'),
         self::COLUMN_PACKET_NUMBER                     => E::ts('Packet number'),
         self::COLUMN_ORGANISATION_NAME                 => E::ts('Organisation Name'),
-    );
+    ];
 
     // fill prefix lookup
-    $prefixes = civicrm_api3('OptionValue', 'get', array('option_group_id' => 'individual_prefix', 'return' => 'value,label'));
-    $this->id2prefix = array('' => '', NULL => '');
+    $prefixes = civicrm_api3('OptionValue', 'get', ['option_group_id' => 'individual_prefix', 'return' => 'value,label']);
+    $this->id2prefix = ['' => '', NULL => ''];
     foreach ($prefixes['values'] as $prefix) {
       $this->id2prefix[$prefix['value']] = $prefix['label'];
     }
@@ -155,7 +155,7 @@ class CRM_Esr_GeneratorClassic extends CRM_Esr_Generator {
     $query = CRM_Core_DAO::executeQuery($sql);
     while ($query->fetch()) {
       $record = $this->generateRecord($type, $query, $params);
-      $csv_line = array();
+      $csv_line = [];
       foreach ($headers as $field_index => $field) {
         if (isset($record[$field_index])) {
           $csv_line[] = $record[$field_index];
@@ -180,7 +180,7 @@ class CRM_Esr_GeneratorClassic extends CRM_Esr_Generator {
    */
   protected function generateSQL($type, $entity_ids, $params) {
     // filter IDs
-    $filtered_entity_ids = array();
+    $filtered_entity_ids = [];
     foreach ($entity_ids as $entity_id) {
       $filtered_entity_id = (int) $entity_id;
       if ($filtered_entity_id) {
@@ -414,7 +414,7 @@ class CRM_Esr_GeneratorClassic extends CRM_Esr_Generator {
    * generate a new record on the next line of the query result
    */
   protected function generateRecord($type, $query, $params) {
-    $record = array();
+    $record = [];
 
     // basic information
     $record[self::COLUMN_MAIL_CODE]       = isset($params['mailcode']) ? $params['mailcode'] : '';

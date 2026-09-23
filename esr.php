@@ -29,16 +29,16 @@ function esr_civicrm_searchTasks($objectType, &$tasks) {
   // add ESR generation tasks
   if ($objectType == 'contact') {
     // this object is only available for the 'merge' mode
-    $tasks['generate_esr'] = array(
+    $tasks['generate_esr'] = [
         'title'  => E::ts('ESR Generation'),
         'class'  => 'CRM_Esr_Form_Task_Contact',
-        'result' => false);
+        'result' => false];
   } elseif ($objectType == 'membership') {
     // this object is only available for the 'merge' mode
-    $tasks['generate_esr'] = array(
+    $tasks['generate_esr'] = [
         'title'  => E::ts('ESR Generation'),
         'class'  => 'CRM_Esr_Form_Task_Membership',
-        'result' => false);
+        'result' => false];
   }
 }
 

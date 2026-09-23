@@ -140,7 +140,7 @@ abstract class CRM_Esr_Generator {
 
     // clean the amount
     $config = CRM_Core_Config::singleton();
-    $amount = str_replace(array(' ', "\t", "\n", $config->monetaryThousandSeparator), '', $amount);
+    $amount = str_replace([' ', "\t", "\n", $config->monetaryThousandSeparator], '', $amount);
     $amount = str_replace($config->monetaryDecimalPoint, '.', $amount);
 
     // add the amount
