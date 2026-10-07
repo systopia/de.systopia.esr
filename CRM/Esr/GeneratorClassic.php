@@ -13,8 +13,6 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-require_once 'CRM/Core/Form.php';
-
 use CRM_Esr_ExtensionUtil as E;
 
 /**
